@@ -1,8 +1,9 @@
-package app.src.test.java.travel.memories;
-
-import app.src.main.java.travel.memories.App;
+package app.src.test;
 
 import org.junit.Test;
+
+import app.src.main.App;
+
 import static org.junit.Assert.*;
 
 public class AppTest {

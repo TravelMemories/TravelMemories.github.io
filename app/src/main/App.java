@@ -1,4 +1,4 @@
-package app.src.main.java.travel.memories;
+package app.src.main;
 
 public class App {
     public String getGreeting() {

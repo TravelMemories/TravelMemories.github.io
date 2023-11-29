@@ -32,5 +32,5 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("travel.memories.App")
+    mainClass.set("app.src.main.App")
 }
