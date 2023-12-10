@@ -1,4 +1,4 @@
-[![Java CI with Maven](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml/badge.svg)](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml)
+[![Java CI with Maven](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml/badge.svg)](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml) [![CodeQL](https://github.com/dxrgrabowski/travel-memories/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/dxrgrabowski/travel-memories/actions/workflows/github-code-scanning/codeql)
 # travel-memories
 
 When committing something to the repo, remember to add an issue to the project and add it to the project, mark it on the roadmap
