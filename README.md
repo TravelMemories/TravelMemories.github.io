@@ -1,16 +1,13 @@
 # travel-memories
 
-mvn spring-boot:run odpala server backend, npm start odpalany z ./frontend odpala front
-Przy pierwszym uruchomieniu należy zainstlalować react scripts, albo wykonać tą komendę żeby sprawdzić czy jest zainstalowane (bo może już to naprawiłem)
+I've configured codespaces so that you don't need to insatlate additional packages or deps.
+mvn spring-boot:run launches server backend, npm start launched from ./frontend launches frontend
 
-### First run
-mvn spring-boot:run
-cd frontend
-npm install react-scripts --save 
-
-### Every next run
-mvn spring-boot:run
+### How to run  
+// You can paste the following commands all at once
+mvn spring-boot:run  
 cd frontend
 npm start
 
-Prawidłowe uruchomienie powinno wyświetlić aktualny czas zaciągniety z backendu
+
+Running properly should display the current time pulled from the backend
