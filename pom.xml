@@ -65,7 +65,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>npm install</id>
+                        <id>npm install v2</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
