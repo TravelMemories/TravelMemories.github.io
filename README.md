@@ -1,3 +1,4 @@
+[![Maven Package](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven-publish.yml) [![Java CI with Maven](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml/badge.svg)](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml)
 # travel-memories
 
 I've configured codespaces so that you don't need to insatlate additional packages or deps.
