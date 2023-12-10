@@ -21,6 +21,9 @@
     "ghcr.io/devcontainers-contrib/features/npm-package:1": {
       "package": "typescript",
       "version": "latest"
+    },
+    "ghcr.io/devcontainers-contrib/features/springboot-sdkman:2": {
+
     }
   }
 
