@@ -7,11 +7,21 @@
 
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "none",
-      "installMaven": "true",
+      "installMaven": true,
+      "version": "17",
+      "jdkDistro": "ms",
+      "mavenVersion": "latest",
       "installGradle": "false"
     },
-    "ghcr.io/devcontainers-contrib/features/ant-sdkman:2": {}
+    "ghcr.io/devcontainers-contrib/features/ant-sdkman:2": {
+      "version": "latest",
+      "jdkVersion": "17",
+      "jdkDistro": "ms"
+    },
+    "ghcr.io/devcontainers-contrib/features/npm-package:1": {
+      "package": "typescript",
+      "version": "latest"
+    }
   }
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
