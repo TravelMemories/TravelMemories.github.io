@@ -13,3 +13,8 @@ mvn spring-boot:run launches server backend and front, npm start launched from .
 mvn spring-boot:run  
 
 Pay attention to whether your commits are built on the server
+
+## Contributors 
+<a href="https://github.com/reactorspring/travel-memories/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=reactorspring/travel-memories" />
+</a>
