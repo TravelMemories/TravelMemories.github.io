@@ -1,6 +1,5 @@
-[![Java CI with Maven](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml/badge.svg)](https://github.com/dxrgrabowski/travel-memories/actions/workflows/maven.yml) [![CodeQL](https://github.com/dxrgrabowski/travel-memories/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/dxrgrabowski/travel-memories/actions/workflows/github-code-scanning/codeql)
+[![Java CI with Maven](https://github.com/ReactorSpring/travel-memories/actions/workflows/maven.yml/badge.svg)](https://github.com/ReactorSpring/travel-memories/actions/workflows/maven.yml) [![CodeQL](https://github.com/ReactorSpring/travel-memories/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/ReactorSpring/travel-memories/actions/workflows/github-code-scanning/codeql) [![Codespaces Prebuilds](https://github.com/ReactorSpring/travel-memories/actions/workflows/codespaces/create_codespaces_prebuilds/badge.svg)](https://github.com/ReactorSpring/travel-memories/actions/workflows/codespaces/create_codespaces_prebuilds)
 # travel-memories
-
 When committing something to the repo, remember to add an issue to the project and add it to the project, mark it on the roadmap
 
 I've configured codespaces so that you don't need to insatlate additional packages or deps.
