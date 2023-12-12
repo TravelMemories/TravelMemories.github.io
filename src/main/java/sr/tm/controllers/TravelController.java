@@ -29,6 +29,7 @@ public class TravelController {
     @GetMapping("/travel")
     public Page<Travel> getTravelsByUserEmail(
             @RequestParam(name = "userEmail", required = false) String userEmail,
+            @RequestParam(name = "sort", defaultValue = "latest") String sort,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "20") int pageSize){
         PageRequest pageRequest = PageRequest.of(page, pageSize);
