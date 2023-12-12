@@ -16,7 +16,7 @@ function Home() {
   return (
     <motion.div className="w-full h-screen flex flex-col items-center justify-center gap-4 cursor-default">
       <motion.h1
-        className="text-8xl font-bold tracking-tighter text-center origin-center"
+        className=" font-bold tracking-tighter text-center origin-center text-5xl sm:text-7xl xl:text-8xl"
         variants={heroAnimationVariants}
         initial="initial"
         animate="animate"
@@ -26,7 +26,7 @@ function Home() {
         Capture Your Travel Memories
       </motion.h1>
       <motion.p
-        className="text-2xl tracking-normal text-center max-w-[50%] mx-auto text-black/80 cursor-default"
+        className="text-xl sm:text-2xl tracking-normal text-center  mx-auto text-black/80 cursor-default sm:max-w-[70%] xl:max-w-[50%]"
         variants={heroAnimationVariants}
         initial="initial"
         animate="animate"
@@ -37,7 +37,7 @@ function Home() {
         the essence of exploration.
       </motion.p>
       <motion.div
-        className="flex w-fit gap-10"
+        className="flex-col gap-4 flex w-fit sm:gap-10 sm:flex-row"
         variants={heroAnimationVariants}
         initial="initial"
         animate="animate"
