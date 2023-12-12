@@ -7,7 +7,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 function Navbar() {
   return (
-    <nav className="relative flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b bg-white px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
+    <nav className="sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b bg-white px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
       <motion.div
         animate={{ scale: 1 }}
         whileHover={{

@@ -14,7 +14,7 @@ function Home() {
     animate: { opacity: 1, y: 0, scaleX: 1 },
   };
   return (
-    <motion.div className="w-full h-screen flex flex-col items-center justify-center gap-4 cursor-default">
+    <motion.div className="w-full h-[90vh] flex flex-col items-center justify-center gap-4 cursor-default">
       <motion.h1
         className=" font-bold tracking-tighter text-center origin-center text-5xl sm:text-7xl xl:text-8xl"
         variants={heroAnimationVariants}
