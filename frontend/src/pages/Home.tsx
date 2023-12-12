@@ -33,8 +33,8 @@ function Home() {
         transition={{ delay: 2 * transitionDelay, duration: 0.4 }}
         key="home-p"
       >
-        Keep track of your favorite destinations and share your travel memories
-        with your friends.
+        Collect, share and remember your adventures in a space that celebrates
+        the essence of exploration.
       </motion.p>
       <motion.div
         className="flex w-fit gap-10"
