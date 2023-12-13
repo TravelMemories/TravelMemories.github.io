@@ -10,7 +10,6 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/travel-memories" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </div>
