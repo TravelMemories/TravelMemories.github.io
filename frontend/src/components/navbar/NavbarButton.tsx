@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink, NavLinkProps, useLocation } from "react-router-dom";
-interface Props {
+export interface NavbarButtonProps {
   text: String;
   route: String;
 }
-function NavbarButton({ text, route }: Props) {
+function NavbarButton({ text, route }: NavbarButtonProps) {
   const location = useLocation();
   const [isActive, setIsActive] = useState(false);
   const checkIfActive = () => {
