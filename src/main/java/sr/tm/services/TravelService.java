@@ -1,6 +1,7 @@
 package sr.tm.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,13 @@ public class TravelService {
             return travelDAORepository.findAllByUserEmailOrderByTravelDateDesc(userEmail, pageable);
         }
         return travelDAORepository.findAllByUserEmailOrderByTravelDateAsc(userEmail, pageable);
+    }
+    public boolean deleteTravel(Long id) {
+        try {
+            travelDAORepository.deleteById(id);
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
+        }
     }
 }
