@@ -13,7 +13,7 @@ import sr.tm.services.StageService;
 import sr.tm.services.TravelService;
 
 @RestController
-@RequestMapping(name = "/api")
+@RequestMapping(value = "/api")
 public class TravelController {
     PhotoService photoService;
     StageService stageService;

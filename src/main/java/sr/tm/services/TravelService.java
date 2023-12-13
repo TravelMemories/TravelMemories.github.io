@@ -22,11 +22,14 @@ public class TravelService {
 
     public Page<Travel> getTravelsByUserEmail(String userEmail, Pageable pageable, String sort){
         if(userEmail == null){
-            return travelDAORepository.findAll(pageable);
+            if(Objects.equals(sort, "latest")){
+                return travelDAORepository.findAllByOrderByTravelDateDesc(pageable);
+            }
+            return travelDAORepository.findAllByOrderByTravelDateAsc(pageable);
         }
         if(Objects.equals(sort, "latest")){
-            return travelService.getTravelsByUserEmail(userEmail, pageRequest);
+            return travelDAORepository.findAllByUserEmailOrderByTravelDateDesc(userEmail, pageable);
         }
-        return travelService.getTravelsByUserEmail(userEmail, pageRequest);
+        return travelDAORepository.findAllByUserEmailOrderByTravelDateAsc(userEmail, pageable);
     }
 }
