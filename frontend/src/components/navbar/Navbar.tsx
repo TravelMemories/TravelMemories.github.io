@@ -1,11 +1,44 @@
-import React from "react";
-import NavbarButton from "./NavbarButton";
+import React, { useRef, useState, useEffect } from "react";
+import NavbarButton, { NavbarButtonProps } from "./NavbarButton";
 import { SlGlobe } from "react-icons/sl";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { GoX } from "react-icons/go";
 
 function Navbar() {
+  //const [navbarButtons, setNavbarButtons] = useState<NavbarButtonProps[]>([
+  const navbarButtons: NavbarButtonProps[] = [
+    {
+      text: "Your Memories",
+      route: "/memories",
+    },
+    {
+      text: "Society",
+      route: "/society",
+    },
+    {
+      text: "Destinations",
+      route: "/destinations",
+    },
+    {
+      text: "Profile",
+      route: "/profile",
+    },
+  ];
+
+  const ref = useRef(null);
+  const isInView = useInView(ref);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((isMobileMenuOpen) => !isMobileMenuOpen);
+  };
+
+  useEffect(() => {
+    if (isMobileMenuOpen && !isInView) setIsMobileMenuOpen(false);
+  }, [isInView, isMobileMenuOpen]);
+
   return (
     <nav className="sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b bg-white px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
       <motion.div
@@ -33,19 +66,44 @@ function Navbar() {
           NEW MEMORY
         </motion.div>
       </NavLink>
-
       <ul className="hidden lg:flex gap-4 items-center justify-center w-auto ml-auto xl:gap-10 xl:text-lg">
-        <NavbarButton text={"Your Memories"} route={"/memories"} />
-        <NavbarButton text={"Society"} route={"/society"} />
-        <NavbarButton text={"Destinations"} route={"/destinations"} />
-        <NavbarButton text={"Profile"} route={"/profile"} />
+        {navbarButtons.map((button, index) => (
+          <NavbarButton key={index} text={button.text} route={button.route} />
+        ))}
       </ul>
       <motion.button
+        ref={ref}
         className="ml-auto text-3xl lg:hidden cursor-pointer"
         whileHover={{ scaleY: 1.1 }}
+        onClick={toggleMobileMenu}
       >
         <RxHamburgerMenu />
       </motion.button>
+      {isInView && isMobileMenuOpen && (
+        <motion.div className="absolute w-screen h-screen top-0 left-0 bg-black/40 z-50 overflow-hidden">
+          <motion.ul
+            initial={{ x: 500 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.1 }}
+            className="absolute right-0 top-0 h-full w-1/2 bg-white shadow-md p-4 flex flex-col items-end text-2xl gap-4"
+          >
+            <motion.button
+              className="cursor-pointer text-4xl"
+              whileHover={{ scale: 1.1 }}
+              onClick={toggleMobileMenu}
+            >
+              <GoX />
+            </motion.button>
+            {navbarButtons.map((button, index) => (
+              <NavbarButton
+                key={index}
+                text={button.text}
+                route={button.route}
+              />
+            ))}
+          </motion.ul>
+        </motion.div>
+      )}
     </nav>
   );
 }
