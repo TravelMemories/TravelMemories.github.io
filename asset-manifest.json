@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/travel-memories/static/css/main.2d731a3f.css",
-    "main.js": "/travel-memories/static/js/main.54d938ec.js",
-    "index.html": "/travel-memories/index.html",
-    "main.2d731a3f.css.map": "/travel-memories/static/css/main.2d731a3f.css.map",
-    "main.54d938ec.js.map": "/travel-memories/static/js/main.54d938ec.js.map"
+    "main.css": "/static/css/main.2d731a3f.css",
+    "main.js": "/static/js/main.f4c97d6a.js",
+    "index.html": "/index.html",
+    "main.2d731a3f.css.map": "/static/css/main.2d731a3f.css.map",
+    "main.f4c97d6a.js.map": "/static/js/main.f4c97d6a.js.map"
   },
   "entrypoints": [
     "static/css/main.2d731a3f.css",
-    "static/js/main.54d938ec.js"
+    "static/js/main.f4c97d6a.js"
   ]
 }
