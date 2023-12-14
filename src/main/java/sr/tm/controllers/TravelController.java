@@ -43,4 +43,10 @@ public class TravelController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Travel not found or delete unsuccessful");
     }
+
+    @PostMapping("travel/add")
+    public ResponseEntity<Travel> addTravel(@RequestBody Travel travel){
+        Travel addedTravel = travelService.save(travel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedTravel);
+    }
 }

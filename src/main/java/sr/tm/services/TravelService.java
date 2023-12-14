@@ -41,4 +41,8 @@ public class TravelService {
             return false;
         }
     }
+
+    public Travel save(Travel travel) {
+        return travelDAORepository.save(travel);
+    }
 }

@@ -20,6 +20,8 @@ public class Travel {
     @Column(name = "travel_date")
     private String travelDate;
 
+    @Column(name = "place")
+    private String place;
     @Column(name = "latitude")
     private Double latitude;
 
