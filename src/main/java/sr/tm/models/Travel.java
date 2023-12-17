@@ -1,5 +1,6 @@
 package sr.tm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -31,6 +32,7 @@ public class Travel {
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Stage> stages;
 }

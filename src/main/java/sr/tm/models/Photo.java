@@ -1,5 +1,6 @@
 package sr.tm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class Photo {
     @Column(name = "photo_date")
     private String photoDate;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "stage_id")
     private Stage stage;
