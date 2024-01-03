@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GoX } from "react-icons/go";
 import { useUserContext } from "../../context/UserContext";
+import LoginButton from "./LoginButton";
 
 function Navbar() {
   //const [navbarButtons, setNavbarButtons] = useState<NavbarButtonProps[]>([
@@ -36,23 +37,23 @@ function Navbar() {
     if (isMobileMenuOpen && !isInView) setIsMobileMenuOpen(false);
   }, [isInView, isMobileMenuOpen]);
 
-  const { isLoggedIn, LogIn, LogOut } = useUserContext();
+  const { isLoggedIn } = useUserContext();
 
   return (
-    <nav className="sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
+    <nav className=" sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
       {/* Travel memories logo */}
       <motion.div
-        animate={{ scale: 1 }}
+        animate={{ scaleX: 1 }}
         whileHover={{
-          scale: 1.01,
+          scaleX: 1.01,
         }}
         transition={{ duration: 0.2 }}
       >
         <NavLink
           to={"/"}
-          className="hidden sm:flex justify-center items-center gap-2 xl:gap-4 cursor-pointer"
+          className="group hidden sm:flex justify-center items-center gap-2 xl:gap-4 cursor-pointer"
         >
-          <SlGlobe className="text-2xl lg:text-3xl xl:text-4xl" />
+          <SlGlobe className="text-2xl lg:text-3xl xl:text-4xl group-hover:rotate-12 transition-transform" />
           <p className="text-lg lg:text-xl font-bold xl:text-2xl">
             Travel Memories
           </p>
@@ -75,18 +76,7 @@ function Navbar() {
         {navbarButtons.map((button, index) => (
           <NavbarButton key={index} text={button.text} route={button.route} />
         ))}
-        <motion.button
-          className="bg-action-400 px-4 py-1 rounded-2xl tracking-tight text-background-50 shadow-md hover:bg-action-500 transition-colors"
-          animate={{ scale: 1 }}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 1.01 }}
-          onClick={() => {
-            if (isLoggedIn) LogOut();
-            else LogIn();
-          }}
-        >
-          {isLoggedIn ? "Log out" : "Log in"}
-        </motion.button>
+        <LoginButton />
       </ul>
       {/* Hamburger menu button */}
       <motion.button
@@ -120,6 +110,7 @@ function Navbar() {
                 route={button.route}
               />
             ))}
+            <LoginButton />
           </motion.ul>
         </motion.div>
       )}
