@@ -39,7 +39,7 @@ function Navbar() {
   const { isLoggedIn, LogIn, LogOut } = useUserContext();
 
   return (
-    <nav className="sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b bg-white px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
+    <nav className="sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
       {/* Travel memories logo */}
       <motion.div
         animate={{ scale: 1 }}
@@ -64,7 +64,7 @@ function Navbar() {
           to={"/new-memory"}
           className="absolute left-1/2 translate-x-[-50%]"
         >
-          <motion.div className="whitespace-nowrap text-xl text-center bg-primary-400 text-white font-bold py-2 px-8 rounded-full shadow-sm border border-primary-200 origin-center transition cursor-pointer hover:scale-105 hover:bg-primary-500 active:scale-100 sm:text-base xl:text-xl">
+          <motion.div className="whitespace-nowrap text-xl text-center bg-action-400 text-background-50 font-bold py-2 px-8 rounded-full shadow-sm border border-background-100 origin-center transition cursor-pointer hover:scale-105 hover:bg-action-500 active:scale-100 sm:text-base xl:text-xl">
             NEW MEMORY
           </motion.div>
         </NavLink>
@@ -76,7 +76,7 @@ function Navbar() {
           <NavbarButton key={index} text={button.text} route={button.route} />
         ))}
         <motion.button
-          className="bg-primary-500 px-4 py-1 rounded-2xl tracking-tight text-white  shadow-md hover:bg-primary-600 transition-colors"
+          className="bg-action-400 px-4 py-1 rounded-2xl tracking-tight text-background-50 shadow-md hover:bg-action-500 transition-colors"
           animate={{ scale: 1 }}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 1.01 }}
@@ -104,7 +104,7 @@ function Navbar() {
             initial={{ x: 500 }}
             animate={{ x: 0 }}
             transition={{ duration: 0.1 }}
-            className="absolute right-0 top-0 h-full w-1/2 bg-white shadow-md p-4 flex flex-col items-end text-2xl gap-4"
+            className="absolute right-0 top-0 h-full w-1/2 bg-background-50 shadow-md p-4 flex flex-col items-end text-2xl gap-4"
           >
             <motion.button
               className="cursor-pointer text-4xl"

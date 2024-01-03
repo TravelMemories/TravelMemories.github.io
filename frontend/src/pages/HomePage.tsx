@@ -26,7 +26,7 @@ function Home() {
         Capture Your Travel Memories
       </motion.h1>
       <motion.p
-        className="text-xl sm:text-2xl tracking-normal text-center  mx-auto text-black/80 cursor-default sm:max-w-[70%] xl:max-w-[50%]"
+        className="text-xl sm:text-2xl tracking-normal text-center  mx-auto text-primary-950/80 cursor-default sm:max-w-[70%] xl:max-w-[50%]"
         variants={heroAnimationVariants}
         initial="initial"
         animate="animate"
@@ -44,7 +44,7 @@ function Home() {
         transition={{ delay: 3 * transitionDelay, duration: 0.4 }}
       >
         <motion.button
-          className="bg-primary-500 px-10 py-4 text-xl rounded-2xl tracking-tight font-bold text-white  shadow-md"
+          className="bg-action-400 px-10 py-4 text-xl rounded-2xl tracking-tight font-bold text-background-50  shadow-md"
           variants={buttonAnimationVariants}
           initial="initial"
           animate="animate"
@@ -54,7 +54,7 @@ function Home() {
           Get Started
         </motion.button>
         <motion.button
-          className=" bg-white px-10 py-4 text-xl rounded-2xl tracking-tight font-bold text-black shadow-md"
+          className=" bg-background-50 px-10 py-4 text-xl rounded-2xl tracking-tight font-bold text-primary-950 shadow-md"
           variants={buttonAnimationVariants}
           initial="initial"
           animate="animate"
