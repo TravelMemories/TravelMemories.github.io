@@ -3,12 +3,12 @@ import React, { ReactNode, createContext, useContext, useState } from "react";
 interface UserContextProviderProps {
   children: ReactNode;
 }
-interface UserContext {
+interface UserContextProps {
   isLoggedIn: boolean;
   LogIn: () => void;
   LogOut: () => void;
 }
-const UserContext = createContext({} as UserContext);
+const UserContext = createContext({} as UserContextProps);
 
 export function useUserContext() {
   return useContext(UserContext);
