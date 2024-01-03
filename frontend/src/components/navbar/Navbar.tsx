@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GoX } from "react-icons/go";
+import { useUserContext } from "../../context/UserContext";
 
 function Navbar() {
   //const [navbarButtons, setNavbarButtons] = useState<NavbarButtonProps[]>([
@@ -35,8 +36,11 @@ function Navbar() {
     if (isMobileMenuOpen && !isInView) setIsMobileMenuOpen(false);
   }, [isInView, isMobileMenuOpen]);
 
+  const { isLoggedIn, LogIn, LogOut } = useUserContext();
+
   return (
     <nav className="sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b bg-white px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
+      {/* Travel memories logo */}
       <motion.div
         animate={{ scale: 1 }}
         whileHover={{
@@ -54,19 +58,37 @@ function Navbar() {
           </p>
         </NavLink>
       </motion.div>
-      <NavLink
-        to={"/new-memory"}
-        className="absolute left-1/2 translate-x-[-50%]"
-      >
-        <motion.div className="whitespace-nowrap text-xl text-center bg-primary-400 text-white font-bold py-2 px-8 rounded-full shadow-sm border border-primary-200 origin-center transition cursor-pointer hover:scale-105 hover:bg-primary-500 active:scale-100 sm:text-base xl:text-xl">
-          NEW MEMORY
-        </motion.div>
-      </NavLink>
+      {/* New memory button */}
+      {isLoggedIn && (
+        <NavLink
+          to={"/new-memory"}
+          className="absolute left-1/2 translate-x-[-50%]"
+        >
+          <motion.div className="whitespace-nowrap text-xl text-center bg-primary-400 text-white font-bold py-2 px-8 rounded-full shadow-sm border border-primary-200 origin-center transition cursor-pointer hover:scale-105 hover:bg-primary-500 active:scale-100 sm:text-base xl:text-xl">
+            NEW MEMORY
+          </motion.div>
+        </NavLink>
+      )}
+      {/* Button list */}
       <ul className="hidden lg:flex gap-4 items-center justify-center w-auto ml-auto xl:gap-10 xl:text-lg">
+        {/* Navigation buttons */}
         {navbarButtons.map((button, index) => (
           <NavbarButton key={index} text={button.text} route={button.route} />
         ))}
+        <motion.button
+          className="bg-primary-500 px-4 py-1 rounded-2xl tracking-tight text-white  shadow-md hover:bg-primary-600 transition-colors"
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 1.01 }}
+          onClick={() => {
+            if (isLoggedIn) LogOut();
+            else LogIn();
+          }}
+        >
+          {isLoggedIn ? "Log out" : "Log in"}
+        </motion.button>
       </ul>
+      {/* Hamburger menu button */}
       <motion.button
         ref={ref}
         className="ml-auto text-3xl lg:hidden cursor-pointer"
@@ -75,6 +97,7 @@ function Navbar() {
       >
         <RxHamburgerMenu />
       </motion.button>
+      {/* Hamburger menu */}
       {isInView && isMobileMenuOpen && (
         <motion.div className="absolute w-screen h-screen top-0 left-0 bg-black/40 z-50 overflow-hidden">
           <motion.ul

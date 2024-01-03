@@ -5,6 +5,8 @@ interface UserContextProviderProps {
 }
 interface UserContext {
   isLoggedIn: boolean;
+  LogIn: () => void;
+  LogOut: () => void;
 }
 const UserContext = createContext({} as UserContext);
 
@@ -14,8 +16,15 @@ export function useUserContext() {
 
 export function UserContextProvider({ children }: UserContextProviderProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const LogIn = () => {
+    setIsLoggedIn(true);
+  };
+  const LogOut = () => {
+    setIsLoggedIn(false);
+  };
   return (
-    <UserContext.Provider value={{ isLoggedIn }}>
+    <UserContext.Provider value={{ isLoggedIn, LogIn, LogOut }}>
       {children}
     </UserContext.Provider>
   );
