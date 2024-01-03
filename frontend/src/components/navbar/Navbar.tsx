@@ -14,12 +14,8 @@ function Navbar() {
       route: "/memories",
     },
     {
-      text: "Society",
-      route: "/society",
-    },
-    {
-      text: "Destinations",
-      route: "/destinations",
+      text: "Discover",
+      route: "/public-memories",
     },
     {
       text: "Profile",
