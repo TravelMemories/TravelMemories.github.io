@@ -37,15 +37,15 @@ function LoginPage() {
         >
           Login
         </button>
-        <a className="text-sm text-right block underline text-gray-700" href="#">
+        <button className="text-sm text-right block underline text-gray-700" onClick={() => {}}>
           Forgot your password?
-        </a>
+        </button>
       </div>
       <div className="mt-4 text-center text-sm text-white">
-        Don't have an account?{" "}
-        <a className="underline" href="#">
+        Don't have an account?{' '}
+        <button className="underline" onClick={() => {}}>
           Sign up
-        </a>
+        </button>
       </div>
     </div>
   );
