@@ -1,8 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import ImageCarousel from "../components/home-page/ImageCarousel";
+import { useUserContext } from "../context/UserContext";
 
 function HomePage() {
+  const { LogIn } = useUserContext();
   const transitionDelay = 0.7;
   const buttonAnimationVariants = {
     initial: { scale: 0 },
@@ -63,6 +65,9 @@ function HomePage() {
             animate="animate"
             whileHover="whileHover"
             whileTap="whileTap"
+            onClick={() => {
+              LogIn();
+            }}
           >
             Get Started
           </motion.button>
