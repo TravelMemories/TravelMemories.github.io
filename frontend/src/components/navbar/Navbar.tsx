@@ -7,6 +7,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { GoX } from "react-icons/go";
 import { useUserContext } from "../../context/UserContext";
 import LoginButton from "./LoginButton";
+import RegisterButton from "./RegisterButton";
 
 function Navbar() {
   //const [navbarButtons, setNavbarButtons] = useState<NavbarButtonProps[]>([
@@ -40,7 +41,7 @@ function Navbar() {
   const { isLoggedIn } = useUserContext();
 
   return (
-    <nav className=" sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 px-4 sm:px-6 lg:px-3 xl:px-6 py-4 sm:py-3">
+    <nav className=" sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 px-4 sm:px-6 lg:px-3 xl:px-10 py-4 sm:py-3">
       {/* Travel memories logo */}
       <motion.div
         animate={{ scaleX: 1 }}
@@ -60,7 +61,7 @@ function Navbar() {
         </NavLink>
       </motion.div>
       {/* New memory button */}
-      {isLoggedIn && (
+      {/* {isLoggedIn && (
         <NavLink
           to={"/new-memory"}
           className="absolute left-1/2 translate-x-[-50%]"
@@ -69,14 +70,16 @@ function Navbar() {
             NEW MEMORY
           </motion.div>
         </NavLink>
-      )}
+      )} */}
       {/* Button list */}
       <ul className="hidden lg:flex gap-4 items-center justify-center w-auto ml-auto xl:gap-10 xl:text-lg">
         {/* Navigation buttons */}
-        {navbarButtons.map((button, index) => (
-          <NavbarButton key={index} text={button.text} route={button.route} />
-        ))}
+        {isLoggedIn &&
+          navbarButtons.map((button, index) => (
+            <NavbarButton key={index} text={button.text} route={button.route} />
+          ))}
         <LoginButton />
+        {!isLoggedIn && <RegisterButton />}
       </ul>
       {/* Hamburger menu button */}
       <motion.button
@@ -103,14 +106,16 @@ function Navbar() {
             >
               <GoX />
             </motion.button>
-            {navbarButtons.map((button, index) => (
-              <NavbarButton
-                key={index}
-                text={button.text}
-                route={button.route}
-              />
-            ))}
+            {isLoggedIn &&
+              navbarButtons.map((button, index) => (
+                <NavbarButton
+                  key={index}
+                  text={button.text}
+                  route={button.route}
+                />
+              ))}
             <LoginButton />
+            {!isLoggedIn && <RegisterButton />}
           </motion.ul>
         </motion.div>
       )}
