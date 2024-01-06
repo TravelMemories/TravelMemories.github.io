@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import BgImage from "../home-page/BgImage";
 import homeImage1 from "../../images/homeImage1.jpg";
 import homeImage2 from "../../images/homeImage2.jpg";
@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { BackgroundImageProps } from "./BackgroundImageProps";
 
 function ImageCarousel() {
-  const [images, setImages] = useState<BackgroundImageProps[]>([
+  const [images] = useState<BackgroundImageProps[]>([
     {
       img: homeImage1,
       location: "Ludington, US",
@@ -21,22 +21,27 @@ function ImageCarousel() {
       location: "Dubai, AE",
     },
   ]);
+
+  const shiftIndexes = useCallback(() => {
+    setIndexes((prevIndexes) =>
+      prevIndexes.map((idx) => (idx === images.length - 1 ? 0 : idx + 1))
+    );
+  }, [images.length]);
+
   const [indexes, setIndexes] = useState<number[]>([0]);
+
   useEffect(() => {
     setIndexes(images.map((_, i) => i));
+  }, [images]);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
       shiftIndexes();
     }, 3000);
-    return () => clearInterval(intervalId);
-  }, []);
 
-  const shiftIndexes = () => {
-    setIndexes((prevIndexes) => {
-      return prevIndexes.map((idx, i) => {
-        return (idx = idx === images.length - 1 ? 0 : idx + 1);
-      });
-    });
-  };
+    return () => clearInterval(intervalId);
+  }, [shiftIndexes]);
+
   return (
     <motion.ul
       className="hidden relative w-[30%] sm:ml-0 mr-auto sm:mr-20 xl:ml-auto sm:flex items-center justify-center"
