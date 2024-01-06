@@ -5,8 +5,8 @@ import YourMemoriesPage from "./pages/YourMemoriesPage";
 import PublicMemoriesPage from "./pages/PublicMemoriesPage";
 import ProfilePage from "./pages/ProfilePage";
 import { useUserContext } from "./context/UserContext";
-import NewMemoryPage from "./pages/NewMemoryPage";
 import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   const { isLoggedIn } = useUserContext();
@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={isLoggedIn ? <NewMemoryPage /> : <HomePage />}
+            element={isLoggedIn ? <LoginPage /> : <HomePage />}
           />
           {isLoggedIn && (
             <Route path="/memories" element={<YourMemoriesPage />} />
