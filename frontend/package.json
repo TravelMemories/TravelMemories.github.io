@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://travel-memories.social/",
+  "homepage": "https://TravelMemories.github.io/",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "7.21.11",
