@@ -41,27 +41,30 @@ function Navbar() {
   const { isLoggedIn } = useUserContext();
 
   return (
-    <nav className=" sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 px-4 sm:px-6 lg:px-3 xl:px-10 py-4 sm:py-3">
-      {/* Travel memories logo */}
-      <motion.div
-        animate={{ scaleX: 1 }}
-        whileHover={{
-          scaleX: 1.01,
-        }}
-        transition={{ duration: 0.2 }}
+    <nav className="sticky flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 py-4 sm:py-3">
+      <div
+        className={`flex items-center flex-grow ${
+          isLoggedIn ? "max-w-[80%]" : "max-w-[97%] sm:max-w-[80%]"
+        } mx-auto`}
       >
-        <NavLink
-          to={"/"}
-          className="group hidden sm:flex justify-center items-center gap-2 xl:gap-4 cursor-pointer"
+        {/* Travel memories logo */}
+        <motion.div
+          animate={{ scaleX: 1 }}
+          whileHover={{
+            scaleX: 1.01,
+          }}
+          transition={{ duration: 0.2 }}
         >
-          <SlGlobe className="text-2xl lg:text-3xl xl:text-4xl group-hover:rotate-12 transition-transform" />
-          <p className="text-lg lg:text-xl font-bold xl:text-2xl">
-            Travel Memories
-          </p>
-        </NavLink>
-      </motion.div>
-      {/* New memory button */}
-      {/* {isLoggedIn && (
+          <NavLink
+            to={"/"}
+            className="group flex justify-center items-center gap-2 lg:gap-4 cursor-pointer"
+          >
+            <SlGlobe className="text-2xl lg:text-4xl group-hover:rotate-12 transition-transform" />
+            <p className=" sm:text-lg lg:text-2xl font-bold">Travel Memories</p>
+          </NavLink>
+        </motion.div>
+        {/* New memory button */}
+        {/* {isLoggedIn && (
         <NavLink
           to={"/new-memory"}
           className="absolute left-1/2 translate-x-[-50%]"
@@ -71,54 +74,71 @@ function Navbar() {
           </motion.div>
         </NavLink>
       )} */}
-      {/* Button list */}
-      <ul className="hidden lg:flex gap-4 items-center justify-center w-auto ml-auto xl:gap-10 xl:text-lg">
-        {/* Navigation buttons */}
-        {isLoggedIn &&
-          navbarButtons.map((button, index) => (
-            <NavbarButton key={index} text={button.text} route={button.route} />
-          ))}
-        <LoginButton />
-        {!isLoggedIn && <RegisterButton />}
-      </ul>
-      {/* Hamburger menu button */}
-      <motion.button
-        ref={ref}
-        className="ml-auto text-3xl lg:hidden cursor-pointer"
-        whileHover={{ scaleY: 1.1 }}
-        onClick={toggleMobileMenu}
-      >
-        <RxHamburgerMenu />
-      </motion.button>
-      {/* Hamburger menu */}
-      {isInView && isMobileMenuOpen && (
-        <motion.div className="absolute w-screen h-screen top-0 left-0 bg-black/40 z-50 overflow-hidden">
-          <motion.ul
-            initial={{ x: 500 }}
-            animate={{ x: 0 }}
-            transition={{ duration: 0.1 }}
-            className="absolute right-0 top-0 h-full w-1/2 bg-background-50 shadow-md p-4 flex flex-col items-end text-2xl gap-4"
-          >
-            <motion.button
-              className="cursor-pointer text-4xl"
-              whileHover={{ scale: 1.1 }}
-              onClick={toggleMobileMenu}
-            >
-              <GoX />
-            </motion.button>
-            {isLoggedIn &&
-              navbarButtons.map((button, index) => (
-                <NavbarButton
-                  key={index}
-                  text={button.text}
-                  route={button.route}
-                />
-              ))}
+        {/* Button list */}
+        <ul
+          className={`hidden lg:flex items-center justify-center w-auto ml-auto ${
+            isLoggedIn ? "gap-10" : "gap-6"
+          } text-lg`}
+        >
+          {/* Navigation buttons */}
+          {isLoggedIn &&
+            navbarButtons.map((button, index) => (
+              <NavbarButton
+                key={index}
+                text={button.text}
+                route={button.route}
+              />
+            ))}
+          <LoginButton />
+          {!isLoggedIn && <RegisterButton />}
+        </ul>
+        {!isLoggedIn && (
+          <div className="lg:hidden flex items-center justify-center ml-auto gap-2">
             <LoginButton />
-            {!isLoggedIn && <RegisterButton />}
-          </motion.ul>
-        </motion.div>
-      )}
+            <RegisterButton />
+          </div>
+        )}
+        {/* Hamburger menu button */}
+        <motion.button
+          ref={ref}
+          className={`ml-auto text-3xl ${
+            isLoggedIn ? "lg:hidden" : "hidden"
+          } cursor-pointer`}
+          whileHover={{ scaleY: 1.1 }}
+          onClick={toggleMobileMenu}
+        >
+          <RxHamburgerMenu />
+        </motion.button>
+        {/* Hamburger menu */}
+        {isInView && isMobileMenuOpen && (
+          <motion.div className="absolute w-screen h-screen top-0 left-0 bg-black/40 z-50 overflow-hidden">
+            <motion.ul
+              initial={{ x: 500 }}
+              animate={{ x: 0 }}
+              transition={{ duration: 0.1 }}
+              className="absolute right-0 top-0 h-full w-1/2 bg-background-50 shadow-md p-4 flex flex-col items-end text-2xl gap-4 text-right"
+            >
+              <motion.button
+                className="cursor-pointer text-4xl"
+                whileHover={{ scale: 1.1 }}
+                onClick={toggleMobileMenu}
+              >
+                <GoX />
+              </motion.button>
+              {isLoggedIn &&
+                navbarButtons.map((button, index) => (
+                  <NavbarButton
+                    key={index}
+                    text={button.text}
+                    route={button.route}
+                  />
+                ))}
+              <LoginButton />
+              {!isLoggedIn && <RegisterButton />}
+            </motion.ul>
+          </motion.div>
+        )}
+      </div>
     </nav>
   );
 }
