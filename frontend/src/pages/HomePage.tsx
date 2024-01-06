@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-function Home() {
+function HomePage() {
   const transitionDelay = 0.7;
   const buttonAnimationVariants = {
     initial: { scale: 0 },
@@ -68,4 +68,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default HomePage;
