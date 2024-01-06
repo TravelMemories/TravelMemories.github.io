@@ -59,6 +59,7 @@ module.exports = {
       },
       fontFamily: {
         primary: ["Montserrat", "sans-serif"],
+        backgroundImage: ["Pacifico", "cursive"],
       },
     },
   },
