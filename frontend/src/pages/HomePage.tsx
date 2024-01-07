@@ -8,8 +8,8 @@ function HomePage() {
   const buttonAnimationVariants = {
     initial: { scale: 0 },
     animate: { scale: 1 },
-    whileHover: { scale: 1.05 },
-    whileTap: { scale: 1.03 },
+    whileHover: { scale: 1.02 },
+    whileTap: { scale: 1.01 },
   };
   const heroAnimationVariants = {
     initial: { opacity: 0, y: 50, scaleX: 1.05 },
@@ -65,7 +65,7 @@ function HomePage() {
             whileHover="whileHover"
             whileTap="whileTap"
           >
-            <NavLink to={"/register"}>Get Started</NavLink>
+            <NavLink to={"/login"}>Get Started</NavLink>
           </motion.button>
           <motion.button
             className=" bg-background-50 hover:bg-background-100 px-10 py-4 text-xl rounded-2xl tracking-tight font-bold text-primary-950 shadow-md"
