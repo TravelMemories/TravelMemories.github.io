@@ -14,6 +14,12 @@ mvn spring-boot:run
 
 Pay attention to whether your commits are built on the server
 
+## Deployment 
+
+Github pages deployment: https://travelmemories.github.io/
+
+Vercel deployment on custom domain: https://www.travel-memories.social/
+
 ## Contributors 
 <a href="https://github.com/TravelMemories/TravelMemories.github.io/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=TravelMemories/TravelMemories.github.io" />
