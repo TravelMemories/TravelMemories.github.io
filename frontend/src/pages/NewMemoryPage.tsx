@@ -25,7 +25,7 @@ function NewMemoryPage() {
           name="image"
           accept="image/png, image/jpeg"
           onChange={handleOnChange}
-          className="ml-auto"
+          className="ml-auto cursor-pointer"
         />
       </form>
     </div>

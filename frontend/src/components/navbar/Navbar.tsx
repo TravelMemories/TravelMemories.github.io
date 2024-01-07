@@ -8,6 +8,7 @@ import { GoX } from "react-icons/go";
 import { useUserContext } from "../../context/UserContext";
 import LoginButton from "./LoginButton";
 import RegisterButton from "./RegisterButton";
+import NewMemoryButton from "./NewMemoryButton";
 
 function Navbar() {
   //const [navbarButtons, setNavbarButtons] = useState<NavbarButtonProps[]>([
@@ -74,12 +75,14 @@ function Navbar() {
           </motion.div>
         </NavLink>
       )} */}
+
         {/* Button list */}
         <ul
           className={`hidden lg:flex items-center justify-center w-auto ml-auto ${
             isLoggedIn ? "gap-10" : "gap-6"
           } text-lg`}
         >
+          {isLoggedIn && <NewMemoryButton />}
           {/* Navigation buttons */}
           {isLoggedIn &&
             navbarButtons.map((button, index) => (
@@ -89,7 +92,7 @@ function Navbar() {
                 route={button.route}
               />
             ))}
-          <LoginButton />
+          {!isLoggedIn && <LoginButton />}
           {!isLoggedIn && <RegisterButton />}
         </ul>
         {!isLoggedIn && (
@@ -125,6 +128,7 @@ function Navbar() {
               >
                 <GoX />
               </motion.button>
+              {isLoggedIn && <NewMemoryButton />}
               {isLoggedIn &&
                 navbarButtons.map((button, index) => (
                   <NavbarButton
@@ -133,7 +137,7 @@ function Navbar() {
                     route={button.route}
                   />
                 ))}
-              <LoginButton />
+              {!isLoggedIn && <LoginButton />}
               {!isLoggedIn && <RegisterButton />}
             </motion.ul>
           </motion.div>
