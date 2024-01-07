@@ -14,7 +14,7 @@ import java.util.Objects;
 @Transactional
 @Service
 public class TravelService {
-    private TravelDAORepository travelDAORepository;
+    private final TravelDAORepository travelDAORepository;
 
     @Autowired
     public TravelService(TravelDAORepository travelDAORepository){

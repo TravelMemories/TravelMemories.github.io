@@ -1,6 +1,7 @@
 package sr.tm.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import sr.tm.repositories.StageDAORepository;
 @Transactional
 @Service
 public class StageService {
-    private StageDAORepository stageDAORepository;
+    private final StageDAORepository stageDAORepository;
 
     @Autowired
     public StageService(StageDAORepository stageDAORepository) {
@@ -30,5 +31,18 @@ public class StageService {
             }
             return stageDAORepository.findAllByTravelIdOrderByStageDateDesc(travelId, pageable);
         }
+    }
+
+    public boolean deleteStage(Long id){
+        try{
+            stageDAORepository.deleteById(id);
+            return true;
+        } catch (EmptyResultDataAccessException e){
+            return false;
+        }
+    }
+
+    public Stage save(Stage stage){
+        return stageDAORepository.save(stage);
     }
 }

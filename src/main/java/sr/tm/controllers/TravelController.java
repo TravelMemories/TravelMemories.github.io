@@ -39,9 +39,9 @@ public class TravelController {
     public ResponseEntity<String> deleteTravel(@RequestParam(name = "id")Long id){
         boolean deleteSuccessful = travelService.deleteTravel(id);
         if(deleteSuccessful){
-            return ResponseEntity.ok("Delete successful");
+            return ResponseEntity.ok("Travel deleted successfully.");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Travel not found or delete unsuccessful");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Travel not found or delete unsuccessful.");
     }
 
     @PostMapping("/travel/add")
