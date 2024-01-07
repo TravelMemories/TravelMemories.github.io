@@ -1,10 +1,25 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-
+import { SlGlobe } from "react-icons/sl";
+import { motion } from "framer-motion";
 function LoginPage() {
   return (
-    <div className="flex flex-col h-screen justify-center items-center bg-gradient-to-br from-secondary-100 via-background-200 to-background-300">
-      <h1 className="text-5xl font-bold text-background-50 mb-10">Login</h1>
+    <div className="flex flex-col min-h-[100vh] justify-center items-center py-4 bg-gradient-to-br from-background-100  to-background-200 via-background-200">
+      <motion.div
+        animate={{ scaleX: 1 }}
+        whileHover={{
+          scaleX: 1.01,
+        }}
+        transition={{ duration: 0.2 }}
+      >
+        <NavLink
+          to={"/"}
+          className="group flex justify-center items-center gap-2 cursor-pointer font-bold text-background-500 mb-6"
+        >
+          <SlGlobe className="text-3xl group-hover:rotate-6 transition-transform" />
+          <p className="text-4xl">Travel Memories</p>
+        </NavLink>
+      </motion.div>
       <div className="w-80 space-y-6 bg-primary-50 p-10 rounded-lg shadow-md">
         <div className="space-y-2">
           <label
@@ -37,7 +52,7 @@ function LoginPage() {
           />
         </div>
         <button
-          className="inline-flex items-center justify-center text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 w-full bg-gradient-to-r from-background-200  to-background-300 text-white p-2 rounded-md transition-colors "
+          className="inline-flex items-center justify-center text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 w-full bg-action-400 hover:bg-action-500 text-background-50 p-2 rounded-md transition-colors"
           type="submit"
         >
           Login
@@ -49,7 +64,7 @@ function LoginPage() {
           Forgot your password?
         </button>
       </div>
-      <div className="mt-4 text-center text-sm text-white">
+      <div className="mt-4 text-center text-sm text-background-700">
         Don't have an account?{" "}
         <button className="underline" onClick={() => {}}>
           <NavLink to={"/register"}>Sign up</NavLink>
