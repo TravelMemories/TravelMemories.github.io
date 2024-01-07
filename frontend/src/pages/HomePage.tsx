@@ -8,8 +8,8 @@ function HomePage() {
   const buttonAnimationVariants = {
     initial: { scale: 0 },
     animate: { scale: 1 },
-    whileHover: { scale: 1.05 },
-    whileTap: { scale: 1.03 },
+    whileHover: { scale: 1.02 },
+    whileTap: { scale: 1.01 },
   };
   const heroAnimationVariants = {
     initial: { opacity: 0, y: 50, scaleX: 1.05 },
