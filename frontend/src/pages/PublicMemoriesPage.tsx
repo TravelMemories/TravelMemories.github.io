@@ -7,7 +7,9 @@ function PublicMemoriesPage() {
   return (
     <>
       {!isLoggedIn && <Navbar />}
-      <div>PublicMemoriesPage</div>
+      <div className="w-full min-h-[100vh] flex items-center justify-center">
+        PublicMemoriesPage
+      </div>
     </>
   );
 }
