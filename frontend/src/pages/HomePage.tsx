@@ -1,10 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import ImageCarousel from "../components/home-page/ImageCarousel";
-import { useUserContext } from "../context/UserContext";
+import { NavLink } from "react-router-dom";
 
 function HomePage() {
-  const { LogIn } = useUserContext();
   const transitionDelay = 0.7;
   const buttonAnimationVariants = {
     initial: { scale: 0 },
@@ -65,11 +64,8 @@ function HomePage() {
             animate="animate"
             whileHover="whileHover"
             whileTap="whileTap"
-            onClick={() => {
-              LogIn();
-            }}
           >
-            Get Started
+            <NavLink to={"/register"}>Get Started</NavLink>
           </motion.button>
           <motion.button
             className=" bg-background-50 hover:bg-background-100 px-10 py-4 text-xl rounded-2xl tracking-tight font-bold text-primary-950 shadow-md"
@@ -79,7 +75,7 @@ function HomePage() {
             whileHover="whileHover"
             whileTap="whileTap"
           >
-            Learn more
+            <NavLink to={"/public-memories"}>Learn more</NavLink>
           </motion.button>
         </motion.div>
       </div>
