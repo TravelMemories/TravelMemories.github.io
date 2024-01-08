@@ -1,6 +1,6 @@
 import React from "react";
 import placeholder from "../images/placeholder.svg";
-import LoginButton from "../components/navbar/LoginButton";
+import LogoutButton from "../components/navbar/LogoutButton";
 
 function ProfilePage() {
   return (
@@ -50,7 +50,7 @@ function ProfilePage() {
           </div>
         </div>
       </section>
-      <LoginButton />
+      <LogoutButton />
     </div>
   );
 }

@@ -16,7 +16,7 @@ function HomePage() {
     animate: { opacity: 1, y: 0, scaleX: 1 },
   };
   return (
-    <div className="sm:gap-60 xl:gap-0 mx-auto h-[100vh] flex flex-col-reverse xl:flex-row items-center justify-center xl:justify-between px-4 sm:px-0 sm:pl-10 py-8 overflow-hidden bg-gradient-to-br from-background-50 to-background-200/70">
+    <div className="sm:gap-60 xl:gap-0 mx-auto h-[100vh] flex flex-col-reverse xl:flex-row items-center justify-center xl:justify-between px-4 sm:px-0 sm:pl-10 py-8 overflow-hidden bg-gradient-to-br from-background-50 to-background-200">
       <ImageCarousel />
       <div className="flex flex-col items-center justify-center gap-4 cursor-default z-10 w-fit">
         <motion.h1
