@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import NavbarButton, { NavbarButtonProps } from "./NavbarButton";
 import { SlGlobe } from "react-icons/sl";
-import { motion, useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { GoX } from "react-icons/go";
@@ -114,33 +114,36 @@ function Navbar() {
         </motion.button>
         {/* Hamburger menu */}
         {isInView && isMobileMenuOpen && (
-          <motion.div className="absolute w-screen h-screen top-0 left-0 bg-black/40 z-50 overflow-hidden">
-            <motion.ul
-              initial={{ x: 500 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 0.1 }}
-              className="absolute right-0 top-0 h-full w-1/2 bg-background-50 shadow-md p-4 flex flex-col items-end text-2xl gap-4 text-right"
-            >
-              <motion.button
-                className="cursor-pointer text-4xl"
-                whileHover={{ scale: 1.1 }}
-                onClick={toggleMobileMenu}
+          <AnimatePresence>
+            <motion.div className="absolute w-screen h-screen top-0 left-0 bg-black/40 z-50 overflow-hidden">
+              <motion.ul
+                initial={{ x: 500 }}
+                animate={{ x: 0 }}
+                exit={{ x: 500 }}
+                transition={{ duration: 0.1 }}
+                className="absolute right-0 top-0 h-full w-fit max-w-1/2 bg-background-50 shadow-md p-4 flex flex-col items-end text-2xl gap-4 text-right"
               >
-                <GoX />
-              </motion.button>
-              {isLoggedIn && <NewMemoryButton />}
-              {isLoggedIn &&
-                navbarButtons.map((button, index) => (
-                  <NavbarButton
-                    key={index}
-                    text={button.text}
-                    route={button.route}
-                  />
-                ))}
-              {!isLoggedIn && <LoginButton />}
-              {!isLoggedIn && <RegisterButton />}
-            </motion.ul>
-          </motion.div>
+                <motion.button
+                  className="cursor-pointer text-4xl"
+                  whileHover={{ scale: 1.1 }}
+                  onClick={toggleMobileMenu}
+                >
+                  <GoX />
+                </motion.button>
+                {isLoggedIn && <NewMemoryButton />}
+                {isLoggedIn &&
+                  navbarButtons.map((button, index) => (
+                    <NavbarButton
+                      key={index}
+                      text={button.text}
+                      route={button.route}
+                    />
+                  ))}
+                {!isLoggedIn && <LoginButton />}
+                {!isLoggedIn && <RegisterButton />}
+              </motion.ul>
+            </motion.div>
+          </AnimatePresence>
         )}
       </div>
     </nav>
