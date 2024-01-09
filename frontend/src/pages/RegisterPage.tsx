@@ -2,8 +2,10 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { SlGlobe } from "react-icons/sl";
 import { motion } from "framer-motion";
+import { useUserContext } from "../context/UserContext";
 
 function RegisterPage() {
+  const { LogIn } = useUserContext();
   return (
     <div className="flex flex-col min-h-[100vh] justify-center items-center py-4 bg-gradient-to-br from-background-100  to-background-200 via-background-200">
       <motion.div
@@ -99,13 +101,11 @@ function RegisterPage() {
         <button
           className="inline-flex items-center justify-center text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 w-full bg-action-400 hover:bg-action-500 text-background-50 p-2 rounded-md transition-colors "
           type="submit"
+          onClick={LogIn}
         >
           Register
         </button>
-        <button
-          className="text-sm text-right block underline text-gray-700"
-          onClick={() => {}}
-        >
+        <button className="text-sm text-right block underline text-gray-700">
           Forgot your password?
         </button>
       </div>

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { UserContextProvider } from "./context/UserContext";
+import { TravelsContextProvider } from "./context/TravelsContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <UserContextProvider>
-      <App />
+      <TravelsContextProvider>
+        <App />
+      </TravelsContextProvider>
     </UserContextProvider>
   </React.StrictMode>
 );

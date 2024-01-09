@@ -14,7 +14,7 @@ function ImageCarousel() {
     },
     {
       img: homeImage2,
-      location: "Catragena, BO",
+      location: "Cartagena, CO",
     },
     {
       img: homeImage3,
@@ -44,25 +44,28 @@ function ImageCarousel() {
 
   return (
     <motion.ul
-      className="hidden relative w-[30%] sm:ml-0 mr-auto sm:mr-20 xl:ml-auto sm:flex items-center justify-center"
+      className={`relative w-[30%] mx-auto xl:ml-auto flex items-center justify-center h-20 mb-10 sm:mb-0`}
       style={{ perspective: "100px" }}
     >
       {indexes.map((idx, i) => (
         <motion.li
           layout
           key={i}
-          className="absolute left-0"
+          className="absolute origin-center"
           initial={{ rotate: 0, x: 0, y: 0, opacity: 1 }}
           animate={{
             rotate: (idx - 1) * 10,
-            x: idx * 100,
+            x: (idx - 1) * 100,
             y: idx === 0 ? 50 : idx * -10,
             z: idx === images.length - 1 ? 10 : 0,
             zIndex: idx,
             opacity: 1 - (images.length - idx - 1) * 0.1,
           }}
           transition={{ type: "spring", mass: 1, damping: 12, spring: 50 }}
-          style={{ transformStyle: "preserve-3d" }}
+          style={{
+            transformStyle: "preserve-3d",
+            transform: "translateX: [50%]",
+          }}
         >
           <BgImage img={images[i].img} location={images[i].location} />
         </motion.li>
