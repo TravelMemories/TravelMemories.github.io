@@ -14,7 +14,7 @@ function ImageCarousel() {
     },
     {
       img: homeImage2,
-      location: "Catragena, BO",
+      location: "Cartagena, CO",
     },
     {
       img: homeImage3,

@@ -1,19 +1,26 @@
 import React, { ReactNode, createContext, useContext, useState } from "react";
+import { TravelData } from "../model/TravelData";
+import ExampleTravels from "../examples/ExampleTravels";
 
 interface TravelsContextProviderProps {
   children: ReactNode;
 }
-interface TravelsContextProps {}
+interface TravelsContextProps {
+  travels: TravelData[];
+}
 const TravelsContext = createContext({} as TravelsContextProps);
 
-export function useUserContext() {
+export function useTravelsContext() {
   return useContext(TravelsContext);
 }
 
 export function TravelsContextProvider({
   children,
 }: TravelsContextProviderProps) {
+  const [travels] = useState<TravelData[]>(ExampleTravels);
   return (
-    <TravelsContext.Provider value={{}}>{children}</TravelsContext.Provider>
+    <TravelsContext.Provider value={{ travels }}>
+      {children}
+    </TravelsContext.Provider>
   );
 }
