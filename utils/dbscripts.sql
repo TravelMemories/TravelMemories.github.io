@@ -2,23 +2,40 @@ CREATE DATABASE IF NOT EXISTS travel_memories;
 USE travel_memories;
 
 
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS travel;
 DROP TABLE IF EXISTS stage;
 DROP TABLE IF EXISTS photo;
+DROP TABLE IF EXISTS user;
 
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+CREATE TABLE user (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash VARCHAR(60) NOT NULL,
+  role varchar(20) NOT NULL
+);
 
 CREATE TABLE travel (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_email VARCHAR(100),
     place VARCHAR(100),
-    description VARCHAR(300)
+    description VARCHAR(300),
+    latitude DECIMAL(10,8),
+    longitude DECIMAL(11,8),
+    travel_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 
 CREATE TABLE stage (
     id INT PRIMARY KEY AUTO_INCREMENT,
     travel_id INT,
     description VARCHAR(300),
+    stage_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (travel_id) REFERENCES travel(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -29,5 +46,6 @@ CREATE TABLE photo (
     description VARCHAR(300),
     photo_data MEDIUMBLOB,
     privacy BOOLEAN,
+    photo_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (stage_id) REFERENCES stage(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
