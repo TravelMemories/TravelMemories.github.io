@@ -3,6 +3,7 @@ import { PrivacyData } from "../model/PrivacyData";
 import { TravelData } from "../model/TravelData";
 import { TravelStageData } from "../model/TravelStageData";
 import homeImage2 from "../images/homeImage2.jpg";
+import homeImage1 from "../images/homeImage1.jpg";
 const ExamplePhotos: PhotoData[] = [
   {
     id: 0,
@@ -10,7 +11,15 @@ const ExamplePhotos: PhotoData[] = [
     desription: "Beach",
     date: new Date(),
     photoData: homeImage2,
-    privacy: PrivacyData.Private,
+    privacy: PrivacyData.Public,
+  },
+  {
+    id: 1,
+    stageId: 0,
+    desription: "Amazing sun",
+    date: new Date(),
+    photoData: homeImage1,
+    privacy: PrivacyData.Public,
   },
 ];
 
