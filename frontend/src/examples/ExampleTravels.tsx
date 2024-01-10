@@ -36,7 +36,14 @@ const ExampleTravels: TravelData[] = [
   {
     id: 0,
     location: "Cartagena, Colombia",
-    description: "Summer holiday 2023",
+    description: "Summer holiday 2023!",
+    date: new Date(),
+    stages: ExampleStages,
+  },
+  {
+    id: 1,
+    location: "Ludington, USA",
+    description: "Breathtaking view.",
     date: new Date(),
     stages: ExampleStages,
   },
