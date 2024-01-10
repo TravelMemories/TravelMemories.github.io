@@ -7,12 +7,14 @@ import { TiLocation } from "react-icons/ti";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { motion } from "framer-motion";
+import { useUserContext } from "../../context/UserContext";
 interface MemoryCardProps {
   data: PhotoData;
 }
 function MemoryCard({ data }: MemoryCardProps) {
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
+  const { isLoggedIn } = useUserContext();
   return (
     <div className="max-w-[30rem] w-full p-4 shadow-md bg-background-50 flex flex-col">
       <img
@@ -25,6 +27,7 @@ function MemoryCard({ data }: MemoryCardProps) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 1.01 }}
           onClick={() => {
+            if (!isLoggedIn) return;
             if (liked) {
               setLikes((prev) => prev - 1);
               setLiked(false);
