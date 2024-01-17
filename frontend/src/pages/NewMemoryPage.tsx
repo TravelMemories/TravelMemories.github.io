@@ -5,7 +5,7 @@ import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
 import MemoryDataButton from "../components/new-memory/MemoryDataButton";
 import { MdDateRange } from "react-icons/md";
-import dayjs from "dayjs";
+import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
 
@@ -92,7 +92,7 @@ function NewMemoryPage() {
             <p>Location</p>
           </MemoryDataButton>
           <MemoryDataButton
-            data={dayjs(newMemory?.date).format("MM/DD/YYYY")}
+            data={FormatDate(newMemory?.date)}
             onClick={() => {}}
           >
             <MdDateRange />

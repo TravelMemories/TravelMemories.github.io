@@ -2,7 +2,8 @@ import React from "react";
 import { TravelData } from "../../model/TravelData";
 import Placeholder from "../../images/placeholder.png";
 import { motion } from "framer-motion";
-import dayjs from "dayjs";
+import { FormatDate } from "../../helpers/helpers";
+
 import { NavLink } from "react-router-dom";
 interface TravelCardProps {
   data: TravelData | undefined;
@@ -26,7 +27,7 @@ function TravelCard({ data }: TravelCardProps) {
           className="object-cover aspect-square w-80 mb-4"
         />
         <h1 className="text-2xl"> {data?.location}</h1>
-        <p className="text-lg">{dayjs(data?.date).format("MM/DD/YYYY")}</p>
+        <p className="text-lg">{FormatDate(data?.date)}</p>
       </motion.button>
     </NavLink>
   );
