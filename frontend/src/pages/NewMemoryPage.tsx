@@ -19,8 +19,8 @@ function NewMemoryPage() {
   return (
     <>
       {image === undefined ? (
-        <div className="w-full min-h-[100vh] flex flex-col items-center justify-center gap-8 ">
-          <h1 className=" text-4xl sm:text-6xl text-primary-900 text-center">
+        <div className="container mx-auto min-h-[100vh] flex flex-col items-center justify-center gap-8 ">
+          <h1 className=" text-2xl sm:text-5xl text-primary-900 text-center">
             Add new memory
           </h1>
           <form
@@ -41,6 +41,7 @@ function NewMemoryPage() {
           </form>
         </div>
       ) : (
+        // Image is uploaded
         <form className="max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 p-8 gap-6 shadow-md">
           <img
             src={image}
