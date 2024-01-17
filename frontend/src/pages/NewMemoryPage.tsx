@@ -6,8 +6,12 @@ import { PrivacyData } from "../model/PrivacyData";
 import MemoryDataButton from "../components/new-memory/MemoryDataButton";
 import { MdDateRange } from "react-icons/md";
 import dayjs from "dayjs";
+import { MdOutlineSecurity } from "react-icons/md";
+import { useTravelsContext } from "../context/TravelsContext";
 
 function NewMemoryPage() {
+  const { GetTravelByStageID } = useTravelsContext();
+
   //const [file, setFile] = useState<File | undefined>();
   const [image, setImage] = useState<string | undefined>();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
@@ -58,7 +62,7 @@ function NewMemoryPage() {
         </div>
       ) : (
         // Image is uploaded
-        <form className="max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 p-8 gap-2 shadow-md">
+        <form className="max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md">
           <img
             src={image}
             alt=""
@@ -76,15 +80,17 @@ function NewMemoryPage() {
               );
             }}
           />
+          <MemoryDataButton
+            data={GetTravelByStageID(newMemory?.stageId)?.location}
+            onClick={() => {}}
+          >
+            <FaMap />
+            <p>Travel</p>
+          </MemoryDataButton>
           <MemoryDataButton data={undefined} onClick={() => {}}>
             <TiLocation />
             <p>Location</p>
           </MemoryDataButton>
-          <MemoryDataButton data={undefined} onClick={() => {}}>
-            <FaMap />
-            <p>Travel</p>
-          </MemoryDataButton>
-
           <MemoryDataButton
             data={dayjs(newMemory?.date).format("MM/DD/YYYY")}
             onClick={() => {}}
@@ -92,7 +98,28 @@ function NewMemoryPage() {
             <MdDateRange />
             <p>Date</p>
           </MemoryDataButton>
-          <div className="flex items-center justify-between w-full mt-auto">
+          <MemoryDataButton
+            data={
+              newMemory?.privacy === PrivacyData.Private ? "Private" : "Public"
+            }
+            onClick={() => {
+              setNewMemory(
+                (prev) =>
+                  ({
+                    ...prev,
+                    privacy:
+                      prev?.privacy === PrivacyData.Private
+                        ? PrivacyData.Public
+                        : PrivacyData.Private,
+                  } as PhotoData)
+              );
+            }}
+          >
+            <MdOutlineSecurity />
+            <p>Privacy</p>
+          </MemoryDataButton>
+
+          <div className="flex items-center justify-between w-full mt-5">
             <button
               className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
               type="button"
