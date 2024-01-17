@@ -8,7 +8,7 @@ const ExamplePhotos: PhotoData[] = [
   {
     id: 0,
     stageId: 0,
-    desription: "Beach",
+    description: "Beach",
     date: new Date(),
     photoData: homeImage2,
     privacy: PrivacyData.Public,
@@ -16,7 +16,7 @@ const ExamplePhotos: PhotoData[] = [
   {
     id: 1,
     stageId: 0,
-    desription: "Amazing sun",
+    description: "Amazing sun",
     date: new Date(),
     photoData: homeImage1,
     privacy: PrivacyData.Public,

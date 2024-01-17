@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
-import YourMemoriesPage from "./pages/YourMemoriesPage";
+import YourMemoriesPage from "./pages/YourTravelsPage";
 import PublicMemoriesPage from "./pages/PublicMemoriesPage";
 import ProfilePage from "./pages/ProfilePage";
 import { useUserContext } from "./context/UserContext";
@@ -22,7 +22,7 @@ function App() {
             element={isLoggedIn ? <NewMemoryPage /> : <HomePage />}
           />
           {isLoggedIn && (
-            <Route path="/memories" element={<YourMemoriesPage />} />
+            <Route path="/travels" element={<YourMemoriesPage />} />
           )}
           <Route path="/public-memories" element={<PublicMemoriesPage />} />
           {isLoggedIn && <Route path="/profile" element={<ProfilePage />} />}
