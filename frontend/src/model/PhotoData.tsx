@@ -1,10 +1,10 @@
 import { PrivacyData } from "./PrivacyData";
 
 export interface PhotoData {
-  id: number;
-  stageId: number;
-  desription: string;
-  date: Date;
-  photoData: string;
+  id: number | undefined;
+  stageId: number | undefined;
+  description: string | undefined;
+  date: Date | undefined;
+  photoData: string | undefined;
   privacy: PrivacyData;
 }
