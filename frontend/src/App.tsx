@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import NewMemoryPage from "./pages/NewMemoryPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import TravelPage from "./pages/TravelPage";
 
 function App() {
   const { isLoggedIn } = useUserContext();
@@ -26,6 +27,7 @@ function App() {
           )}
           <Route path="/public-memories" element={<PublicMemoriesPage />} />
           {isLoggedIn && <Route path="/profile" element={<ProfilePage />} />}
+          {isLoggedIn && <Route path="/travel/:id" element={<TravelPage />} />}
           {!isLoggedIn && <Route path="/login" element={<LoginPage />} />}
           {!isLoggedIn && <Route path="/register" element={<RegisterPage />} />}
           <Route path="*" element={<Navigate to="/" />} />
