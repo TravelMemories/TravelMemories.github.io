@@ -8,6 +8,7 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useUserContext } from "../../context/UserContext";
+import { FormatDate } from "../../helpers/helpers";
 interface MemoryCardProps {
   data: PhotoData;
 }
@@ -50,7 +51,7 @@ function MemoryCard({ data }: MemoryCardProps) {
             : ExampleTravels[1].location}
         </h1>
       </div>
-      <p className="text-sm">{ExampleTravels[0].date.toDateString()}</p>
+      <p className="text-sm">{FormatDate(ExampleTravels[0].date)}</p>
       <p className="">
         {data.id === 0
           ? ExampleTravels[0].description

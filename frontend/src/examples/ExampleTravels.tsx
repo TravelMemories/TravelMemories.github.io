@@ -8,18 +8,31 @@ const ExamplePhotos: PhotoData[] = [
   {
     id: 0,
     stageId: 0,
-    desription: "Beach",
+    description: "Beach",
     date: new Date(),
     photoData: homeImage2,
     privacy: PrivacyData.Public,
+    likes: ["test1"],
   },
   {
     id: 1,
     stageId: 0,
-    desription: "Amazing sun",
+    description: "Amazing sun",
     date: new Date(),
     photoData: homeImage1,
     privacy: PrivacyData.Public,
+    likes: ["test1", "test2"],
+  },
+];
+const ExamplePhotos2: PhotoData[] = [
+  {
+    id: 0,
+    stageId: 0,
+    description: "Beach",
+    date: new Date(),
+    photoData: homeImage1,
+    privacy: PrivacyData.Public,
+    likes: ["test1"],
   },
 ];
 
@@ -29,6 +42,14 @@ const ExampleStages: TravelStageData[] = [
     description: "Arrival",
     travelID: 0,
     photos: ExamplePhotos,
+  },
+];
+const ExampleStages2: TravelStageData[] = [
+  {
+    id: 0,
+    description: "Arrival",
+    travelID: 0,
+    photos: ExamplePhotos2,
   },
 ];
 
@@ -45,7 +66,7 @@ const ExampleTravels: TravelData[] = [
     location: "Ludington, USA",
     description: "Breathtaking view.",
     date: new Date(),
-    stages: ExampleStages,
+    stages: ExampleStages2,
   },
 ];
 

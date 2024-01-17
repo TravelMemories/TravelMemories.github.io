@@ -55,7 +55,9 @@ function LoginPage() {
         <button
           className="inline-flex items-center justify-center text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 w-full bg-action-400 hover:bg-action-500 text-background-50 p-2 rounded-md transition-colors"
           type="submit"
-          onClick={LogIn}
+          onClick={() => {
+            LogIn({ username: "user1", password: "password" });
+          }}
         >
           Login
         </button>
