@@ -11,11 +11,10 @@ import RegisterButton from "./RegisterButton";
 import NewMemoryButton from "./NewMemoryButton";
 
 function Navbar() {
-  //const [navbarButtons, setNavbarButtons] = useState<NavbarButtonProps[]>([
   const navbarButtons: NavbarButtonProps[] = [
     {
-      text: "Your Memories",
-      route: "/memories",
+      text: "Your Travels",
+      route: "/travels",
     },
     {
       text: "Discover",
