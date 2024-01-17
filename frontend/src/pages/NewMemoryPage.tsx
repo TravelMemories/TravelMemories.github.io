@@ -3,7 +3,7 @@ import { TiLocation } from "react-icons/ti";
 import { FaMap } from "react-icons/fa";
 import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
-import MemoryDataButton from "../components/new-memory/MemoryDataButton";
+import DataEditButton from "../components/buttons/DataEditButton";
 import { MdDateRange } from "react-icons/md";
 import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
@@ -80,25 +80,22 @@ function NewMemoryPage() {
               );
             }}
           />
-          <MemoryDataButton
+          <DataEditButton
             data={GetTravelByStageID(newMemory?.stageId)?.location}
             onClick={() => {}}
           >
             <FaMap />
             <p>Travel</p>
-          </MemoryDataButton>
-          <MemoryDataButton data={undefined} onClick={() => {}}>
+          </DataEditButton>
+          <DataEditButton data={undefined} onClick={() => {}}>
             <TiLocation />
             <p>Location</p>
-          </MemoryDataButton>
-          <MemoryDataButton
-            data={FormatDate(newMemory?.date)}
-            onClick={() => {}}
-          >
+          </DataEditButton>
+          <DataEditButton data={FormatDate(newMemory?.date)} onClick={() => {}}>
             <MdDateRange />
             <p>Date</p>
-          </MemoryDataButton>
-          <MemoryDataButton
+          </DataEditButton>
+          <DataEditButton
             data={
               newMemory?.privacy === PrivacyData.Private ? "Private" : "Public"
             }
@@ -117,7 +114,7 @@ function NewMemoryPage() {
           >
             <MdOutlineSecurity />
             <p>Privacy</p>
-          </MemoryDataButton>
+          </DataEditButton>
 
           <div className="flex items-center justify-between w-full mt-5">
             <button

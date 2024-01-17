@@ -5,7 +5,7 @@ interface Props {
   onClick: () => void;
   data: string | undefined;
 }
-function MemoryDataButton({ children, onClick, data }: Props) {
+function DataEditButton({ children, onClick, data }: Props) {
   return (
     <div className="flex gap-2 w-full items-center text-xl">
       <p className="flex gap-1 items-center text-center text-primary-800 pointer-events-none">
@@ -42,4 +42,4 @@ function MemoryDataButton({ children, onClick, data }: Props) {
   );
 }
 
-export default MemoryDataButton;
+export default DataEditButton;

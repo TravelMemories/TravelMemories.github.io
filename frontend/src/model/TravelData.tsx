@@ -1,8 +1,8 @@
 import { TravelStageData } from "./TravelStageData";
 
 export interface TravelData {
-  id: number;
-  location: string;
+  id: number | undefined;
+  location: string | undefined;
   description: string;
   date: Date;
   stages: TravelStageData[];
