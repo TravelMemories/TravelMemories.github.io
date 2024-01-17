@@ -11,7 +11,7 @@ function MemoryDataButton({ children, onClick, data }: Props) {
       <p className="flex gap-1 items-center text-center text-primary-800 pointer-events-none">
         {children}:
       </p>
-      {data === undefined && (
+      {data === undefined ? (
         <motion.button
           className="text-center text-primary-950 bg-background-100 p-1 px-3 rounded-md shadow-md"
           whileHover={{ scale: 1.01 }}
@@ -21,6 +21,19 @@ function MemoryDataButton({ children, onClick, data }: Props) {
         >
           Select
         </motion.button>
+      ) : (
+        <>
+          <p>{data}</p>
+          <motion.button
+            className="text-center text-primary-950 bg-background-100 p-1 px-3 rounded-md shadow-md text-base"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.99 }}
+            type="button"
+            onClick={onClick}
+          >
+            Change
+          </motion.button>
+        </>
       )}
     </div>
   );

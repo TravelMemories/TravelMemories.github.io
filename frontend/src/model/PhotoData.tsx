@@ -7,4 +7,5 @@ export interface PhotoData {
   date: Date | undefined;
   photoData: string | undefined;
   privacy: PrivacyData;
+  likes: string[];
 }

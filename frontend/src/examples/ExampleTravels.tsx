@@ -12,6 +12,7 @@ const ExamplePhotos: PhotoData[] = [
     date: new Date(),
     photoData: homeImage2,
     privacy: PrivacyData.Public,
+    likes: ["test1"],
   },
   {
     id: 1,
@@ -20,6 +21,7 @@ const ExamplePhotos: PhotoData[] = [
     date: new Date(),
     photoData: homeImage1,
     privacy: PrivacyData.Public,
+    likes: ["test1", "test2"],
   },
 ];
 

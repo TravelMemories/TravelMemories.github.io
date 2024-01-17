@@ -4,6 +4,8 @@ import { FaMap } from "react-icons/fa";
 import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
 import MemoryDataButton from "../components/new-memory/MemoryDataButton";
+import { MdDateRange } from "react-icons/md";
+import dayjs from "dayjs";
 
 function NewMemoryPage() {
   //const [file, setFile] = useState<File | undefined>();
@@ -22,6 +24,7 @@ function NewMemoryPage() {
       date: new Date(),
       photoData: image,
       privacy: PrivacyData.Private,
+      likes: [],
     });
   };
   const cancelEditing = () => {
@@ -82,6 +85,13 @@ function NewMemoryPage() {
             <p>Travel</p>
           </MemoryDataButton>
 
+          <MemoryDataButton
+            data={dayjs(newMemory?.date).format("MM/DD/YYYY")}
+            onClick={() => {}}
+          >
+            <MdDateRange />
+            <p>Date</p>
+          </MemoryDataButton>
           <div className="flex items-center justify-between w-full mt-auto">
             <button
               className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
