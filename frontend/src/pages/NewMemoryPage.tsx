@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TiLocation } from "react-icons/ti";
-import { motion } from "framer-motion";
 import { FaMap } from "react-icons/fa";
 import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
+import MemoryDataButton from "../components/new-memory/MemoryDataButton";
 
 function NewMemoryPage() {
   //const [file, setFile] = useState<File | undefined>();
@@ -59,7 +59,7 @@ function NewMemoryPage() {
           <img
             src={image}
             alt=""
-            className="object-cover aspect-square h-[20rem] rounded-md mx-auto shadow-md mb-4"
+            className="object-cover aspect-square h-[30rem] rounded-md mx-auto shadow-md mb-4"
           />
           <textarea
             className="flex h-40 w-full bg-background text-lg  file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md resize-none"
@@ -73,28 +73,21 @@ function NewMemoryPage() {
               );
             }}
           />
-          <motion.button
-            className="flex text-center justify-center items-center text-2xl gap-2 text-primary-950/90"
-            whileHover={{ scale: 1.01 }}
-            type="button"
-          >
-            <p>Select location</p>
+          <MemoryDataButton data={undefined} onClick={() => {}}>
             <TiLocation />
-          </motion.button>
-          <motion.button
-            className="flex text-center justify-center items-center text-2xl gap-2 text-primary-950/90"
-            whileHover={{ scale: 1.01 }}
-            type="button"
-          >
-            <p>Select travel</p>
+            <p>Location</p>
+          </MemoryDataButton>
+          <MemoryDataButton data={undefined} onClick={() => {}}>
             <FaMap />
-          </motion.button>
+            <p>Travel</p>
+          </MemoryDataButton>
+
           <div className="flex items-center justify-between w-full mt-auto">
             <button
-              className="flex text-center text-2xl justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors"
+              className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
               type="button"
             >
-              Add
+              Create
             </button>
             <button
               className="flex text-center justify-center items-center gap-2 bg-secondary-500 hover:bg-secondary-600 p-2 rounded-lg text-background-50 transition-colors"
