@@ -8,6 +8,7 @@ import { MdDateRange } from "react-icons/md";
 import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
+import CustomDatepicker from "../components/datepicker/CustomDatepicker";
 
 function NewMemoryPage() {
   const { GetTravelByStageID } = useTravelsContext();
@@ -15,6 +16,8 @@ function NewMemoryPage() {
   //const [file, setFile] = useState<File | undefined>();
   const [image, setImage] = useState<string | undefined>();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
+  const [memoryDate, setMemoryDate] = useState<Date>(new Date());
+  const [datepickerVisible, setDatepickerVisible] = useState(false);
   const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
@@ -91,10 +94,31 @@ function NewMemoryPage() {
             <TiLocation />
             <p>Location</p>
           </DataEditButton>
-          <DataEditButton data={FormatDate(newMemory?.date)} onClick={() => {}}>
+
+          <DataEditButton
+            data={FormatDate(newMemory?.date)}
+            onClick={() => {
+              setDatepickerVisible((prev) => !prev);
+            }}
+          >
             <MdDateRange />
             <p>Date</p>
           </DataEditButton>
+
+          {datepickerVisible && (
+            <CustomDatepicker
+              date={memoryDate}
+              onDateSet={(newDate: Date) => {
+                setMemoryDate(newDate);
+                setNewMemory(
+                  (prev) => ({ ...prev, date: newDate } as PhotoData)
+                );
+              }}
+              visible={datepickerVisible}
+              setVisible={setDatepickerVisible}
+            />
+          )}
+
           <DataEditButton
             data={
               newMemory?.privacy === PrivacyData.Private ? "Private" : "Public"
