@@ -74,7 +74,7 @@ function NewMemoryPage() {
           <textarea
             className="flex h-40 w-full bg-background text-lg  file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md resize-none"
             id="description"
-            placeholder="Enter desription"
+            placeholder="Enter description"
             value={newMemory?.description}
             onChange={(e) => {
               setNewMemory(
@@ -94,31 +94,6 @@ function NewMemoryPage() {
             <TiLocation />
             <p>Location</p>
           </DataEditButton>
-
-          <DataEditButton
-            data={FormatDate(newMemory?.date)}
-            onClick={() => {
-              setDatepickerVisible((prev) => !prev);
-            }}
-          >
-            <MdDateRange />
-            <p>Date</p>
-          </DataEditButton>
-
-          {datepickerVisible && (
-            <CustomDatepicker
-              date={memoryDate}
-              onDateSet={(newDate: Date) => {
-                setMemoryDate(newDate);
-                setNewMemory(
-                  (prev) => ({ ...prev, date: newDate } as PhotoData)
-                );
-              }}
-              visible={datepickerVisible}
-              setVisible={setDatepickerVisible}
-            />
-          )}
-
           <DataEditButton
             data={
               newMemory?.privacy === PrivacyData.Private ? "Private" : "Public"
@@ -139,6 +114,29 @@ function NewMemoryPage() {
             <MdOutlineSecurity />
             <p>Privacy</p>
           </DataEditButton>
+          <DataEditButton
+            data={FormatDate(newMemory?.date)}
+            onClick={() => {
+              setDatepickerVisible((prev) => !prev);
+            }}
+          >
+            <MdDateRange />
+            <p>Date</p>
+          </DataEditButton>
+          {datepickerVisible && (
+            <CustomDatepicker
+              className=""
+              date={memoryDate}
+              onDateSet={(newDate: Date) => {
+                setMemoryDate(newDate);
+                setNewMemory(
+                  (prev) => ({ ...prev, date: newDate } as PhotoData)
+                );
+              }}
+              visible={datepickerVisible}
+              setVisible={setDatepickerVisible}
+            />
+          )}
 
           <div className="flex items-center justify-between w-full mt-5">
             <button
