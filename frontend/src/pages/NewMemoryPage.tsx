@@ -3,12 +3,12 @@ import { TiLocation } from "react-icons/ti";
 import { FaMap } from "react-icons/fa";
 import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
-import DataEditButton from "../components/buttons/DataEditButton";
+import DataEditButton from "../components/general-purpose/DataEditButton";
 import { MdDateRange } from "react-icons/md";
 import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
-import CustomDatepicker from "../components/datepicker/CustomDatepicker";
+import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
 
 function NewMemoryPage() {
   const { GetTravelByStageID } = useTravelsContext();

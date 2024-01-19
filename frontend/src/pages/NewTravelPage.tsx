@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { TiLocation } from "react-icons/ti";
 import { MdDateRange } from "react-icons/md";
 import { FormatDate } from "../helpers/helpers";
-import DataEditButton from "../components/buttons/DataEditButton";
+import DataEditButton from "../components/general-purpose/DataEditButton";
 import { TravelData } from "../model/TravelData";
-import CustomDatepicker from "../components/datepicker/CustomDatepicker";
+import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
+import CustomMap from "../components/general-purpose/CustomMap";
 function NewTravelPage() {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
   const [travelDate, setTravelDate] = useState<Date>(new Date());
@@ -36,6 +37,7 @@ function NewTravelPage() {
             );
           }}
         />
+        <CustomMap />
         <DataEditButton
           data={FormatDate(newTravel?.date)}
           onClick={() => {
