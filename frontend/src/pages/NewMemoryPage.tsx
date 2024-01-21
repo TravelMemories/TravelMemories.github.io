@@ -29,7 +29,8 @@ function NewMemoryPage() {
       stageId: undefined,
       description: undefined,
       date: new Date(),
-      photoData: image,
+      photoData: target.files[0],
+      imageSource: image,
       privacy: PrivacyData.Private,
       likes: [],
     });

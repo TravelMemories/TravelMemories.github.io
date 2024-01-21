@@ -5,7 +5,8 @@ export interface PhotoData {
   stageId: number | undefined;
   description: string | undefined;
   date: Date | undefined;
-  photoData: string | undefined;
+  photoData: Blob | undefined;
+  imageSource: string | undefined;
   privacy: PrivacyData;
   likes: string[];
 }

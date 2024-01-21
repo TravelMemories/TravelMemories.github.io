@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 
 const center = { lat: 48, lng: 2 };
@@ -7,9 +7,6 @@ function CustomMap() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
   });
-  useEffect(() => {
-    console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
-  }, []);
   if (!isLoaded) {
     return <p>Map not available</p>;
   }
@@ -19,6 +16,11 @@ function CustomMap() {
         center={center}
         zoom={15}
         mapContainerStyle={{ width: "100%", height: "100%" }}
+        options={{
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}
       ></GoogleMap>
     </div>
   );
