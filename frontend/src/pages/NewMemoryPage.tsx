@@ -3,11 +3,12 @@ import { TiLocation } from "react-icons/ti";
 import { FaMap } from "react-icons/fa";
 import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
-import DataEditButton from "../components/buttons/DataEditButton";
+import DataEditButton from "../components/general-purpose/DataEditButton";
 import { MdDateRange } from "react-icons/md";
 import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
+import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
 
 function NewMemoryPage() {
   const { GetTravelByStageID } = useTravelsContext();
@@ -15,6 +16,8 @@ function NewMemoryPage() {
   //const [file, setFile] = useState<File | undefined>();
   const [image, setImage] = useState<string | undefined>();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
+  const [memoryDate, setMemoryDate] = useState<Date>(new Date());
+  const [datepickerVisible, setDatepickerVisible] = useState(false);
   const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
@@ -26,7 +29,8 @@ function NewMemoryPage() {
       stageId: undefined,
       description: undefined,
       date: new Date(),
-      photoData: image,
+      photoData: target.files[0],
+      imageSource: image,
       privacy: PrivacyData.Private,
       likes: [],
     });
@@ -71,7 +75,7 @@ function NewMemoryPage() {
           <textarea
             className="flex h-40 w-full bg-background text-lg  file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md resize-none"
             id="description"
-            placeholder="Enter desription"
+            placeholder="Enter description"
             value={newMemory?.description}
             onChange={(e) => {
               setNewMemory(
@@ -90,10 +94,6 @@ function NewMemoryPage() {
           <DataEditButton data={undefined} onClick={() => {}}>
             <TiLocation />
             <p>Location</p>
-          </DataEditButton>
-          <DataEditButton data={FormatDate(newMemory?.date)} onClick={() => {}}>
-            <MdDateRange />
-            <p>Date</p>
           </DataEditButton>
           <DataEditButton
             data={
@@ -115,6 +115,29 @@ function NewMemoryPage() {
             <MdOutlineSecurity />
             <p>Privacy</p>
           </DataEditButton>
+          <DataEditButton
+            data={FormatDate(newMemory?.date)}
+            onClick={() => {
+              setDatepickerVisible((prev) => !prev);
+            }}
+          >
+            <MdDateRange />
+            <p>Date</p>
+          </DataEditButton>
+          {datepickerVisible && (
+            <CustomDatepicker
+              className=""
+              date={memoryDate}
+              onDateSet={(newDate: Date) => {
+                setMemoryDate(newDate);
+                setNewMemory(
+                  (prev) => ({ ...prev, date: newDate } as PhotoData)
+                );
+              }}
+              visible={datepickerVisible}
+              setVisible={setDatepickerVisible}
+            />
+          )}
 
           <div className="flex items-center justify-between w-full mt-5">
             <button

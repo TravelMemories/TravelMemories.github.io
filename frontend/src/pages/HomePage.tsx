@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import ImageCarousel from "../components/home-page/ImageCarousel";
 import { NavLink } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
 
 function HomePage() {
   const transitionDelay = 0.7;
@@ -15,6 +16,10 @@ function HomePage() {
     initial: { opacity: 0, y: 50, scaleX: 1.05 },
     animate: { opacity: 1, y: 0, scaleX: 1 },
   };
+  const { LoginCookies } = useUserContext();
+  useEffect(() => {
+    LoginCookies();
+  }, [LoginCookies]);
   return (
     <div className="gap-32 sm:gap-60 xl:gap-0 mx-auto h-[100vh] flex flex-col-reverse xl:flex-row items-center justify-center xl:justify-between px-4 sm:px-0 py-8 overflow-hidden bg-gradient-to-br from-background-50 to-background-200">
       <ImageCarousel />
