@@ -5,10 +5,12 @@ import { motion } from "framer-motion";
 import { FormatDate } from "../../helpers/helpers";
 
 import { NavLink } from "react-router-dom";
+import { TravelDisplayType } from "./TravelsDisplay";
 interface TravelCardProps {
   data: TravelData | undefined;
+  variant: TravelDisplayType
 }
-function TravelCard({ data }: TravelCardProps) {
+function TravelCard({ data, variant }: TravelCardProps) {
   return (
     <NavLink to={`/travel/${data?.id}`}>
       <motion.button
@@ -16,6 +18,9 @@ function TravelCard({ data }: TravelCardProps) {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.02 }}
+        onClick={()=>{
+          //variant === TravelDisplayType.Display ? 
+        }}
       >
         <img
           src={

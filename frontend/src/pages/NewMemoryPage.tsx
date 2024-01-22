@@ -9,6 +9,7 @@ import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
+import TravelsDisplay, { TravelDisplayType } from "../components/travels-page/TravelsDisplay";
 
 function NewMemoryPage() {
   const { GetTravelByStageID } = useTravelsContext();
@@ -18,6 +19,7 @@ function NewMemoryPage() {
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
+  const [selectingTravel, setSelectingTravel] = useState(false);
   const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
@@ -86,7 +88,9 @@ function NewMemoryPage() {
           />
           <DataEditButton
             data={GetTravelByStageID(newMemory?.stageId)?.location}
-            onClick={() => {}}
+            onClick={() => {
+              setSelectingTravel(true);
+            }}
           >
             <FaMap />
             <p>Travel</p>
@@ -154,6 +158,11 @@ function NewMemoryPage() {
               Cancel
             </button>
           </div>
+
+          {selectingTravel && <>
+          <div className="fixed inset-0 bg-primary-950/50" onClick={()=>{setSelectingTravel(false)}}/>
+          <TravelsDisplay variant={TravelDisplayType.Select}/>
+          </>}
         </form>
       )}
     </>

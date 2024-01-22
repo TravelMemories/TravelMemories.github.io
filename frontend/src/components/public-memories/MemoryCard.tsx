@@ -8,7 +8,6 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useUserContext } from "../../context/UserContext";
-import { FormatDate } from "../../helpers/helpers";
 interface MemoryCardProps {
   data: PhotoData;
 }
@@ -17,7 +16,9 @@ function MemoryCard({ data }: MemoryCardProps) {
   const [liked, setLiked] = useState(false);
   const { isLoggedIn } = useUserContext();
   return (
-    <div className="max-w-[20rem] p-4 h-fit shadow-md bg-background-50 flex flex-col">
+    <motion.button className="max-w-[20rem] p-4 h-fit shadow-md bg-background-50 flex flex-col"
+    whileHover={{scale:1.008}}
+    transition={{type:"spring", duration: 0.2}}>
       <img
         src={data.id === 0 ? homeImage1 : homeImage2}
         alt={"beach"}
@@ -43,7 +44,7 @@ function MemoryCard({ data }: MemoryCardProps) {
         <p>{likes}</p>
       </div>
 
-      <div className="flex items-center text-center text-lg font-bold">
+      <div className="flex items-center text-center text-lg font-bold truncate">
         <TiLocation />
         <h1>
           {data.id === 0
@@ -51,7 +52,7 @@ function MemoryCard({ data }: MemoryCardProps) {
             : ExampleTravels[1].location}
         </h1>
       </div>
-    </div>
+    </motion.button>
   );
 }
 
