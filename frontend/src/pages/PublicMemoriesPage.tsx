@@ -11,7 +11,7 @@ function PublicMemoriesPage() {
     <>
       {!isLoggedIn && <Navbar />}
       <div className="w-full min-h-[100vh] flex justify-center">
-        <div className="pt-20 p-8 container w-fit gap-8 h-full flex flex-col items-center">
+        <div className="pt-20 p-8 container w-full gap-8 flex flex-wrap">
           {travels[0].stages[0].photos.map((photo, idx) => (
             <MemoryCard key={idx} data={photo} />
           ))}

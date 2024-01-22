@@ -17,7 +17,7 @@ function MemoryCard({ data }: MemoryCardProps) {
   const [liked, setLiked] = useState(false);
   const { isLoggedIn } = useUserContext();
   return (
-    <div className="max-w-[30rem] w-full p-4 shadow-md bg-background-50 flex flex-col">
+    <div className="max-w-[20rem] p-4 h-fit shadow-md bg-background-50 flex flex-col">
       <img
         src={data.id === 0 ? homeImage1 : homeImage2}
         alt={"beach"}
@@ -51,12 +51,6 @@ function MemoryCard({ data }: MemoryCardProps) {
             : ExampleTravels[1].location}
         </h1>
       </div>
-      <p className="text-sm">{FormatDate(ExampleTravels[0].date)}</p>
-      <p className="">
-        {data.id === 0
-          ? ExampleTravels[0].description
-          : ExampleTravels[1].description}
-      </p>
     </div>
   );
 }
