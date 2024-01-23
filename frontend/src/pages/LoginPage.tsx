@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { SlGlobe } from "react-icons/sl";
 import { motion } from "framer-motion";
 import { useUserContext } from "../context/UserContext";
+import LoginPopup from "../components/login/loginPopup";
 function LoginPage() {
   const { LogIn } = useUserContext();
+  const [errorMsg, setErrorMsg] = useState("");
+  const clearMsg = () => {
+    if (errorMsg === "") return;
+    setErrorMsg("");
+  };
   return (
-    <div className="flex flex-col min-h-[100vh] justify-center items-center py-4 bg-gradient-to-br from-background-100  to-background-200 via-background-200">
+    <form
+      className=" flex flex-col min-h-[100vh] justify-center items-center py-4 bg-gradient-to-br from-background-100  to-background-200 via-background-200"
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <motion.div
         animate={{ scaleX: 1 }}
         whileHover={{
@@ -22,7 +33,7 @@ function LoginPage() {
           <p className="text-4xl">Travel Memories</p>
         </NavLink>
       </motion.div>
-      <div className="w-80 space-y-6 bg-primary-50 p-10 rounded-lg shadow-md">
+      <div className="relative w-80 space-y-6 bg-primary-50 p-10 rounded-lg shadow-md">
         <div className="space-y-2">
           <label
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700"
@@ -36,6 +47,7 @@ function LoginPage() {
             placeholder="m@example.com"
             required
             type="email"
+            onChange={clearMsg}
           />
         </div>
         <div className="space-y-2">
@@ -50,23 +62,26 @@ function LoginPage() {
             id="password"
             required
             type="password"
+            onChange={clearMsg}
           />
         </div>
         <button
           className="inline-flex items-center justify-center text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 w-full bg-action-400 hover:bg-action-500 text-background-50 p-2 rounded-md transition-colors"
           type="submit"
           onClick={() => {
+            clearMsg();
             LogIn({ username: "user1", password: "password" });
           }}
         >
           Login
         </button>
-        <button
+        {/* <button
           className="text-sm text-right block underline text-gray-700"
           onClick={() => {}}
         >
           Forgot your password?
-        </button>
+        </button> */}
+        {errorMsg !== "" && <LoginPopup message={errorMsg} />}
       </div>
       <div className="mt-4 text-center text-sm text-background-700">
         Don't have an account?{" "}
@@ -74,7 +89,7 @@ function LoginPage() {
           <NavLink to={"/register"}>Sign up</NavLink>
         </button>
       </div>
-    </div>
+    </form>
   );
 }
 

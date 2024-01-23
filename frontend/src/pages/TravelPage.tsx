@@ -6,6 +6,7 @@ import { FormatDate } from "../helpers/helpers";
 import Placeholder from "../images/placeholder.png";
 import StagesDisplay from "../components/travels-page/StagesDisplay";
 import { TravelStageData } from "../model/TravelStageData";
+import { motion } from "framer-motion";
 
 function TravelPage() {
   const { id } = useParams();
@@ -22,7 +23,7 @@ function TravelPage() {
     }
   }, [id, navigate, travels]);
   return (
-    <div className="mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2">
+    <div className="mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8">
       <div className="flex justify-between items-center w-fit mx-auto gap-8">
         <div className="flex flex-col items-center">
           <h1 className="text-6xl">{travelData?.location}</h1>
@@ -40,10 +41,16 @@ function TravelPage() {
           alt={travelData?.location}
         />
       </div>
-      <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold mt-8 w-5/6 mx-auto">
+      <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
         <div className="text-3xl uppercase">stages:</div>
         <StagesDisplay stages={travelData?.stages as TravelStageData[]} />
       </div>
+      <motion.button
+        className="flex items-center justify-center bg-secondary-500 text-4xl p-4 h-full text-primary-50 shadow-md hover:bg-secondary-600 transition-colors rounded-full mb-8"
+        whileHover={{ scale: 1.02 }}
+      >
+        Create slideshow
+      </motion.button>
     </div>
   );
 }
