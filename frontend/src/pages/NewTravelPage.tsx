@@ -10,7 +10,7 @@ function NewTravelPage() {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
   const [travelDate, setTravelDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
-  const [setMapVisible] = useState(false);
+  const [mapVisible, setMapVisible] = useState(false);
 
   useEffect(() => {
     setNewTravel({
@@ -41,7 +41,7 @@ function NewTravelPage() {
             );
           }}
         />
-        <MapPicker setMapVisible={setMapVisible} />
+        {mapVisible && <MapPicker setMapVisible={setMapVisible} />}
         <DataEditButton
           data={FormatDate(newTravel?.date)}
           onClick={() => {
