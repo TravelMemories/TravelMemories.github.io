@@ -5,11 +5,13 @@ import { FormatDate } from "../helpers/helpers";
 import DataEditButton from "../components/general-purpose/DataEditButton";
 import { TravelData } from "../model/TravelData";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
-import CustomMap from "../components/general-purpose/CustomMap";
+import MapPicker from "../components/general-purpose/MapPicker";
 function NewTravelPage() {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
   const [travelDate, setTravelDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
+  const [mapVisible, setMapVisible] = useState(false);
+
   useEffect(() => {
     setNewTravel({
       id: undefined,
@@ -39,7 +41,7 @@ function NewTravelPage() {
             );
           }}
         />
-        <CustomMap />
+        <MapPicker setMapVisible={setMapVisible} />
         <DataEditButton
           data={FormatDate(newTravel?.date)}
           onClick={() => {

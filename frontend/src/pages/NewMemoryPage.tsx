@@ -9,7 +9,10 @@ import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
-import TravelsDisplay, { TravelDisplayType } from "../components/travels-page/TravelsDisplay";
+import TravelsDisplay, {
+  TravelDisplayType,
+} from "../components/travels-page/TravelsDisplay";
+import MapPicker from "../components/general-purpose/MapPicker";
 
 function NewMemoryPage() {
   const { GetTravelByStageID } = useTravelsContext();
@@ -20,6 +23,8 @@ function NewMemoryPage() {
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
   const [selectingTravel, setSelectingTravel] = useState(false);
+  const [mapVisible, setMapVisible] = useState(false);
+
   const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
@@ -95,7 +100,12 @@ function NewMemoryPage() {
             <FaMap />
             <p>Travel</p>
           </DataEditButton>
-          <DataEditButton data={undefined} onClick={() => {}}>
+          <DataEditButton
+            data={undefined}
+            onClick={() => {
+              setMapVisible(true);
+            }}
+          >
             <TiLocation />
             <p>Location</p>
           </DataEditButton>
@@ -159,10 +169,18 @@ function NewMemoryPage() {
             </button>
           </div>
 
-          {selectingTravel && <>
-          <div className="fixed inset-0 bg-primary-950/50" onClick={()=>{setSelectingTravel(false)}}/>
-          <TravelsDisplay variant={TravelDisplayType.Select}/>
-          </>}
+          {selectingTravel && (
+            <>
+              <div
+                className="fixed inset-0 bg-primary-950/50"
+                onClick={() => {
+                  setSelectingTravel(false);
+                }}
+              />
+              <TravelsDisplay variant={TravelDisplayType.Select} />
+            </>
+          )}
+          {mapVisible && <MapPicker setMapVisible={setMapVisible} />}
         </form>
       )}
     </>
