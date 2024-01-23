@@ -3,10 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTravelsContext } from "../context/TravelsContext";
 import { TravelData } from "../model/TravelData";
 import { FormatDate } from "../helpers/helpers";
-import Placeholder from "../images/placeholder.png";
 import StagesDisplay from "../components/travels-page/StagesDisplay";
 import { TravelStageData } from "../model/TravelStageData";
 import { motion } from "framer-motion";
+import TravelMap from "../components/travels-page/TravelMap";
 
 function TravelPage() {
   const { id } = useParams();
@@ -30,15 +30,9 @@ function TravelPage() {
           <h2 className="text-4xl font-thin">{FormatDate(travelData?.date)}</h2>
           <p className="text-2xl ">{travelData?.description}</p>
         </div>
-        <img
-          className="aspect-square h-80 rounded-lg shadow-md"
-          src={
-            travelData?.stages.length !== 0 &&
-            travelData?.stages[0].photos.length !== 0
-              ? travelData?.stages[0].photos[0].imageSource
-              : Placeholder
-          }
-          alt={travelData?.location}
+        <TravelMap
+          lat={travelData?.lat as number}
+          lon={travelData?.lon as number}
         />
       </div>
       <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">

@@ -60,6 +60,8 @@ const ExampleTravels: TravelData[] = [
   {
     id: 0,
     location: "Cartagena, Colombia",
+    lat: 10.433118,
+    lon: -75.534791,
     description: "Summer holiday 2023!",
     date: new Date(),
     stages: ExampleStages,
@@ -67,6 +69,8 @@ const ExampleTravels: TravelData[] = [
   {
     id: 1,
     location: "Ludington, USA",
+    lat: 43.966713,
+    lon: -86.461251,
     description: "Breathtaking view.",
     date: new Date(),
     stages: ExampleStages2,

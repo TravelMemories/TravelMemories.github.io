@@ -14,6 +14,8 @@ function NewTravelPage() {
     setNewTravel({
       id: undefined,
       location: undefined,
+      lat: 0,
+      lon: 0,
       description: "",
       date: new Date(),
       stages: [],
