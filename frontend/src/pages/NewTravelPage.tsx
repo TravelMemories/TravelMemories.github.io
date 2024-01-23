@@ -10,7 +10,7 @@ function NewTravelPage() {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
   const [travelDate, setTravelDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
-  const [mapVisible, setMapVisible] = useState(false);
+  const [setMapVisible] = useState(false);
 
   useEffect(() => {
     setNewTravel({
