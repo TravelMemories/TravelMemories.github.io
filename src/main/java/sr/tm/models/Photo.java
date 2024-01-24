@@ -1,7 +1,11 @@
 package sr.tm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -20,7 +24,15 @@ public class Photo {
     @Column(name = "privacy")
     private Long privacy;
 
+    @Column(name = "photo_date")
+    private String photoDate;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "stage_id")
     private Stage stage;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "photo")
+    private Set<Likes> likes = new HashSet<>();
 }
