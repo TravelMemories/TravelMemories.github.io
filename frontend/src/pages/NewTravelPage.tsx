@@ -6,11 +6,16 @@ import DataEditButton from "../components/general-purpose/DataEditButton";
 import { TravelData } from "../model/TravelData";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
 import MapPicker from "../components/general-purpose/MapPicker";
+import { useTravelsContext } from "../context/TravelsContext";
+import { useNavigate } from "react-router-dom";
+
 function NewTravelPage() {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
   const [travelDate, setTravelDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
   const [mapVisible, setMapVisible] = useState(false);
+  const { AddTravel } = useTravelsContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setNewTravel({
@@ -23,10 +28,32 @@ function NewTravelPage() {
       stages: [],
     });
   }, []);
+
+  const onLocationSelect = (lat: number, lng: number, location: string) => {
+    setNewTravel(
+      (prev) =>
+        ({ ...prev, location: location, lat: lat, lon: lng } as TravelData)
+    );
+  };
+
   return (
     <>
-      <form className=" max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md">
-        <DataEditButton data={undefined} onClick={() => {}}>
+      <form
+        className=" max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (newTravel !== undefined) {
+            AddTravel(newTravel);
+            navigate("/travels");
+          }
+        }}
+      >
+        <DataEditButton
+          data={newTravel?.location}
+          onClick={() => {
+            setMapVisible(true);
+          }}
+        >
           <TiLocation />
           <p>Location</p>
         </DataEditButton>
@@ -41,7 +68,12 @@ function NewTravelPage() {
             );
           }}
         />
-        {mapVisible && <MapPicker setMapVisible={setMapVisible} />}
+        {mapVisible && (
+          <MapPicker
+            setMapVisible={setMapVisible}
+            onSelect={onLocationSelect}
+          />
+        )}
         <DataEditButton
           data={FormatDate(newTravel?.date)}
           onClick={() => {
@@ -55,7 +87,7 @@ function NewTravelPage() {
         <div className="flex items-center justify-between w-full mt-5 ">
           <button
             className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
-            type="button"
+            type="submit"
           >
             Create
           </button>

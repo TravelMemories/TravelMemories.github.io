@@ -8,6 +8,7 @@ interface TravelsContextProviderProps {
 interface TravelsContextProps {
   travels: TravelData[];
   GetTravelByStageID: (stageID: number | undefined) => TravelData | undefined;
+  AddTravel: (data: TravelData) => void;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -18,8 +19,7 @@ export function useTravelsContext() {
 export function TravelsContextProvider({
   children,
 }: TravelsContextProviderProps) {
-  const [travels] = useState<TravelData[]>(ExampleTravels);
-
+  const [travels, setTravels] = useState<TravelData[]>(ExampleTravels);
   const GetTravelByStageID = (stageID: number | undefined) => {
     if (stageID === undefined) return undefined;
     for (const travel of travels) {
@@ -30,8 +30,11 @@ export function TravelsContextProvider({
     }
     return undefined;
   };
+  const AddTravel = (data: TravelData) => {
+    setTravels((prev) => [...prev, data]);
+  };
   return (
-    <TravelsContext.Provider value={{ travels, GetTravelByStageID }}>
+    <TravelsContext.Provider value={{ travels, GetTravelByStageID, AddTravel }}>
       {children}
     </TravelsContext.Provider>
   );

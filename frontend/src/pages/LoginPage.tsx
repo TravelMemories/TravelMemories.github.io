@@ -4,12 +4,26 @@ import { SlGlobe } from "react-icons/sl";
 import { motion } from "framer-motion";
 import { useUserContext } from "../context/UserContext";
 import LoginPopup from "../components/login/loginPopup";
+import api from "../api/api";
+import axios from "axios";
 function LoginPage() {
   const { LogIn } = useUserContext();
   const [errorMsg, setErrorMsg] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const clearMsg = () => {
     if (errorMsg === "") return;
     setErrorMsg("");
+  };
+  const checkLogin = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/user/checkPassword?username=${username}&password=${password}`
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <form
@@ -37,17 +51,21 @@ function LoginPage() {
         <div className="space-y-2">
           <label
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700"
-            htmlFor="email"
+            htmlFor="username"
           >
-            Email
+            Username
           </label>
           <input
             className="flex h-10 w-full bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md"
-            id="email"
-            placeholder="m@example.com"
+            id="username"
+            placeholder="Your username"
             required
-            type="email"
-            onChange={clearMsg}
+            type="text"
+            value={username}
+            onChange={(e) => {
+              clearMsg();
+              setUsername(e.target.value);
+            }}
           />
         </div>
         <div className="space-y-2">
@@ -61,8 +79,12 @@ function LoginPage() {
             className="flex h-10 w-full bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md"
             id="password"
             required
+            value={password}
             type="password"
-            onChange={clearMsg}
+            onChange={(e) => {
+              clearMsg();
+              setPassword(e.target.value);
+            }}
           />
         </div>
         <button
@@ -70,7 +92,8 @@ function LoginPage() {
           type="submit"
           onClick={() => {
             clearMsg();
-            LogIn({ username: "user1", password: "password" });
+            //checkLogin();
+            LogIn({ username: "username", password: "password" });
           }}
         >
           Login

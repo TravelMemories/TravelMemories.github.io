@@ -180,7 +180,7 @@ function NewMemoryPage() {
               <TravelsDisplay variant={TravelDisplayType.Select} />
             </>
           )}
-          {mapVisible && <MapPicker setMapVisible={setMapVisible} />}
+          {/* {mapVisible && <MapPicker setMapVisible={setMapVisible} />} */}
         </form>
       )}
     </>
