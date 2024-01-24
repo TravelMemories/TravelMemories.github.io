@@ -27,12 +27,12 @@ public class TravelController {
 
     @GetMapping("/travel")
     public Page<Travel> getTravels(
-            @RequestParam(name = "userEmail", required = false) String userEmail,
+            @RequestParam(name = "Username", required = false) String username,
             @RequestParam(name = "sort", defaultValue = "latest") String sort,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "20") int pageSize){
         PageRequest pageRequest = PageRequest.of(page, pageSize);
-        return travelService.getTravelsByUserEmail(userEmail, pageRequest, sort);
+        return travelService.getTravelsByUsername(username, pageRequest, sort);
     }
 
     @DeleteMapping("/travel/delete")
@@ -40,15 +40,15 @@ public class TravelController {
         boolean deleteSuccessful = travelService.deleteTravel(id);
         PageRequest pageRequest = PageRequest.of(0, 20);
         if(deleteSuccessful){
-            return ResponseEntity.ok(travelService.getTravelsByUserEmail(null, pageRequest, "latest"));
+            return ResponseEntity.ok(travelService.getTravelsByUsername(null, pageRequest, "latest"));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(travelService.getTravelsByUserEmail(null, pageRequest, "latest"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(travelService.getTravelsByUsername(null, pageRequest, "latest"));
     }
 
     @PutMapping("/travel/add")
     public ResponseEntity<Page<Travel>> addTravel(@RequestBody Travel travel){
         travelService.save(travel);
         PageRequest pageRequest = PageRequest.of(0, 20);
-        return ResponseEntity.status(HttpStatus.CREATED).body(travelService.getTravelsByUserEmail(null, pageRequest, "latest"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(travelService.getTravelsByUsername(null, pageRequest, "latest"));
     }
 }

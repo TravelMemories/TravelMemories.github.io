@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply bg-primary-200 font-primary;
+  @apply font-primary bg-gradient-to-br from-background-50 to-background-200/70 min-h-[100vh];
 }
