@@ -10,7 +10,7 @@ import sr.tm.models.Likes;
 import sr.tm.services.LikesService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
 public class LikesController {
     private final LikesService likesService;
 
