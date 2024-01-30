@@ -5,7 +5,6 @@ import { FormatDate } from "../helpers/helpers";
 import DataEditButton from "../components/general-purpose/DataEditButton";
 import { TravelData } from "../model/TravelData";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
-import MapPicker from "../components/general-purpose/MapPicker";
 import { useTravelsContext } from "../context/TravelsContext";
 import { useNavigate } from "react-router-dom";
 import LocationPicker from "../components/general-purpose/LocationPicker";

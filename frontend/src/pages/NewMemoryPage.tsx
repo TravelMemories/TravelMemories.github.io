@@ -12,7 +12,6 @@ import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
 import TravelsDisplay, {
   TravelDisplayType,
 } from "../components/travels-page/TravelsDisplay";
-import MapPicker from "../components/general-purpose/MapPicker";
 
 function NewMemoryPage() {
   const { GetTravelByStageID } = useTravelsContext();
