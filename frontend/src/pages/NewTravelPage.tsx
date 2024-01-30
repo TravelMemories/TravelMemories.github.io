@@ -8,25 +8,36 @@ import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
 import { useTravelsContext } from "../context/TravelsContext";
 import { useNavigate } from "react-router-dom";
 import LocationPicker from "../components/general-purpose/LocationPicker";
-
-function NewTravelPage() {
+interface EditPageProps {
+  travelData: TravelData;
+  setTravelData: (newData: TravelData) => void;
+  cancelEditing: () => void;
+}
+interface Props {
+  editPage?: EditPageProps;
+}
+function NewTravelPage({ editPage }: Props) {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
   const [travelDate, setTravelDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
   const [mapVisible, setMapVisible] = useState(false);
-  const { AddTravel } = useTravelsContext();
+  const { AddTravel, UpdateTravel, GetNewTravelID } = useTravelsContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setNewTravel({
-      id: undefined,
-      location: undefined,
-      lat: 0,
-      lon: 0,
-      description: "",
-      date: new Date(),
-      stages: [],
-    });
+    setNewTravel(
+      editPage === undefined
+        ? {
+            id: GetNewTravelID(),
+            location: undefined,
+            lat: 0,
+            lon: 0,
+            description: "",
+            date: new Date(),
+            stages: [],
+          }
+        : editPage.travelData
+    );
   }, []);
 
   const onLocationSelect = (lat: number, lng: number, location: string) => {
@@ -43,8 +54,14 @@ function NewTravelPage() {
         onSubmit={(e) => {
           e.preventDefault();
           if (newTravel !== undefined) {
-            AddTravel(newTravel);
-            navigate("/travels");
+            if (editPage === undefined) {
+              AddTravel(newTravel);
+              navigate("/travels");
+            } else {
+              UpdateTravel(newTravel);
+              editPage.setTravelData(newTravel);
+              navigate(`/travel/${editPage.travelData.id}`);
+            }
           }
         }}
       >
@@ -89,7 +106,20 @@ function NewTravelPage() {
             className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
             type="submit"
           >
-            Create
+            {editPage === undefined ? "Create" : "Confirm"}
+          </button>
+          <button
+            className="flex text-center justify-center items-center gap-2 bg-secondary-400 hover:bg-secondary-500 p-2 rounded-lg text-background-50 transition-colors px-6"
+            type="button"
+            onClick={() => {
+              if (editPage === undefined) {
+                navigate("/travels");
+              } else {
+                editPage.cancelEditing();
+              }
+            }}
+          >
+            Cancel
           </button>
         </div>
       </form>

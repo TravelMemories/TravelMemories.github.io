@@ -8,18 +8,18 @@ import { NavLink } from "react-router-dom";
 import { TravelDisplayType } from "./TravelsDisplay";
 interface TravelCardProps {
   data: TravelData | undefined;
-  variant: TravelDisplayType
+  variant: TravelDisplayType;
 }
 function TravelCard({ data, variant }: TravelCardProps) {
   return (
     <NavLink to={`/travel/${data?.id}`}>
       <motion.button
-        className="flex flex-col items-center p-3 shadow-md bg-background-100 w-fit"
+        className="flex flex-col items-center p-3 shadow-md bg-background-100 w-80"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.02 }}
-        onClick={()=>{
-          //variant === TravelDisplayType.Display ? 
+        onClick={() => {
+          //variant === TravelDisplayType.Display ?
         }}
       >
         <img

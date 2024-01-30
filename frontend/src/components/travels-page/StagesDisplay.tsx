@@ -18,7 +18,7 @@ function StagesDisplay({ stages }: Props) {
       </motion.button>
 
       {stages === undefined || stages?.length === 0 ? (
-        <p className="text-3xl">You don't have any stages yet.</p>
+        <p className="text-xl">You don't have any stages yet.</p>
       ) : (
         stages?.map((stage) => <StageCard data={stage} />)
       )}

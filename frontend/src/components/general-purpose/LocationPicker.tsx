@@ -10,9 +10,8 @@ interface Props {
 
 function LocationPicker({ setVisible, onSelect }: Props) {
   const { isLoaded } = useMapContext();
-  const [selectedLocation, setSelectedLocation] = useState<
-    google.maps.LatLng | google.maps.LatLngLiteral | null
-  >();
+  const [selectedLocation, setSelectedLocation] =
+    useState<google.maps.LatLng | null>();
   const [locationAdress, setLocationAdress] = useState("");
 
   const [autocomplete, setAutocomplete] = useState<
@@ -58,11 +57,11 @@ function LocationPicker({ setVisible, onSelect }: Props) {
                 fullscreenControl: false,
               }}
               onClick={(e) => {
-                if (e.latLng)
-                  setSelectedLocation({
-                    lat: e.latLng.lat(),
-                    lng: e.latLng.lng(),
-                  });
+                if (e.latLng) {
+                  setSelectedLocation(
+                    new google.maps.LatLng(e.latLng.lat(), e.latLng.lng())
+                  );
+                }
               }}
             >
               {selectedLocation && (
@@ -94,8 +93,8 @@ function LocationPicker({ setVisible, onSelect }: Props) {
                     return;
                   }
                   onSelect(
-                    (selectedLocation as google.maps.LatLngLiteral).lat,
-                    (selectedLocation as google.maps.LatLngLiteral).lng,
+                    selectedLocation.lat(),
+                    selectedLocation.lng(),
                     locationAdress
                   );
                   closePanel();
@@ -140,9 +139,8 @@ function LocationPicker({ setVisible, onSelect }: Props) {
                         return;
                       }
                       setSelectedLocation(
-                        autocomplete.getPlace().geometry?.location as
-                          | google.maps.LatLng
-                          | google.maps.LatLngLiteral
+                        autocomplete.getPlace().geometry
+                          ?.location as google.maps.LatLng
                       );
                       setLocationAdress(
                         autocomplete.getPlace().formatted_address === undefined
@@ -173,8 +171,8 @@ function LocationPicker({ setVisible, onSelect }: Props) {
                         return;
                       }
                       onSelect(
-                        (selectedLocation as google.maps.LatLngLiteral).lat,
-                        (selectedLocation as google.maps.LatLngLiteral).lng,
+                        selectedLocation.lat(),
+                        selectedLocation.lng(),
                         locationAdress
                       );
                       closePanel();

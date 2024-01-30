@@ -9,6 +9,9 @@ interface TravelsContextProps {
   travels: TravelData[];
   GetTravelByStageID: (stageID: number | undefined) => TravelData | undefined;
   AddTravel: (data: TravelData) => void;
+  DeleteTravel: (id: number) => void;
+  UpdateTravel: (newData: TravelData) => void;
+  GetNewTravelID: () => number;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -33,8 +36,28 @@ export function TravelsContextProvider({
   const AddTravel = (data: TravelData) => {
     setTravels((prev) => [...prev, data]);
   };
+  const DeleteTravel = (id: number) => {
+    setTravels((prev) => prev.filter((travel) => travel.id !== id));
+  };
+  const UpdateTravel = (newData: TravelData) => {
+    setTravels((prev) =>
+      prev.map((travel) => (travel.id === newData.id ? newData : travel))
+    );
+  };
+  const GetNewTravelID = () => {
+    return Math.max(...(travels.map((travel) => travel.id) as number[])) + 1;
+  };
   return (
-    <TravelsContext.Provider value={{ travels, GetTravelByStageID, AddTravel }}>
+    <TravelsContext.Provider
+      value={{
+        travels,
+        GetTravelByStageID,
+        AddTravel,
+        DeleteTravel,
+        UpdateTravel,
+        GetNewTravelID,
+      }}
+    >
       {children}
     </TravelsContext.Provider>
   );
