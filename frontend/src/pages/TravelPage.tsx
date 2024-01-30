@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import TravelMap from "../components/travels-page/TravelMap";
 import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
-import { FaEdit } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
 
 function TravelPage() {
   const { id } = useParams();
@@ -28,10 +28,9 @@ function TravelPage() {
   return (
     <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8">
       <BackButton navigateTo="/travels" />
-      <div className="absolute top-5 right-5">
-        <CustomButton variant={"action"} rounded={true}>
-          <FaEdit />
-        </CustomButton>
+      <div className="absolute top-5 right-5 flex flex-col items-end gap-1">
+        <CustomButton variant={"edit"}></CustomButton>
+        <CustomButton variant={"delete"}></CustomButton>
       </div>
       <div className="flex justify-between items-center w-fit mx-auto gap-8">
         <div className="flex flex-col items-center">
