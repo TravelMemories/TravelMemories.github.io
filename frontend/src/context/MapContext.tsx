@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useContext, useState } from "react";
+import React, { ReactNode, createContext, useContext } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 interface MapContextProviderProps {
   children: ReactNode;
