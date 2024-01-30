@@ -50,7 +50,68 @@ function LocationPicker({ setVisible, onSelect }: Props) {
       ></div>
       <div className="bg-background-50 w-fit p-4 rounded-md shadow-md">
         {customMapLocation ? (
-          <div />
+          <div className="w-[70vw] h-[80vh]">
+            <GoogleMap
+              center={
+                selectedLocation === null || selectedLocation === undefined
+                  ? { lat: 50.2888847, lng: 18.677663 }
+                  : selectedLocation
+              }
+              zoom={15}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+              options={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
+              }}
+              onClick={(e) => {
+                if (e.latLng)
+                  setSelectedLocation({
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng(),
+                  });
+              }}
+            >
+              {selectedLocation && (
+                <MarkerF position={selectedLocation}></MarkerF>
+              )}
+            </GoogleMap>
+            <div className="flex items-center justify-center gap-2 w-[30vw] absolute top-20 left-1/2 -translate-x-[50%] bg-background-50 p-4 rounded-md shadow-lg">
+              <input
+                className="flex h-10 w-full bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md"
+                id="location"
+                placeholder="Enter location"
+                required
+                type="text"
+                value={locationAdress}
+                onChange={(e) => {
+                  setLocationAdress(e.target.value);
+                }}
+              />
+              <motion.button
+                className="text-sm rounded-md bg-secondary-300 hover:bg-secondary-400 transition-colors p-2"
+                whileHover={{ scale: 1.05 }}
+                type="button"
+                onClick={() => {
+                  if (
+                    locationAdress === "" ||
+                    selectedLocation === undefined ||
+                    selectedLocation === null
+                  ) {
+                    return;
+                  }
+                  onSelect(
+                    (selectedLocation as google.maps.LatLngLiteral).lat,
+                    (selectedLocation as google.maps.LatLngLiteral).lng,
+                    locationAdress
+                  );
+                  closePanel();
+                }}
+              >
+                Select
+              </motion.button>
+            </div>
+          </div>
         ) : (
           <div className="flex items-center justify-center flex-col gap-1">
             <div className="flex items-center justify-between gap-4">
@@ -164,6 +225,11 @@ function LocationPicker({ setVisible, onSelect }: Props) {
               whileHover={{ scale: 1.05 }}
               type="button"
               className="bg-action-200 hover:bg-action-300 transition-colors text-xl px-2 py-2 rounded-md shadow-mds"
+              onClick={() => {
+                setLocationAdress("");
+                setSelectedLocation(null);
+                setCustomMapLocation(true);
+              }}
             >
               Pick custom location
             </motion.button>
