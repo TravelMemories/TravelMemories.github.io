@@ -1,5 +1,5 @@
 import React from "react";
-import placeholder from "../images/placeholder.svg";
+import placeholder from "../images/placeholder.png";
 import LogoutButton from "../components/navbar/LogoutButton";
 
 function ProfilePage() {

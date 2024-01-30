@@ -1,13 +1,12 @@
 import React from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF } from "@react-google-maps/api";
+import { useMapContext } from "../../context/MapContext";
 interface Props {
   lat: number;
   lon: number;
 }
 function TravelMap({ lat, lon }: Props) {
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
-  });
+  const { isLoaded } = useMapContext();
   if (!isLoaded) {
     return <p>Map not available</p>;
   }
@@ -24,7 +23,7 @@ function TravelMap({ lat, lon }: Props) {
           zoomControl: false,
         }}
       >
-        <Marker
+        <MarkerF
           position={{ lat: lat, lng: lon }}
           clickable={false}
           draggable={false}

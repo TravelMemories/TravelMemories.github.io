@@ -1,22 +1,15 @@
 import React, { useState } from "react";
-import {
-  GoogleMap,
-  useJsApiLoader,
-  MarkerF,
-  Autocomplete,
-} from "@react-google-maps/api";
+import { GoogleMap, MarkerF, Autocomplete } from "@react-google-maps/api";
 import { motion } from "framer-motion";
 import { IoIosSearch } from "react-icons/io";
+import { useMapContext } from "../../context/MapContext";
 interface Props {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onSelect: (lat: number, lng: number, location: string) => void;
 }
 
 function LocationPicker({ setVisible, onSelect }: Props) {
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string,
-    libraries: ["places"],
-  });
+  const { isLoaded } = useMapContext();
   const [selectedLocation, setSelectedLocation] = useState<
     google.maps.LatLng | google.maps.LatLngLiteral | null
   >();
