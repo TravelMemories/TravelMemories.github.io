@@ -8,6 +8,7 @@ import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
 import MapPicker from "../components/general-purpose/MapPicker";
 import { useTravelsContext } from "../context/TravelsContext";
 import { useNavigate } from "react-router-dom";
+import LocationPicker from "../components/general-purpose/LocationPicker";
 
 function NewTravelPage() {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
@@ -69,8 +70,8 @@ function NewTravelPage() {
           }}
         />
         {mapVisible && (
-          <MapPicker
-            setMapVisible={setMapVisible}
+          <LocationPicker
+            setVisible={setMapVisible}
             onSelect={onLocationSelect}
           />
         )}

@@ -30,6 +30,14 @@ function MapPicker({ setMapVisible, onSelect }: Props) {
     useState<google.maps.places.Autocomplete>();
   const [map, setMap] = useState<google.maps.Map>();
 
+  if (!isLoaded) {
+    return (
+      <div className="z-10 h-[100vh] w-[100vw] fixed left-[50%] translate-x-[-50%] bottom-0 text-5xl text-center">
+        Map not available
+      </div>
+    );
+  }
+
   return (
     <div className="z-10 h-[100vh] w-[100vw] fixed left-[50%] translate-x-[-50%] bottom-0">
       <div
