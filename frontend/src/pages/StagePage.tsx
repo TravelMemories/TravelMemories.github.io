@@ -16,7 +16,7 @@ import NewStagePage from "./NewStagePage";
 
 function StagePage() {
   const { id } = useParams();
-  const { GetTravelByStageID } = useTravelsContext();
+  const { GetTravelByStageID, DeleteStage } = useTravelsContext();
   const navigate = useNavigate();
   const [stageData, setStageData] = useState<StageData | undefined>();
   const [parentTravel, setParentTravel] = useState<TravelData | undefined>();
@@ -40,7 +40,7 @@ function StagePage() {
   }, [id, navigate]);
 
   const editStageData = (newData: StageData) => {
-    //setTravelData(newData);
+    setStageData(newData);
     setEditWindow(false);
   };
 
@@ -60,6 +60,7 @@ function StagePage() {
               variant={"edit"}
               onClick={() => {
                 setEditWindow(true);
+                console.log(stageData);
               }}
             ></CustomButton>
             <CustomButton
@@ -70,7 +71,7 @@ function StagePage() {
             ></CustomButton>
           </div>
           {deleteWindow && (
-            <div className="fixed z-10 inset-0 flex items-center justify-center">
+            <div className="fixed z-30 inset-0 flex items-center justify-center">
               <div
                 className="fixed inset-0 z-50 bg-black/50"
                 onClick={(e) => {
@@ -79,14 +80,14 @@ function StagePage() {
                 }}
               ></div>
               <div className="bg-primary-50 py-10 px-10 text-4xl flex flex-col items-center justify-center rounded-md z-50">
-                <p>Do you want to delete this travel?</p>
+                <p>Do you want to delete this stage?</p>
                 <p className="text-base">(This action cannot be reversed)</p>
                 <div className="mt-2 flex w-full items-center justify-around">
                   <CustomButton
                     className="bg-red-400 hover:bg-red-500 w-60"
                     onClick={() => {
-                      //DeleteTravel(travelData.id as number);
-                      navigate("/travels");
+                      DeleteStage(stageData.id as number);
+                      navigate(`/travel/${stageData.travelID}`);
                     }}
                   >
                     Yes
@@ -104,20 +105,21 @@ function StagePage() {
               </div>
             </div>
           )}
-          <div className="flex justify-between items-center w-fit mx-auto gap-8">
-            <div className="flex flex-col items-center">
-              <h1 className="text-6xl">{stageData?.location}</h1>
-              <h2 className="text-4xl font-thin">
-                {FormatDate(stageData?.date)}
-              </h2>
-              <p className="text-2xl ">{stageData?.description}</p>
-            </div>
+          <div className="flex gap-10 items-start w-full mx-auto max-w-[60%]">
             {stageData !== undefined && (
               <TravelMap
                 lat={stageData?.lat as number}
                 lng={stageData?.lng as number}
               />
             )}
+            <div className="flex flex-col items-start gap-2">
+              <h1 className="text-6xl">{stageData?.location}</h1>
+              <h2 className="text-4xl font-thin">
+                {FormatDate(stageData?.date)}
+              </h2>
+              <p className="mt-1 -mb-3 text-background-500">Description:</p>
+              <p className="text-4xl">{stageData?.description}</p>
+            </div>
           </div>
           {
             <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
@@ -130,7 +132,8 @@ function StagePage() {
         <NewStagePage
           editPage={{
             stageData: stageData,
-            setStageData: setStageData,
+            travelID: stageData.travelID,
+            setStageData: editStageData,
             cancelEditing: () => {
               setEditWindow(false);
             },

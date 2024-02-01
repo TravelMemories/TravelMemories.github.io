@@ -11,6 +11,7 @@ import LocationPicker from "../components/general-purpose/LocationPicker";
 import { StageData } from "../model/StageData";
 interface EditPageProps {
   stageData: StageData;
+  travelID: number;
   setStageData: (newData: StageData) => void;
   cancelEditing: () => void;
 }
@@ -29,7 +30,11 @@ function NewStagePage({ editPage }: Props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setParentTravel(GetTravelByID(Number(travelID)));
+    setParentTravel(
+      GetTravelByID(
+        editPage === undefined ? Number(travelID) : editPage.travelID
+      )
+    );
     if (parentTravel === undefined) {
       return;
     }
@@ -80,7 +85,11 @@ function NewStagePage({ editPage }: Props) {
         }}
       >
         <div className="w-full bg-background-100 rounded-lg shadow-md mb-4">
-          <h1 className="text-center w-full">New stage for travel:</h1>
+          <h1 className="text-center w-full">
+            {editPage === undefined
+              ? "New stage for travel:"
+              : "Editing stage for travel:"}
+          </h1>
           <h2 className="text-center w-full text-xl -mt-2 tracking-wider">
             {parentTravel.location}
           </h2>

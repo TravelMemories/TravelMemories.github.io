@@ -10,7 +10,7 @@ function StageCard({ data }: TravelCardProps) {
   return (
     <NavLink to={`/stage/${data?.id}`}>
       <motion.button
-        className="flex flex-col items-center p-2 shadow-md bg-background-50 w-fit text-primary-950"
+        className="flex flex-col items-center p-2 shadow-md bg-background-50 w-52 text-primary-950"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.02 }}
@@ -20,9 +20,9 @@ function StageCard({ data }: TravelCardProps) {
             data?.photos.length === 0 ? Placeholder : data?.photos[0].photoData
           }
           alt=""
-          className="object-cover aspect-square w-40"
+          className="object-cover aspect-square w-full"
         />
-        <p className="text-lg">{data?.location}</p>
+        <p className="text-base w-full truncate">{data?.description}</p>
       </motion.button>
     </NavLink>
   );

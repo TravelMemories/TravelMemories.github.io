@@ -65,6 +65,11 @@ function NewTravelPage({ editPage }: Props) {
           }
         }}
       >
+        <div className="w-full bg-background-100 rounded-lg shadow-md mb-4">
+          <h1 className="text-center w-full text-xl">
+            {editPage === undefined ? "Create new travel" : "Edit your travel"}
+          </h1>
+        </div>
         <DataEditButton
           data={newTravel?.location}
           onClick={() => {

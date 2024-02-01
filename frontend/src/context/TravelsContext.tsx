@@ -58,7 +58,9 @@ export function TravelsContextProvider({
     );
   };
   const GetNewTravelID = () => {
-    return Math.max(...(travels.map((travel) => travel.id) as number[])) + 1;
+    return travels.length === 0
+      ? 0
+      : Math.max(...(travels.map((travel) => travel.id) as number[])) + 1;
   };
   const GetTravelByID = (id: number) => {
     return travels.find((travel) => travel.id === id);
@@ -75,7 +77,7 @@ export function TravelsContextProvider({
     if (travel === undefined) {
       return;
     }
-    travel.stages.filter((stage) => stage.id !== id);
+    travel.stages = travel.stages.filter((stage) => stage.id !== id);
   };
   const UpdateStage = (newData: StageData) => {
     const travel = GetTravelByStageID(newData.id);
@@ -93,7 +95,9 @@ export function TravelsContextProvider({
         allStages.push(stage);
       });
     });
-    return Math.max(...(allStages.map((stage) => stage.id) as number[])) + 1;
+    return allStages.length === 0
+      ? 0
+      : Math.max(...(allStages.map((stage) => stage.id) as number[])) + 1;
   };
   const GetPublicPhotos = () => {
     const photos: PhotoData[] = [];

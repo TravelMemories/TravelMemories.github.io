@@ -29,10 +29,10 @@ function TravelCard({ data, variant }: TravelCardProps) {
               : data?.stages[0].photos[0].photoData
           }
           alt=""
-          className="object-cover aspect-square w-80 mb-4"
+          className="object-cover aspect-square w-full mb-4"
         />
-        <h1 className="text-2xl"> {data?.location}</h1>
-        <p className="text-lg">{FormatDate(data?.date)}</p>
+        <h1 className="text-2xl truncate"> {data?.location}</h1>
+        <p className="text-lg truncate">{FormatDate(data?.date)}</p>
       </motion.button>
     </NavLink>
   );
