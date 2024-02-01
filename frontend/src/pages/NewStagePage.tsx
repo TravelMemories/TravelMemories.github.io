@@ -69,7 +69,7 @@ function NewStagePage({ editPage }: Props) {
           e.preventDefault();
           if (newStage !== undefined) {
             if (editPage === undefined) {
-              AddStage(newStage);
+              AddStage(newStage, parentTravel.id as number);
               navigate(`/travel/${travelID}`);
             } else {
               UpdateStage(newStage);

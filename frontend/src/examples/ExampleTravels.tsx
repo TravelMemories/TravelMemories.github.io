@@ -28,9 +28,9 @@ const ExamplePhotos: PhotoData[] = [
 ];
 const ExamplePhotos2: PhotoData[] = [
   {
-    id: 0,
-    stageId: 0,
-    description: "Beach",
+    id: 3,
+    stageId: 1,
+    description: "Sunny",
     date: new Date(),
     photoData: homeImage1,
     imageSource: homeImage1,
@@ -48,6 +48,18 @@ const ExampleStages2: StageData[] = [
     location: "Beach",
     lat: 10.433118,
     lng: -75.534791,
+    date: new Date(),
+  },
+];
+const ExampleStages: StageData[] = [
+  {
+    id: 1,
+    description: "First trip",
+    travelID: 1,
+    photos: ExamplePhotos,
+    location: "West side",
+    lat: 43.966713,
+    lng: -86.461251,
     date: new Date(),
   },
 ];
@@ -69,7 +81,7 @@ const ExampleTravels: TravelData[] = [
     lng: -86.461251,
     description: "Breathtaking view.",
     date: new Date(),
-    stages: ExampleStages2,
+    stages: ExampleStages,
   },
 ];
 

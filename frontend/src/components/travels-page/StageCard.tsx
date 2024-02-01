@@ -22,7 +22,7 @@ function StageCard({ data }: TravelCardProps) {
           alt=""
           className="object-cover aspect-square w-40"
         />
-        <p className="text-lg">{data?.description}</p>
+        <p className="text-lg">{data?.location}</p>
       </motion.button>
     </NavLink>
   );

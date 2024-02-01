@@ -2,23 +2,27 @@ import React, { ReactNode, createContext, useContext, useState } from "react";
 import { TravelData } from "../model/TravelData";
 import ExampleTravels from "../examples/ExampleTravels";
 import { StageData } from "../model/StageData";
+import { PhotoData } from "../model/PhotoData";
+import { PrivacyData } from "../model/PrivacyData";
 
 interface TravelsContextProviderProps {
   children: ReactNode;
 }
 interface TravelsContextProps {
   travels: TravelData[];
-  GetTravelByStageID: (stageID: number | undefined) => TravelData | undefined;
+  GetTravelByStageID: (stageID: number) => TravelData | undefined;
   AddTravel: (data: TravelData) => void;
   DeleteTravel: (id: number) => void;
   UpdateTravel: (newData: TravelData) => void;
   GetNewTravelID: () => number;
   GetTravelByID: (id: number) => TravelData | undefined;
 
-  AddStage: (data: StageData) => void;
+  AddStage: (data: StageData, travelId: number) => void;
   DeleteStage: (id: number) => void;
   UpdateStage: (newData: StageData) => void;
   GetNewStageID: () => number;
+
+  GetPublicPhotos: () => PhotoData[];
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -30,8 +34,8 @@ export function TravelsContextProvider({
   children,
 }: TravelsContextProviderProps) {
   const [travels, setTravels] = useState<TravelData[]>(ExampleTravels);
-  const GetTravelByStageID = (stageID: number | undefined) => {
-    if (stageID === undefined) return undefined;
+
+  const GetTravelByStageID = (stageID: number) => {
     for (const travel of travels) {
       const foundStage = travel.stages.find((stage) => stage.id === stageID);
       if (foundStage) {
@@ -57,8 +61,8 @@ export function TravelsContextProvider({
   const GetTravelByID = (id: number) => {
     return travels.find((travel) => travel.id === id);
   };
-  const AddStage = (data: StageData) => {
-    const travel = GetTravelByStageID(data.id);
+  const AddStage = (data: StageData, travelId: number) => {
+    const travel = GetTravelByID(travelId);
     if (travel === undefined) {
       return;
     }
@@ -82,13 +86,25 @@ export function TravelsContextProvider({
   };
   const GetNewStageID = () => {
     const allStages: StageData[] = [];
-    travels.map((travel) => {
-      travel.stages.map((stage) => {
+    travels.forEach((travel) => {
+      travel.stages.forEach((stage) => {
         allStages.push(stage);
       });
     });
     return Math.max(...(allStages.map((stage) => stage.id) as number[])) + 1;
   };
+  const GetPublicPhotos = () => {
+    const photos: PhotoData[] = [];
+    travels.forEach((t) => {
+      t.stages.forEach((s) => {
+        s.photos.forEach((p) => {
+          if (p.privacy === PrivacyData.Public) photos.push(p);
+        });
+      });
+    });
+    return photos;
+  };
+
   return (
     <TravelsContext.Provider
       value={{
@@ -103,6 +119,7 @@ export function TravelsContextProvider({
         DeleteStage,
         UpdateStage,
         GetNewStageID,
+        GetPublicPhotos,
       }}
     >
       {children}

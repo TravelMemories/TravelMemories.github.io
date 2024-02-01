@@ -91,7 +91,7 @@ function NewMemoryPage() {
             }}
           />
           <DataEditButton
-            data={GetTravelByStageID(newMemory?.stageId)?.location}
+            data={GetTravelByStageID(newMemory?.stageId as number)?.location}
             onClick={() => {
               setSelectingTravel(true);
             }}
