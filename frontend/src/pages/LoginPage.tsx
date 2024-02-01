@@ -93,7 +93,7 @@ function LoginPage() {
           onClick={() => {
             clearMsg();
             //checkLogin();
-            LogIn({ username: "username", password: "password" });
+            LogIn({ email: username, password: password });
           }}
         >
           Login

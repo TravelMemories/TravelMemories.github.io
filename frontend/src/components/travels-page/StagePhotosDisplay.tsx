@@ -1,12 +1,13 @@
 import React from "react";
-import { StageData } from "../../model/StageData";
-import StageCard from "./StageCard";
 import { motion } from "framer-motion";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { PhotoData } from "../../model/PhotoData";
+import StagePhotoCard from "./StagePhotoCard";
 interface Props {
-  stages: StageData[] | undefined;
+  photos: PhotoData[] | undefined;
 }
-function StagesDisplay({ stages }: Props) {
+
+function StagePhotosDisplay({ photos }: Props) {
   return (
     <div className="w-full sm:h-auto mx-auto p-2 gap-4 flex sm:flex-row flex-col items-center overflow-x-scroll">
       <motion.button
@@ -14,16 +15,16 @@ function StagesDisplay({ stages }: Props) {
         whileHover={{ scale: 1.02 }}
       >
         <IoAddCircleOutline className="text-2xl " />
-        <p className="whitespace-nowrap">New Stage</p>
+        <p className="whitespace-nowrap">New Photo</p>
       </motion.button>
 
-      {stages === undefined || stages?.length === 0 ? (
-        <p className="text-xl">You don't have any stages yet.</p>
+      {photos === undefined || photos?.length === 0 ? (
+        <p className="text-xl">You don't have any photos yet.</p>
       ) : (
-        stages?.map((stage) => <StageCard data={stage} />)
+        photos?.map((photos) => <StagePhotoCard data={photos} />)
       )}
     </div>
   );
 }
 
-export default StagesDisplay;
+export default StagePhotosDisplay;

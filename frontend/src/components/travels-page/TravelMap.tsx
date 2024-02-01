@@ -3,9 +3,9 @@ import { GoogleMap, MarkerF } from "@react-google-maps/api";
 import { useMapContext } from "../../context/MapContext";
 interface Props {
   lat: number;
-  lon: number;
+  lng: number;
 }
-function TravelMap({ lat, lon }: Props) {
+function TravelMap({ lat, lng: lon }: Props) {
   const { isLoaded } = useMapContext();
   if (!isLoaded) {
     return <p>Map not available</p>;

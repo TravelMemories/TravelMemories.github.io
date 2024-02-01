@@ -31,7 +31,7 @@ function NewTravelPage({ editPage }: Props) {
             id: GetNewTravelID(),
             location: undefined,
             lat: 0,
-            lon: 0,
+            lng: 0,
             description: "",
             date: new Date(),
             stages: [],
@@ -43,7 +43,7 @@ function NewTravelPage({ editPage }: Props) {
   const onLocationSelect = (lat: number, lng: number, location: string) => {
     setNewTravel(
       (prev) =>
-        ({ ...prev, location: location, lat: lat, lon: lng } as TravelData)
+        ({ ...prev, location: location, lat: lat, lng: lng } as TravelData)
     );
   };
 

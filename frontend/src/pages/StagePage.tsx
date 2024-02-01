@@ -10,37 +10,50 @@ import TravelMap from "../components/travels-page/TravelMap";
 import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
 import NewTravelPage from "./NewTravelPage";
+import StagePhotosDisplay from "../components/travels-page/StagePhotosDisplay";
+import { PhotoData } from "../model/PhotoData";
 
-function TravelPage() {
+function StagePage() {
   const { id } = useParams();
-  const { travels, DeleteTravel } = useTravelsContext();
+  const { GetTravelByStageID } = useTravelsContext();
   const navigate = useNavigate();
-  const [travelData, setTravelData] = useState<TravelData | undefined>();
+  const [stageData, setStageData] = useState<StageData | undefined>();
+  const [parentTravel, setParentTravel] = useState<TravelData | undefined>();
+
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [editWindow, setEditWindow] = useState(false);
 
   useEffect(() => {
-    const travel = travels.find((trav) => trav.id === Number(id));
+    const travel = GetTravelByStageID(Number(id));
     if (travel === undefined) {
       navigate("/travels");
     } else {
-      setTravelData(travel);
+      const stage = travel.stages.find((stage) => stage.id === Number(id));
+      if (stage === undefined) {
+        navigate("/travels");
+      } else {
+        setStageData(stage);
+        setParentTravel(travel);
+      }
     }
-  }, [id, navigate, travels]);
+  }, [id, navigate]);
 
-  const editTravelData = (newData: TravelData) => {
-    setTravelData(newData);
+  const editStageData = (newData: StageData) => {
+    //setTravelData(newData);
     setEditWindow(false);
   };
 
-  if (travelData === undefined) {
-    return <p>Travel data is not available</p>;
+  if (stageData === undefined || parentTravel === undefined) {
+    return <p>Stage data is not available</p>;
   }
   return (
     <>
       {!editWindow ? (
         <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8">
-          <BackButton navigateTo="/travels" />
+          <h1 className="text-3xl text-background-300">
+            Stage of travel: <b>{parentTravel.location}</b>
+          </h1>
+          <BackButton navigateTo={`/travel/${parentTravel.id}`} />
           <div className="absolute top-5 right-5 flex flex-col items-end gap-1">
             <CustomButton
               variant={"edit"}
@@ -71,7 +84,7 @@ function TravelPage() {
                   <CustomButton
                     className="bg-red-400 hover:bg-red-500 w-60"
                     onClick={() => {
-                      DeleteTravel(travelData.id as number);
+                      //DeleteTravel(travelData.id as number);
                       navigate("/travels");
                     }}
                   >
@@ -92,35 +105,31 @@ function TravelPage() {
           )}
           <div className="flex justify-between items-center w-fit mx-auto gap-8">
             <div className="flex flex-col items-center">
-              <h1 className="text-6xl">{travelData?.location}</h1>
+              <h1 className="text-6xl">{stageData?.location}</h1>
               <h2 className="text-4xl font-thin">
-                {FormatDate(travelData?.date)}
+                {FormatDate(stageData?.date)}
               </h2>
-              <p className="text-2xl ">{travelData?.description}</p>
+              <p className="text-2xl ">{stageData?.description}</p>
             </div>
-            {travelData !== undefined && (
+            {stageData !== undefined && (
               <TravelMap
-                lat={travelData?.lat as number}
-                lng={travelData?.lng as number}
+                lat={stageData?.lat as number}
+                lng={stageData?.lng as number}
               />
             )}
           </div>
-          <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
-            <div className="text-3xl uppercase">stages:</div>
-            <StagesDisplay stages={travelData?.stages as StageData[]} />
-          </div>
-          <motion.button
-            className="flex items-center justify-center bg-secondary-500 text-4xl p-4 h-full text-primary-50 shadow-md hover:bg-secondary-600 transition-colors rounded-full mb-8"
-            whileHover={{ scale: 1.02 }}
-          >
-            Create slideshow
-          </motion.button>
+          {
+            <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
+              <div className="text-3xl uppercase">photos:</div>
+              <StagePhotosDisplay photos={stageData?.photos as PhotoData[]} />
+            </div>
+          }
         </div>
       ) : (
         <NewTravelPage
           editPage={{
-            travelData: travelData,
-            setTravelData: editTravelData,
+            travelData: parentTravel,
+            setTravelData: setParentTravel,
             cancelEditing: () => {
               setEditWindow(false);
             },
@@ -131,4 +140,4 @@ function TravelPage() {
   );
 }
 
-export default TravelPage;
+export default StagePage;

@@ -87,7 +87,7 @@ function RegisterPage() {
           type="submit"
           onClick={() => {
             clearMsg();
-            LogIn({ username: "user1", password: "password" });
+            LogIn({ email: "user1", password: "password" });
           }}
         >
           Register

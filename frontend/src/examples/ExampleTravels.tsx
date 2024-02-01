@@ -1,7 +1,7 @@
 import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
 import { TravelData } from "../model/TravelData";
-import { TravelStageData } from "../model/TravelStageData";
+import { StageData } from "../model/StageData";
 import homeImage2 from "../images/homeImage2.jpg";
 import homeImage1 from "../images/homeImage1.jpg";
 const ExamplePhotos: PhotoData[] = [
@@ -39,20 +39,16 @@ const ExamplePhotos2: PhotoData[] = [
   },
 ];
 
-const ExampleStages: TravelStageData[] = [
-  {
-    id: 0,
-    description: "Arrival",
-    travelID: 0,
-    photos: ExamplePhotos,
-  },
-];
-const ExampleStages2: TravelStageData[] = [
+const ExampleStages2: StageData[] = [
   {
     id: 0,
     description: "Arrival",
     travelID: 0,
     photos: ExamplePhotos2,
+    location: "Beach",
+    lat: 10.433118,
+    lng: -75.534791,
+    date: new Date(),
   },
 ];
 
@@ -61,16 +57,16 @@ const ExampleTravels: TravelData[] = [
     id: 0,
     location: "Cartagena, Colombia",
     lat: 10.433118,
-    lon: -75.534791,
+    lng: -75.534791,
     description: "Summer holiday 2023!",
     date: new Date(),
-    stages: ExampleStages,
+    stages: ExampleStages2,
   },
   {
     id: 1,
     location: "Ludington, USA",
     lat: 43.966713,
-    lon: -86.461251,
+    lng: -86.461251,
     description: "Breathtaking view.",
     date: new Date(),
     stages: ExampleStages2,

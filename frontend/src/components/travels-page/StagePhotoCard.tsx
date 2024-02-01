@@ -1,12 +1,12 @@
 import React from "react";
-import Placeholder from "../../images/placeholder.png";
-import { motion } from "framer-motion";
+import { PhotoData } from "../../model/PhotoData";
 import { NavLink } from "react-router-dom";
-import { StageData } from "../../model/StageData";
-interface TravelCardProps {
-  data: StageData | undefined;
-}
-function StageCard({ data }: TravelCardProps) {
+import { motion } from "framer-motion";
+type Props = {
+  data: PhotoData;
+};
+
+function StagePhotoCard({ data }: Props) {
   return (
     <NavLink to={`/stage/${data?.id}`}>
       <motion.button
@@ -16,9 +16,7 @@ function StageCard({ data }: TravelCardProps) {
         whileHover={{ scale: 1.02 }}
       >
         <img
-          src={
-            data?.photos.length === 0 ? Placeholder : data?.photos[0].photoData
-          }
+          src={data.imageSource}
           alt=""
           className="object-cover aspect-square w-40"
         />
@@ -28,4 +26,4 @@ function StageCard({ data }: TravelCardProps) {
   );
 }
 
-export default StageCard;
+export default StagePhotoCard;
