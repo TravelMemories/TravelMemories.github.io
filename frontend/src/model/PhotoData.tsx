@@ -9,4 +9,7 @@ export interface PhotoData {
   imageSource: string | undefined;
   privacy: PrivacyData;
   likes: string[];
+  location: string | undefined;
+  lat: number;
+  lng: number;
 }

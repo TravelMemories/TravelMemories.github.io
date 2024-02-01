@@ -23,6 +23,8 @@ interface TravelsContextProps {
   GetNewStageID: () => number;
 
   GetPublicPhotos: () => PhotoData[];
+  DidUserLikePhoto: (userEmail: string, photoID: number) => boolean;
+  LikeDislikePhoto: (userEmail: string, photoID: number) => void;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -104,7 +106,24 @@ export function TravelsContextProvider({
     });
     return photos;
   };
-
+  const DidUserLikePhoto = (userEmail: string, photoID: number) => {
+    const photo = GetPublicPhotos().find((p) => p.id === photoID);
+    if (photo === undefined) {
+      return false;
+    }
+    return photo.likes.find((like) => like === userEmail) !== undefined;
+  };
+  const LikeDislikePhoto = (userEmail: string, photoID: number) => {
+    const photo = GetPublicPhotos().find((p) => p.id === photoID);
+    if (photo === undefined) {
+      return;
+    }
+    if (DidUserLikePhoto(userEmail, photoID)) {
+      photo.likes = photo.likes.filter((like) => like !== userEmail);
+    } else {
+      photo.likes.push(userEmail);
+    }
+  };
   return (
     <TravelsContext.Provider
       value={{
@@ -120,6 +139,8 @@ export function TravelsContextProvider({
         UpdateStage,
         GetNewStageID,
         GetPublicPhotos,
+        DidUserLikePhoto,
+        LikeDislikePhoto,
       }}
     >
       {children}

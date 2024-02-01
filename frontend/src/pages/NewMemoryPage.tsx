@@ -39,6 +39,9 @@ function NewMemoryPage() {
       imageSource: image,
       privacy: PrivacyData.Private,
       likes: [],
+      location: "",
+      lat: 0,
+      lng: 0,
     });
   };
   const cancelEditing = () => {

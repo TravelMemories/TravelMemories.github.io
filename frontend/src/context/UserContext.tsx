@@ -1,4 +1,10 @@
-import React, { ReactNode, createContext, useContext, useState } from "react";
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { UserData } from "../model/UserData";
 import { CookiesProvider, useCookies } from "react-cookie";
 
@@ -39,6 +45,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       LogIn(storedUserData);
     }
   };
+
   return (
     <CookiesProvider>
       <UserContext.Provider

@@ -4,6 +4,8 @@ import { TravelData } from "../model/TravelData";
 import { StageData } from "../model/StageData";
 import homeImage2 from "../images/homeImage2.jpg";
 import homeImage1 from "../images/homeImage1.jpg";
+import homeImage3 from "../images/homeImage3.jpg";
+
 const ExamplePhotos: PhotoData[] = [
   {
     id: 0,
@@ -14,6 +16,9 @@ const ExamplePhotos: PhotoData[] = [
     imageSource: homeImage2,
     privacy: PrivacyData.Public,
     likes: ["test1"],
+    location: "West side",
+    lat: 10.433118,
+    lng: -75.534791,
   },
   {
     id: 1,
@@ -24,6 +29,9 @@ const ExamplePhotos: PhotoData[] = [
     imageSource: homeImage1,
     privacy: PrivacyData.Public,
     likes: ["test1", "test2"],
+    location: "Amazing beach",
+    lat: 10.433118,
+    lng: -75.534791,
   },
 ];
 const ExamplePhotos2: PhotoData[] = [
@@ -32,10 +40,13 @@ const ExamplePhotos2: PhotoData[] = [
     stageId: 1,
     description: "Sunny",
     date: new Date(),
-    photoData: homeImage1,
-    imageSource: homeImage1,
+    photoData: homeImage3,
+    imageSource: homeImage3,
     privacy: PrivacyData.Public,
     likes: ["test1"],
+    location: "London eye?",
+    lat: 10.433118,
+    lng: -75.534791,
   },
 ];
 
