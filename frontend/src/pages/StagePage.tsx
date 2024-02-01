@@ -13,6 +13,7 @@ import NewTravelPage from "./NewTravelPage";
 import StagePhotosDisplay from "../components/travels-page/StagePhotosDisplay";
 import { PhotoData } from "../model/PhotoData";
 import NewStagePage from "./NewStagePage";
+import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 
 function StagePage() {
   const { id } = useParams();
@@ -124,7 +125,7 @@ function StagePage() {
           {
             <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
               <div className="text-3xl uppercase">photos:</div>
-              <StagePhotosDisplay photos={stageData?.photos as PhotoData[]} />
+              <HorizontalDisplay photos={stageData.photos} />
             </div>
           }
         </div>

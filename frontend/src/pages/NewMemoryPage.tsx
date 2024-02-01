@@ -9,26 +9,28 @@ import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
-import TravelsDisplay, {
-  TravelDisplayType,
-} from "../components/travels-page/TravelsDisplay";
+import TravelsDisplay from "../components/travels-page/TravelsDisplay";
+import { StageData } from "../model/StageData";
+import { TravelData } from "../model/TravelData";
+import StagesDisplay from "../components/travels-page/StagesDisplay";
 
 function NewMemoryPage() {
   const { GetTravelByStageID } = useTravelsContext();
-
-  //const [file, setFile] = useState<File | undefined>();
-  const [image, setImage] = useState<string | undefined>();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
+
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());
+  const [image, setImage] = useState<string | undefined>();
+
   const [datepickerVisible, setDatepickerVisible] = useState(false);
   const [selectingTravel, setSelectingTravel] = useState(false);
+  const [selectingStage, setSelectingStage] = useState<TravelData>();
   const [mapVisible, setMapVisible] = useState(false);
 
   const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
     };
-    //setFile(target.files[0]);
+
     setImage(URL.createObjectURL(target.files[0]));
     setNewMemory({
       id: undefined,
@@ -47,6 +49,11 @@ function NewMemoryPage() {
   const cancelEditing = () => {
     setImage(undefined);
     setNewMemory(undefined);
+  };
+  const onStageSelect = (stage: StageData) => {};
+  const onTravelSelect = (travel: TravelData) => {
+    setSelectingTravel(false);
+    setSelectingStage(travel);
   };
   return (
     <>
@@ -179,7 +186,22 @@ function NewMemoryPage() {
                   setSelectingTravel(false);
                 }}
               />
-              <TravelsDisplay variant={TravelDisplayType.Select} />
+              <TravelsDisplay onTravelSelect={onTravelSelect} />
+            </>
+          )}
+          {selectingStage !== undefined && (
+            <>
+              <div
+                className="fixed inset-0 bg-primary-950/50"
+                onClick={() => {
+                  setSelectingStage(undefined);
+                }}
+              />
+              <StagesDisplay
+                stages={selectingStage.stages}
+                travelID={selectingStage.id as number}
+                onStageSelect={onStageSelect}
+              />
             </>
           )}
           {/* {mapVisible && <MapPicker setMapVisible={setMapVisible} />} */}

@@ -21,10 +21,16 @@ interface TravelsContextProps {
   DeleteStage: (id: number) => void;
   UpdateStage: (newData: StageData) => void;
   GetNewStageID: () => number;
+  GetStageByID: (id: number) => StageData | undefined;
 
   GetPublicPhotos: () => PhotoData[];
   DidUserLikePhoto: (userEmail: string, photoID: number) => boolean;
   LikeDislikePhoto: (userEmail: string, photoID: number) => void;
+
+  AddPhoto: (data: PhotoData, stageData: StageData) => void;
+  DeletePhoto: (data: PhotoData) => void;
+  UpdatePhoto: (newData: PhotoData) => void;
+  GetNewPhotoID: () => number;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -99,6 +105,15 @@ export function TravelsContextProvider({
       ? 0
       : Math.max(...(allStages.map((stage) => stage.id) as number[])) + 1;
   };
+  const GetStageByID = (id: number): StageData | undefined => {
+    travels.forEach((t) => {
+      const stage: StageData | undefined = t.stages.find((s) => s.id === id);
+      if (stage !== undefined) {
+        return stage;
+      }
+    });
+    return undefined;
+  };
   const GetPublicPhotos = () => {
     const photos: PhotoData[] = [];
     travels.forEach((t) => {
@@ -128,6 +143,43 @@ export function TravelsContextProvider({
       photo.likes.push(userEmail);
     }
   };
+  const AddPhoto = (data: PhotoData, stageData: StageData) => {
+    if (stageData === undefined || data === undefined) {
+      return;
+    }
+    stageData.photos.push(data);
+  };
+  const DeletePhoto = (data: PhotoData) => {
+    if (data === undefined || data?.stageId === undefined) {
+      return;
+    }
+    const stage: StageData | undefined = GetStageByID(data.stageId);
+    if (stage === undefined) {
+      return;
+    }
+    stage.photos.filter((p) => p.id !== data.id);
+  };
+  const UpdatePhoto = (newData: PhotoData) => {
+    if (newData === undefined || newData?.stageId === undefined) {
+      return;
+    }
+    const stage: StageData | undefined = GetStageByID(newData.stageId);
+    if (stage === undefined) {
+      return;
+    }
+    stage.photos = stage.photos.map((p) => (p.id === newData.id ? newData : p));
+  };
+  const GetNewPhotoID = () => {
+    const allStages: StageData[] = [];
+    travels.forEach((travel) => {
+      travel.stages.forEach((stage) => {
+        allStages.push(stage);
+      });
+    });
+    return allStages.length === 0
+      ? 0
+      : Math.max(...(allStages.map((stage) => stage.id) as number[])) + 1;
+  };
   return (
     <TravelsContext.Provider
       value={{
@@ -142,9 +194,14 @@ export function TravelsContextProvider({
         DeleteStage,
         UpdateStage,
         GetNewStageID,
+        GetStageByID,
         GetPublicPhotos,
         DidUserLikePhoto,
         LikeDislikePhoto,
+        AddPhoto,
+        DeletePhoto,
+        UpdatePhoto,
+        GetNewPhotoID,
       }}
     >
       {children}

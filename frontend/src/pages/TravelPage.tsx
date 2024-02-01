@@ -10,6 +10,7 @@ import TravelMap from "../components/travels-page/TravelMap";
 import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
 import NewTravelPage from "./NewTravelPage";
+import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 
 function TravelPage() {
   const { id } = useParams();
@@ -109,10 +110,7 @@ function TravelPage() {
           </div>
           <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
             <div className="text-3xl uppercase">stages:</div>
-            <StagesDisplay
-              stages={travelData?.stages as StageData[]}
-              travelID={travelData.id as number}
-            />
+            <HorizontalDisplay stages={travelData?.stages} />
           </div>
           <motion.button
             className="flex items-center justify-center bg-secondary-500 text-4xl p-4 h-full text-primary-50 shadow-md hover:bg-secondary-600 transition-colors rounded-full mb-8"
