@@ -12,6 +12,7 @@ import CustomButton from "../components/general-purpose/CustomButton";
 import NewTravelPage from "./NewTravelPage";
 import StagePhotosDisplay from "../components/travels-page/StagePhotosDisplay";
 import { PhotoData } from "../model/PhotoData";
+import NewStagePage from "./NewStagePage";
 
 function StagePage() {
   const { id } = useParams();
@@ -54,7 +55,7 @@ function StagePage() {
             Stage of travel: <b>{parentTravel.location}</b>
           </h1>
           <BackButton navigateTo={`/travel/${parentTravel.id}`} />
-          <div className="absolute top-5 right-5 flex flex-col items-end gap-1">
+          <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
             <CustomButton
               variant={"edit"}
               onClick={() => {
@@ -126,10 +127,10 @@ function StagePage() {
           }
         </div>
       ) : (
-        <NewTravelPage
+        <NewStagePage
           editPage={{
-            travelData: parentTravel,
-            setTravelData: setParentTravel,
+            stageData: stageData,
+            setStageData: setStageData,
             cancelEditing: () => {
               setEditWindow(false);
             },

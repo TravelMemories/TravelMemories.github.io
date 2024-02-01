@@ -12,7 +12,7 @@ function BackButton({ className, navigateTo }: Props) {
   return (
     <motion.button
       className={cn(
-        "absolute top-5 left-5 flex items-center bg-secondary-100 hover:bg-secondary-200 transition-colors p-1 rounded-full pr-2",
+        "absolute top-5 left-5 flex items-center bg-secondary-100 hover:bg-secondary-200 transition-colors p-1 rounded-full pr-2 z-20",
         className
       )}
       onClick={() => {

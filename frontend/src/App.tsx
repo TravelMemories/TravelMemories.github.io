@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage";
 import TravelPage from "./pages/TravelPage";
 import NewTravelPage from "./pages/NewTravelPage";
 import StagePage from "./pages/StagePage";
+import NewStagePage from "./pages/NewStagePage";
 
 function App() {
   const { isLoggedIn } = useUserContext();
@@ -33,6 +34,9 @@ function App() {
           {isLoggedIn && <Route path="/stage/:id" element={<StagePage />} />}
           {isLoggedIn && (
             <Route path="/new-travel" element={<NewTravelPage />} />
+          )}
+          {isLoggedIn && (
+            <Route path="/new-stage/:travelID" element={<NewStagePage />} />
           )}
           {!isLoggedIn && <Route path="/login" element={<LoginPage />} />}
           {!isLoggedIn && <Route path="/register" element={<RegisterPage />} />}
