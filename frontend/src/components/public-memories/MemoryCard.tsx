@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { PhotoData } from "../../model/PhotoData";
 import { TiLocation } from "react-icons/ti";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { IoMdHeart } from "react-icons/io";
 import { motion } from "framer-motion";
-import { useUserContext } from "../../context/UserContext";
-import { useTravelsContext } from "../../context/TravelsContext";
-import { UserData } from "../../model/UserData";
+import LikesDisplay from "./LikesDisplay";
+import { useNavigate } from "react-router-dom";
 interface MemoryCardProps {
   data: PhotoData;
+  isUserLogged: boolean;
 }
-function MemoryCard({ data }: MemoryCardProps) {
-  const { isLoggedIn, userData } = useUserContext();
-  const { LikeDislikePhoto, DidUserLikePhoto } = useTravelsContext();
-  const [likes, setLikes] = useState(data.likes.length);
+function MemoryCard({ data, isUserLogged }: MemoryCardProps) {
+  const navigate = useNavigate();
   if (data === undefined) {
     return <div>No photo data</div>;
   }
@@ -22,37 +18,23 @@ function MemoryCard({ data }: MemoryCardProps) {
       className="max-w-[20rem] p-4 h-fit shadow-md bg-background-50 flex flex-col"
       whileHover={{ scale: 1.008 }}
       transition={{ type: "spring", duration: 0.2 }}
+      onClick={(e) => {
+        if (!isUserLogged) {
+          return;
+        }
+        e.stopPropagation();
+        e.preventDefault();
+        navigate(
+          `/memory/${data.parentStage?.parentTravel.id}/${data.parentStage?.id}/${data.id}`
+        );
+      }}
     >
       <img
         src={data.imageSource}
         alt={"Travel photo"}
         className="object-cover aspect-square w-full"
       />
-      <div className="flex items-center text-4xl">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 1.01 }}
-          onClick={() => {
-            if (!isLoggedIn) return;
-            LikeDislikePhoto(
-              userData === undefined ? "" : userData?.email,
-              data.id as number
-            );
-            setLikes(data.likes.length);
-          }}
-        >
-          {DidUserLikePhoto(
-            userData === undefined ? "" : userData?.email,
-            data.id as number
-          ) ? (
-            <IoMdHeart />
-          ) : (
-            <IoIosHeartEmpty />
-          )}
-        </motion.button>
-        <p>{likes}</p>
-      </div>
-
+      <LikesDisplay photoData={data} />
       <div className="flex items-center text-center text-lg font-bold truncate">
         <TiLocation />
         <h1>{data.location}</h1>

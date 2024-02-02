@@ -3,21 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTravelsContext } from "../context/TravelsContext";
 import { TravelData } from "../model/TravelData";
 import { FormatDate } from "../helpers/helpers";
-import StagesDisplay from "../components/travels-page/StagesDisplay";
 import { StageData } from "../model/StageData";
-import { motion } from "framer-motion";
 import TravelMap from "../components/travels-page/TravelMap";
 import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
-import NewTravelPage from "./NewTravelPage";
-import StagePhotosDisplay from "../components/travels-page/StagePhotosDisplay";
-import { PhotoData } from "../model/PhotoData";
 import NewStagePage from "./NewStagePage";
 import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 
 function StagePage() {
-  const { id } = useParams();
-  const { GetTravelByStageID, DeleteStage } = useTravelsContext();
+  const { travelID, stageID } = useParams();
+  const { DeleteStage, GetTravelByID } = useTravelsContext();
   const navigate = useNavigate();
   const [stageData, setStageData] = useState<StageData | undefined>();
   const [parentTravel, setParentTravel] = useState<TravelData | undefined>();
@@ -26,11 +21,11 @@ function StagePage() {
   const [editWindow, setEditWindow] = useState(false);
 
   useEffect(() => {
-    const travel = GetTravelByStageID(Number(id));
+    const travel = GetTravelByID(Number(travelID));
     if (travel === undefined) {
       navigate("/travels");
     } else {
-      const stage = travel.stages.find((stage) => stage.id === Number(id));
+      const stage = travel.stages.find((stage) => stage.id === Number(stageID));
       if (stage === undefined) {
         navigate("/travels");
       } else {
@@ -38,7 +33,7 @@ function StagePage() {
         setParentTravel(travel);
       }
     }
-  }, [id, navigate]);
+  }, [navigate, GetTravelByID, stageID, travelID]);
 
   const editStageData = (newData: StageData) => {
     setStageData(newData);
@@ -88,7 +83,7 @@ function StagePage() {
                     className="bg-red-400 hover:bg-red-500 w-60"
                     onClick={() => {
                       DeleteStage(stageData.id as number);
-                      navigate(`/travel/${stageData.travelID}`);
+                      navigate(`/travel/${stageData.parentTravel.id}`);
                     }}
                   >
                     Yes
@@ -127,7 +122,7 @@ function StagePage() {
               <div className="text-3xl uppercase">photos:</div>
               <HorizontalDisplay
                 photos={stageData.photos}
-                parentTravelID={stageData.travelID}
+                parentTravelID={stageData.parentTravel.id}
                 parentStage={stageData}
               />
             </div>
@@ -137,7 +132,7 @@ function StagePage() {
         <NewStagePage
           editPage={{
             stageData: stageData,
-            travelID: stageData.travelID,
+            travelID: stageData.parentTravel.id,
             setStageData: editStageData,
             cancelEditing: () => {
               setEditWindow(false);

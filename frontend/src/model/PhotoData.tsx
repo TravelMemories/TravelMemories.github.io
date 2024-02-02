@@ -1,15 +1,16 @@
 import { PrivacyData } from "./PrivacyData";
+import { StageData } from "./StageData";
 
 export interface PhotoData {
-  id: number | undefined;
-  stageId: number | undefined;
-  description: string | undefined;
-  date: Date | undefined;
+  id: number;
+  location: string | undefined;
+  lat: number;
+  lng: number;
+  date: Date;
+  description: string;
   photoData: Blob | undefined;
   imageSource: string | undefined;
   privacy: PrivacyData;
   likes: string[];
-  location: string | undefined;
-  lat: number;
-  lng: number;
+  parentStage: StageData | undefined;
 }

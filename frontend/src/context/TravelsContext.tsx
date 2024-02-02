@@ -10,7 +10,6 @@ interface TravelsContextProviderProps {
 }
 interface TravelsContextProps {
   travels: TravelData[];
-  GetTravelByStageID: (stageID: number) => TravelData | undefined;
   AddTravel: (data: TravelData) => void;
   DeleteTravel: (id: number) => void;
   UpdateTravel: (newData: TravelData) => void;
@@ -36,6 +35,7 @@ interface TravelsContextProps {
     stageID: number,
     photoID: number
   ) => PhotoData | undefined;
+  IsUserOwner: (email: string, travel: TravelData) => boolean;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -155,24 +155,18 @@ export function TravelsContextProvider({
     stageData.photos.push(data);
   };
   const DeletePhoto = (data: PhotoData) => {
-    if (data === undefined || data?.stageId === undefined) {
+    if (!data || !data.parentStage) {
       return;
     }
-    const stage: StageData | undefined = GetStageByID(data.stageId);
-    if (stage === undefined) {
-      return;
-    }
-    stage.photos.filter((p) => p.id !== data.id);
+    data.parentStage.photos.filter((p) => p.id !== data.id);
   };
   const UpdatePhoto = (newData: PhotoData) => {
-    if (newData === undefined || newData?.stageId === undefined) {
+    if (!newData || !newData.parentStage) {
       return;
     }
-    const stage: StageData | undefined = GetStageByID(newData.stageId);
-    if (stage === undefined) {
-      return;
-    }
-    stage.photos = stage.photos.map((p) => (p.id === newData.id ? newData : p));
+    newData.parentStage.photos = newData.parentStage.photos.map((p) =>
+      p.id === newData.id ? newData : p
+    );
   };
   const GetNewPhotoID = () => {
     const allStages: StageData[] = [];
@@ -192,11 +186,13 @@ export function TravelsContextProvider({
       ?.photos.find((p) => p.id === photoID);
     return photo;
   };
+  const IsUserOwner = (email: string, travel: TravelData) => {
+    return travel.userEmail === email;
+  };
   return (
     <TravelsContext.Provider
       value={{
         travels,
-        GetTravelByStageID,
         AddTravel,
         DeleteTravel,
         UpdateTravel,
@@ -215,6 +211,7 @@ export function TravelsContextProvider({
         UpdatePhoto,
         GetNewPhotoID,
         GetPhoto,
+        IsUserOwner,
       }}
     >
       {children}

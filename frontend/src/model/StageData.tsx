@@ -1,12 +1,13 @@
 import { PhotoData } from "./PhotoData";
+import { TravelData } from "./TravelData";
 
 export interface StageData {
   id: number;
-  description: string;
-  travelID: number;
-  photos: PhotoData[];
   location: string | undefined;
-  date: Date | undefined;
   lat: number;
   lng: number;
+  description: string;
+  date: Date;
+  photos: PhotoData[];
+  parentTravel: TravelData;
 }

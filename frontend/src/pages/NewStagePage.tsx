@@ -52,11 +52,18 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
             description: "",
             date: parentTravel.date,
             photos: [],
-            travelID: parentTravel.id,
+            parentTravel: parentTravel,
           } as StageData)
         : editPage.stageData
     );
-  }, [GetNewStageID, GetTravelByID, editPage, parentTravel, travelID]);
+  }, [
+    GetNewStageID,
+    GetTravelByID,
+    editPage,
+    parentTravel,
+    travelID,
+    defaultParentTravel,
+  ]);
 
   const onLocationSelect = (lat: number, lng: number, location: string) => {
     setNewStage(

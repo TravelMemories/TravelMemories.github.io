@@ -32,7 +32,9 @@ function App() {
           <Route path="/public-memories" element={<PublicMemoriesPage />} />
           {isLoggedIn && <Route path="/profile" element={<ProfilePage />} />}
           {isLoggedIn && <Route path="/travel/:id" element={<TravelPage />} />}
-          {isLoggedIn && <Route path="/stage/:id" element={<StagePage />} />}
+          {isLoggedIn && (
+            <Route path="/stage/:travelID/:stageID" element={<StagePage />} />
+          )}
           {isLoggedIn && (
             <Route
               path="/memory/:travelID/:stageID/:memoryID"

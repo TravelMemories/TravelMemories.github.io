@@ -6,14 +6,14 @@ import { useTravelsContext } from "../context/TravelsContext";
 
 function PublicMemoriesPage() {
   const { isLoggedIn } = useUserContext();
-  const { travels, GetPublicPhotos } = useTravelsContext();
+  const { GetPublicPhotos } = useTravelsContext();
   return (
     <>
       {!isLoggedIn && <Navbar />}
       <div className="w-full min-h-[100vh] flex justify-center">
         <div className="pt-20 p-8 container w-full gap-8 flex flex-wrap">
           {GetPublicPhotos().map((photo, idx) => (
-            <MemoryCard key={idx} data={photo} />
+            <MemoryCard key={idx} data={photo} isUserLogged={isLoggedIn} />
           ))}
         </div>
       </div>

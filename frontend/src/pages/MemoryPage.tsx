@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTravelsContext } from "../context/TravelsContext";
-import { TravelData } from "../model/TravelData";
 import { FormatDate } from "../helpers/helpers";
-import StagesDisplay from "../components/travels-page/StagesDisplay";
 import { StageData } from "../model/StageData";
-import { motion } from "framer-motion";
 import TravelMap from "../components/travels-page/TravelMap";
 import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
-import NewTravelPage from "./NewTravelPage";
-import StagePhotosDisplay from "../components/travels-page/StagePhotosDisplay";
 import { PhotoData } from "../model/PhotoData";
-import NewStagePage from "./NewStagePage";
-import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
-import NewMemoryPage from "./NewMemoryPage";
+import LikesDisplay from "../components/public-memories/LikesDisplay";
+import { useUserContext } from "../context/UserContext";
 
 function MemoryPage() {
   const { travelID, stageID, memoryID } = useParams();
-  const { GetPhoto, GetStageByID, DeletePhoto, UpdatePhoto } =
-    useTravelsContext();
+  const { GetPhoto, DeletePhoto, IsUserOwner } = useTravelsContext();
+  const { userData } = useUserContext();
   const navigate = useNavigate();
   const [photoData, setPhotoData] = useState<PhotoData>();
-  const [parentStage, setParentStage] = useState<StageData>();
 
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [editWindow, setEditWindow] = useState(false);
@@ -33,13 +26,7 @@ function MemoryPage() {
     if (photo === undefined) {
       navigate("/");
     } else {
-      const stage = GetStageByID(photo.stageId as number);
-      if (stage === undefined) {
-        navigate("/");
-      } else {
-        setPhotoData(photo);
-        setParentStage(stage);
-      }
+      setPhotoData(photo);
     }
   }, []);
 
@@ -48,31 +35,41 @@ function MemoryPage() {
     setEditWindow(false);
   };
 
-  if (photoData === undefined || parentStage === undefined) {
+  if (photoData === undefined || !photoData.parentStage) {
     return <p>Photo is not available</p>;
   }
   return (
     <>
       {!editWindow ? (
-        <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8">
-          <h1 className="text-3xl text-background-300">
-            Memory of stage: <b>{parentStage.location}</b>
-          </h1>
-          <BackButton navigateTo={`/stage/${parentStage.id}`} />
-          <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
-            <CustomButton
-              variant={"edit"}
-              onClick={() => {
-                setEditWindow(true);
-              }}
-            ></CustomButton>
-            <CustomButton
-              variant={"delete"}
-              onClick={() => {
-                setDeleteWindow(true);
-              }}
-            ></CustomButton>
-          </div>
+        <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-4 gap-8">
+          <BackButton
+            navigateTo={
+              userData &&
+              IsUserOwner(userData?.email, photoData.parentStage.parentTravel)
+                ? `/stage/${photoData.parentStage?.parentTravel.id}/${photoData.parentStage?.id}`
+                : "/public-memories"
+            }
+          />
+          {userData &&
+            IsUserOwner(
+              userData?.email,
+              photoData.parentStage.parentTravel
+            ) && (
+              <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
+                <CustomButton
+                  variant={"edit"}
+                  onClick={() => {
+                    setEditWindow(true);
+                  }}
+                ></CustomButton>
+                <CustomButton
+                  variant={"delete"}
+                  onClick={() => {
+                    setDeleteWindow(true);
+                  }}
+                ></CustomButton>
+              </div>
+            )}
           {deleteWindow && (
             <div className="fixed z-30 inset-0 flex items-center justify-center">
               <div
@@ -90,7 +87,7 @@ function MemoryPage() {
                     className="bg-red-400 hover:bg-red-500 w-60"
                     onClick={() => {
                       DeletePhoto(photoData);
-                      navigate(`/stage/${parentStage.id}`);
+                      navigate(`/stage/${photoData.parentStage?.id}`);
                     }}
                   >
                     Yes
@@ -108,20 +105,32 @@ function MemoryPage() {
               </div>
             </div>
           )}
-          <div className="flex gap-10 items-start w-full mx-auto max-w-[60%]">
-            {photoData !== undefined && (
-              <TravelMap
-                lat={photoData?.lat as number}
-                lng={photoData?.lng as number}
+          <div className="flex items-start w-full mx-auto max-w-[80%] gap-10 h-full">
+            <div className="flex w-[30rem] flex-col">
+              <img
+                src={photoData.imageSource}
+                alt="You photo"
+                className="object-cover aspect-square w-full rounded-md shadow-md mb-4"
               />
-            )}
-            <div className="flex flex-col items-start gap-2">
+              <LikesDisplay photoData={photoData} className="text-5xl" />
+            </div>
+            <div className="flex flex-col items-start gap-2 h-full ">
+              <p className="mt-1 -mb-3 text-background-500">Location:</p>
               <h1 className="text-6xl">{photoData?.location}</h1>
               <h2 className="text-4xl font-thin">
                 {FormatDate(photoData?.date)}
               </h2>
               <p className="mt-1 -mb-3 text-background-500">Description:</p>
               <p className="text-4xl">{photoData?.description}</p>
+
+              <div className="flex flex-col items-start gap-1 mt-auto">
+                <p className="mt-1 -mb-3 text-background-500">Travel to:</p>
+                <p className="text-2xl">
+                  {photoData?.parentStage.parentTravel.location}
+                </p>
+                <p className=" -mb-3 text-background-500">Stage of travel:</p>
+                <p className="text-2xl">{photoData?.parentStage.location}</p>
+              </div>
             </div>
           </div>
         </div>

@@ -10,16 +10,12 @@ interface Props<T = any> {
   travel?: TravelData;
   stage?: StageData;
   photo?: PhotoData;
-  parentStageID?: number;
-  parentTravelID?: number;
   newPhotoOnSelect?: (data: T) => void;
 }
 function HorizontalDisplayCard({
   travel,
   stage,
   photo,
-  parentStageID,
-  parentTravelID,
   newPhotoOnSelect,
 }: Props) {
   if (travel === undefined && stage === undefined && photo === undefined) {
@@ -28,12 +24,12 @@ function HorizontalDisplayCard({
   return (
     <NavLink
       to={
-        travel !== undefined
+        travel
           ? `/travel/${travel.id}`
-          : stage !== undefined
-          ? `/stage/${stage.id}`
-          : photo !== undefined
-          ? `/memory/${parentTravelID}/${parentStageID}/${photo.id}`
+          : stage
+          ? `/stage/${stage.parentTravel.id}/${stage.id}`
+          : photo
+          ? `/memory/${photo.parentStage?.parentTravel.id}/${photo.parentStage?.id}/${photo.id}`
           : "/"
       }
       onClick={(e) => {

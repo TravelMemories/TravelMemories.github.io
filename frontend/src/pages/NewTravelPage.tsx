@@ -8,6 +8,7 @@ import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
 import { useTravelsContext } from "../context/TravelsContext";
 import { useNavigate } from "react-router-dom";
 import LocationPicker from "../components/general-purpose/LocationPicker";
+import { useUserContext } from "../context/UserContext";
 interface EditPageProps {
   travelData: TravelData;
   setTravelData: (newData: TravelData) => void;
@@ -24,6 +25,7 @@ function NewTravelPage({ editPage, newPhotoPage }: Props) {
   const [mapVisible, setMapVisible] = useState(false);
   const { AddTravel, UpdateTravel, GetNewTravelID } = useTravelsContext();
   const navigate = useNavigate();
+  const { userData } = useUserContext();
 
   useEffect(() => {
     setNewTravel(
@@ -36,6 +38,7 @@ function NewTravelPage({ editPage, newPhotoPage }: Props) {
             description: "",
             date: new Date(),
             stages: [],
+            userEmail: userData?.email as string,
           }
         : editPage.travelData
     );

@@ -3,8 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTravelsContext } from "../context/TravelsContext";
 import { TravelData } from "../model/TravelData";
 import { FormatDate } from "../helpers/helpers";
-import StagesDisplay from "../components/travels-page/StagesDisplay";
-import { StageData } from "../model/StageData";
 import { motion } from "framer-motion";
 import TravelMap from "../components/travels-page/TravelMap";
 import BackButton from "../components/general-purpose/BackButton";

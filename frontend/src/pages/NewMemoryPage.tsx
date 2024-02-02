@@ -9,10 +9,8 @@ import { FormatDate } from "../helpers/helpers";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useTravelsContext } from "../context/TravelsContext";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
-import TravelsDisplay from "../components/travels-page/TravelsDisplay";
 import { StageData } from "../model/StageData";
 import { TravelData } from "../model/TravelData";
-import StagesDisplay from "../components/travels-page/StagesDisplay";
 import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 import LocationPicker from "../components/general-purpose/LocationPicker";
 import NewTravelPage from "./NewTravelPage";
@@ -46,8 +44,8 @@ function NewMemoryPage() {
     setImage(URL.createObjectURL(target.files[0]));
     setNewMemory({
       id: GetNewPhotoID(),
-      stageId: undefined,
-      description: undefined,
+      parentStage: undefined,
+      description: "",
       date: new Date(),
       photoData: target.files[0],
       imageSource: URL.createObjectURL(target.files[0]),
@@ -117,7 +115,7 @@ function NewMemoryPage() {
               image === undefined ||
               newMemory === undefined ||
               newMemory.location === undefined ||
-              newMemory.stageId === undefined ||
+              newMemory.parentStage === undefined ||
               selectedStage === undefined
             ) {
               return;

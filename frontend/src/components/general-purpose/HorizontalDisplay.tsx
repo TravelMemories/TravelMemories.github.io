@@ -126,8 +126,6 @@ function HorizontalDisplay({
             photos.map((photo) => (
               <HorizontalDisplayCard
                 photo={photo}
-                parentStageID={parentStage?.id}
-                parentTravelID={parentTravelID}
                 newPhotoOnSelect={newPhotoOnSelect}
               />
             ))
