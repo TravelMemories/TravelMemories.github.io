@@ -31,6 +31,11 @@ interface TravelsContextProps {
   DeletePhoto: (data: PhotoData) => void;
   UpdatePhoto: (newData: PhotoData) => void;
   GetNewPhotoID: () => number;
+  GetPhoto: (
+    travelID: number,
+    stageID: number,
+    photoID: number
+  ) => PhotoData | undefined;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -107,7 +112,7 @@ export function TravelsContextProvider({
   };
   const GetStageByID = (id: number): StageData | undefined => {
     travels.forEach((t) => {
-      const stage: StageData | undefined = t.stages.find((s) => s.id === id);
+      const stage = t.stages.find((s) => s.id === id);
       if (stage !== undefined) {
         return stage;
       }
@@ -180,6 +185,13 @@ export function TravelsContextProvider({
       ? 0
       : Math.max(...(allStages.map((stage) => stage.id) as number[])) + 1;
   };
+  const GetPhoto = (travelID: number, stageID: number, photoID: number) => {
+    const photo = travels
+      .find((t) => t.id === travelID)
+      ?.stages.find((s) => s.id === stageID)
+      ?.photos.find((p) => p.id === photoID);
+    return photo;
+  };
   return (
     <TravelsContext.Provider
       value={{
@@ -202,6 +214,7 @@ export function TravelsContextProvider({
         DeletePhoto,
         UpdatePhoto,
         GetNewPhotoID,
+        GetPhoto,
       }}
     >
       {children}

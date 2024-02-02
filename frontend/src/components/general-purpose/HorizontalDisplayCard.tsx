@@ -10,12 +10,16 @@ interface Props<T = any> {
   travel?: TravelData;
   stage?: StageData;
   photo?: PhotoData;
+  parentStageID?: number;
+  parentTravelID?: number;
   newPhotoOnSelect?: (data: T) => void;
 }
 function HorizontalDisplayCard({
   travel,
   stage,
   photo,
+  parentStageID,
+  parentTravelID,
   newPhotoOnSelect,
 }: Props) {
   if (travel === undefined && stage === undefined && photo === undefined) {
@@ -29,7 +33,7 @@ function HorizontalDisplayCard({
           : stage !== undefined
           ? `/stage/${stage.id}`
           : photo !== undefined
-          ? `/photo/${photo.id}`
+          ? `/memory/${parentTravelID}/${parentStageID}/${photo.id}`
           : "/"
       }
       onClick={(e) => {

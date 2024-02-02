@@ -6,10 +6,10 @@ import homeImage2 from "../images/homeImage2.jpg";
 import homeImage1 from "../images/homeImage1.jpg";
 import homeImage3 from "../images/homeImage3.jpg";
 
-const ExamplePhotos: PhotoData[] = [
+const LudingtonPhotos: PhotoData[] = [
   {
     id: 0,
-    stageId: 0,
+    stageId: 1,
     description: "Beach",
     date: new Date(),
     photoData: homeImage2,
@@ -22,7 +22,7 @@ const ExamplePhotos: PhotoData[] = [
   },
   {
     id: 1,
-    stageId: 0,
+    stageId: 1,
     description: "Amazing sun",
     date: new Date(),
     photoData: homeImage1,
@@ -34,10 +34,10 @@ const ExamplePhotos: PhotoData[] = [
     lng: -75.534791,
   },
 ];
-const ExamplePhotos2: PhotoData[] = [
+const CartagenaPhotos: PhotoData[] = [
   {
     id: 3,
-    stageId: 1,
+    stageId: 0,
     description: "Sunny",
     date: new Date(),
     photoData: homeImage3,
@@ -50,24 +50,24 @@ const ExamplePhotos2: PhotoData[] = [
   },
 ];
 
-const ExampleStages2: StageData[] = [
+const CartagenaStages: StageData[] = [
   {
     id: 0,
     description: "Arrival",
     travelID: 0,
-    photos: ExamplePhotos2,
+    photos: CartagenaPhotos,
     location: "Beach",
     lat: 10.433118,
     lng: -75.534791,
     date: new Date(),
   },
 ];
-const ExampleStages: StageData[] = [
+const LudingtonStages: StageData[] = [
   {
     id: 1,
     description: "First trip",
     travelID: 1,
-    photos: ExamplePhotos,
+    photos: LudingtonPhotos,
     location: "West side",
     lat: 43.966713,
     lng: -86.461251,
@@ -83,7 +83,7 @@ const ExampleTravels: TravelData[] = [
     lng: -75.534791,
     description: "Summer holiday 2023!",
     date: new Date(),
-    stages: ExampleStages2,
+    stages: CartagenaStages,
   },
   {
     id: 1,
@@ -92,7 +92,7 @@ const ExampleTravels: TravelData[] = [
     lng: -86.461251,
     description: "Breathtaking view.",
     date: new Date(),
-    stages: ExampleStages,
+    stages: LudingtonStages,
   },
 ];
 

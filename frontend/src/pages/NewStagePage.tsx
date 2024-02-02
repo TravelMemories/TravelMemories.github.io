@@ -178,7 +178,7 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
           }}
           visible={datepickerVisible}
           setVisible={setDatepickerVisible}
-          maxDate={parentTravel.date}
+          minDate={parentTravel.date}
         />
       )}
     </>

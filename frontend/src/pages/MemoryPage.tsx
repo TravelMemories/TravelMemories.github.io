@@ -14,54 +14,56 @@ import StagePhotosDisplay from "../components/travels-page/StagePhotosDisplay";
 import { PhotoData } from "../model/PhotoData";
 import NewStagePage from "./NewStagePage";
 import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
+import NewMemoryPage from "./NewMemoryPage";
 
-function StagePage() {
-  const { id } = useParams();
-  const { GetTravelByStageID, DeleteStage } = useTravelsContext();
+function MemoryPage() {
+  const { travelID, stageID, memoryID } = useParams();
+  const { GetPhoto, GetStageByID, DeletePhoto, UpdatePhoto } =
+    useTravelsContext();
   const navigate = useNavigate();
-  const [stageData, setStageData] = useState<StageData | undefined>();
-  const [parentTravel, setParentTravel] = useState<TravelData | undefined>();
+  const [photoData, setPhotoData] = useState<PhotoData>();
+  const [parentStage, setParentStage] = useState<StageData>();
 
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [editWindow, setEditWindow] = useState(false);
 
   useEffect(() => {
-    const travel = GetTravelByStageID(Number(id));
-    if (travel === undefined) {
-      navigate("/travels");
+    const photo = GetPhoto(Number(travelID), Number(stageID), Number(memoryID));
+
+    if (photo === undefined) {
+      navigate("/");
     } else {
-      const stage = travel.stages.find((stage) => stage.id === Number(id));
+      const stage = GetStageByID(photo.stageId as number);
       if (stage === undefined) {
-        navigate("/travels");
+        navigate("/");
       } else {
-        setStageData(stage);
-        setParentTravel(travel);
+        setPhotoData(photo);
+        setParentStage(stage);
       }
     }
-  }, [id, navigate]);
+  }, []);
 
-  const editStageData = (newData: StageData) => {
-    setStageData(newData);
+  const editPhotoData = (newData: PhotoData) => {
+    setPhotoData(newData);
     setEditWindow(false);
   };
 
-  if (stageData === undefined || parentTravel === undefined) {
-    return <p>Stage data is not available</p>;
+  if (photoData === undefined || parentStage === undefined) {
+    return <p>Photo is not available</p>;
   }
   return (
     <>
       {!editWindow ? (
         <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8">
           <h1 className="text-3xl text-background-300">
-            Stage of travel: <b>{parentTravel.location}</b>
+            Memory of stage: <b>{parentStage.location}</b>
           </h1>
-          <BackButton navigateTo={`/travel/${parentTravel.id}`} />
+          <BackButton navigateTo={`/stage/${parentStage.id}`} />
           <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
             <CustomButton
               variant={"edit"}
               onClick={() => {
                 setEditWindow(true);
-                console.log(stageData);
               }}
             ></CustomButton>
             <CustomButton
@@ -81,14 +83,14 @@ function StagePage() {
                 }}
               ></div>
               <div className="bg-primary-50 py-10 px-10 text-4xl flex flex-col items-center justify-center rounded-md z-50">
-                <p>Do you want to delete this stage?</p>
+                <p>Do you want to delete this memory?</p>
                 <p className="text-base">(This action cannot be reversed)</p>
                 <div className="mt-2 flex w-full items-center justify-around">
                   <CustomButton
                     className="bg-red-400 hover:bg-red-500 w-60"
                     onClick={() => {
-                      DeleteStage(stageData.id as number);
-                      navigate(`/travel/${stageData.travelID}`);
+                      DeletePhoto(photoData);
+                      navigate(`/stage/${parentStage.id}`);
                     }}
                   >
                     Yes
@@ -107,46 +109,37 @@ function StagePage() {
             </div>
           )}
           <div className="flex gap-10 items-start w-full mx-auto max-w-[60%]">
-            {stageData !== undefined && (
+            {photoData !== undefined && (
               <TravelMap
-                lat={stageData?.lat as number}
-                lng={stageData?.lng as number}
+                lat={photoData?.lat as number}
+                lng={photoData?.lng as number}
               />
             )}
             <div className="flex flex-col items-start gap-2">
-              <h1 className="text-6xl">{stageData?.location}</h1>
+              <h1 className="text-6xl">{photoData?.location}</h1>
               <h2 className="text-4xl font-thin">
-                {FormatDate(stageData?.date)}
+                {FormatDate(photoData?.date)}
               </h2>
               <p className="mt-1 -mb-3 text-background-500">Description:</p>
-              <p className="text-4xl">{stageData?.description}</p>
+              <p className="text-4xl">{photoData?.description}</p>
             </div>
           </div>
-          {
-            <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
-              <div className="text-3xl uppercase">photos:</div>
-              <HorizontalDisplay
-                photos={stageData.photos}
-                parentTravelID={stageData.travelID}
-                parentStage={stageData}
-              />
-            </div>
-          }
         </div>
       ) : (
-        <NewStagePage
-          editPage={{
-            stageData: stageData,
-            travelID: stageData.travelID,
-            setStageData: editStageData,
-            cancelEditing: () => {
-              setEditWindow(false);
-            },
-          }}
-        />
+        // <NewMemoryPage
+        //   editPage={{
+        //     photoData: photoData,
+        //     travelID: photoData.travelID,
+        //     setphotoData: editphotoData,
+        //     cancelEditing: () => {
+        //       setEditWindow(false);
+        //     },
+        //   }}
+        // />
+        <></>
       )}
     </>
   );
 }
 
-export default StagePage;
+export default MemoryPage;

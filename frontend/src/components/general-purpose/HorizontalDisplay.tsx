@@ -15,6 +15,7 @@ interface Props<T = any> {
   stages?: StageData[];
   parentStage?: StageData;
   photos?: PhotoData[];
+  parentTravelID?: number;
   newPhotoOnSelect?: (data: T) => void;
   newPhotoCreatingNew?: React.Dispatch<React.SetStateAction<boolean>>;
   newPhotoBackButton?: () => void;
@@ -25,6 +26,7 @@ function HorizontalDisplay({
   photos,
   parentTravel,
   parentStage,
+  parentTravelID,
   newPhotoOnSelect,
   newPhotoCreatingNew,
   newPhotoBackButton,
@@ -124,6 +126,8 @@ function HorizontalDisplay({
             photos.map((photo) => (
               <HorizontalDisplayCard
                 photo={photo}
+                parentStageID={parentStage?.id}
+                parentTravelID={parentTravelID}
                 newPhotoOnSelect={newPhotoOnSelect}
               />
             ))

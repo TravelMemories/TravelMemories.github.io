@@ -13,6 +13,7 @@ import TravelPage from "./pages/TravelPage";
 import NewTravelPage from "./pages/NewTravelPage";
 import StagePage from "./pages/StagePage";
 import NewStagePage from "./pages/NewStagePage";
+import MemoryPage from "./pages/MemoryPage";
 
 function App() {
   const { isLoggedIn } = useUserContext();
@@ -32,6 +33,12 @@ function App() {
           {isLoggedIn && <Route path="/profile" element={<ProfilePage />} />}
           {isLoggedIn && <Route path="/travel/:id" element={<TravelPage />} />}
           {isLoggedIn && <Route path="/stage/:id" element={<StagePage />} />}
+          {isLoggedIn && (
+            <Route
+              path="/memory/:travelID/:stageID/:memoryID"
+              element={<MemoryPage />}
+            />
+          )}
           {isLoggedIn && (
             <Route path="/new-travel" element={<NewTravelPage />} />
           )}
