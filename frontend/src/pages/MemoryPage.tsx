@@ -7,12 +7,15 @@ import CustomButton from "../components/general-purpose/CustomButton";
 import { PhotoData } from "../model/PhotoData";
 import LikesDisplay from "../components/public-memories/LikesDisplay";
 import { useUserContext } from "../context/UserContext";
+import NewMemoryPage from "./NewMemoryPage";
+import { PrivacyData } from "../model/PrivacyData";
 interface Props {
   discover?: boolean;
 }
 function MemoryPage({ discover }: Props) {
   const { travelID, stageID, memoryID } = useParams();
-  const { GetPhoto, DeletePhoto, IsUserOwner } = useTravelsContext();
+  const { GetPhoto, DeletePhoto, IsUserOwner, UpdatePhoto } =
+    useTravelsContext();
   const { userData } = useUserContext();
   const navigate = useNavigate();
   const [photoData, setPhotoData] = useState<PhotoData>();
@@ -28,10 +31,11 @@ function MemoryPage({ discover }: Props) {
     } else {
       setPhotoData(photo);
     }
-  }, []);
+  }, [GetPhoto, memoryID, navigate, stageID, travelID]);
 
   const editPhotoData = (newData: PhotoData) => {
     setPhotoData(newData);
+    UpdatePhoto(newData);
     setEditWindow(false);
   };
 
@@ -84,7 +88,9 @@ function MemoryPage({ discover }: Props) {
                     className="bg-red-400 hover:bg-red-500 w-60"
                     onClick={() => {
                       DeletePhoto(photoData);
-                      navigate(`/stage/${photoData.parentStage?.id}`);
+                      navigate(
+                        `/stage/${photoData.parentStage?.parentTravel.id}/${photoData.parentStage?.id}`
+                      );
                     }}
                   >
                     Yes
@@ -127,22 +133,30 @@ function MemoryPage({ discover }: Props) {
                 </p>
                 <p className=" -mb-3 text-background-500">Stage of travel:</p>
                 <p className="text-2xl">{photoData?.parentStage.location}</p>
+                {IsUserOwner(photoData.parentStage.parentTravel) && (
+                  <>
+                    <p className=" -mb-3 text-background-500">Privacy:</p>
+                    <p className="text-2xl">
+                      {photoData?.privacy === PrivacyData.Private
+                        ? "Private"
+                        : "Public"}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       ) : (
-        // <NewMemoryPage
-        //   editPage={{
-        //     photoData: photoData,
-        //     travelID: photoData.travelID,
-        //     setphotoData: editphotoData,
-        //     cancelEditing: () => {
-        //       setEditWindow(false);
-        //     },
-        //   }}
-        // />
-        <></>
+        <NewMemoryPage
+          editPage={{
+            photoData: photoData,
+            setPhotoData: editPhotoData,
+            cancelEditing: () => {
+              setEditWindow(false);
+            },
+          }}
+        />
       )}
     </>
   );

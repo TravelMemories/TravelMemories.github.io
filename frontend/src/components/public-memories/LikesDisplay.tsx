@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PhotoData } from "../../model/PhotoData";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoMdHeart } from "react-icons/io";
@@ -12,8 +12,18 @@ interface Props {
 }
 function LikesDisplay({ photoData, className }: Props) {
   const { isLoggedIn, userData } = useUserContext();
-  const { LikeDislikePhoto, DidUserLikePhoto } = useTravelsContext();
+  const { LikeDislikePhoto, DidUserLikePhoto, GetLikes } = useTravelsContext();
   const [likes, setLikes] = useState(photoData.likes.length);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    if (!userData) {
+      return;
+    }
+    setLikes(GetLikes(photoData));
+    setLiked(DidUserLikePhoto(userData.email, photoData));
+  }, [userData, GetLikes]);
+
   if (photoData === undefined) {
     return <div>No photo data</div>;
   }
@@ -27,20 +37,13 @@ function LikesDisplay({ photoData, className }: Props) {
           if (!isLoggedIn) return;
           LikeDislikePhoto(
             userData === undefined ? "" : userData?.email,
-            photoData.id as number
+            photoData
           );
-          setLikes(photoData.likes.length);
+          setLikes(GetLikes(photoData));
+          setLiked(DidUserLikePhoto(userData?.email as string, photoData));
         }}
       >
-        {userData &&
-        DidUserLikePhoto(
-          userData === undefined ? "" : userData?.email,
-          photoData.id as number
-        ) ? (
-          <IoMdHeart />
-        ) : (
-          <IoIosHeartEmpty />
-        )}
+        {userData && liked ? <IoMdHeart /> : <IoIosHeartEmpty />}
       </motion.button>
       <p>{likes}</p>
     </div>

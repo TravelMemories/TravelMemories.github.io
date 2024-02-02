@@ -35,8 +35,9 @@ interface TravelsContextProps {
   GetStageByID: (id: number) => StageData | undefined;
 
   GetPublicPhotos: () => PhotoData[];
-  DidUserLikePhoto: (userEmail: string, photoID: number) => boolean;
-  LikeDislikePhoto: (userEmail: string, photoID: number) => void;
+  DidUserLikePhoto: (userEmail: string, photo: PhotoData) => boolean;
+  LikeDislikePhoto: (userEmail: string, photo: PhotoData) => boolean;
+  GetLikes: (photo: PhotoData) => number;
 
   AddPhoto: (data: PhotoData) => void;
   DeletePhoto: (data: PhotoData) => void;
@@ -150,23 +151,26 @@ export function TravelsContextProvider({
     });
     return photos;
   };
-  const DidUserLikePhoto = (userEmail: string, photoID: number) => {
-    const photo = GetPublicPhotos().find((p) => p.id === photoID);
+  const DidUserLikePhoto = (userEmail: string, photo: PhotoData) => {
     if (photo === undefined) {
       return false;
     }
     return photo.likes.find((like) => like === userEmail) !== undefined;
   };
-  const LikeDislikePhoto = (userEmail: string, photoID: number) => {
-    const photo = GetPublicPhotos().find((p) => p.id === photoID);
+  const LikeDislikePhoto = (userEmail: string, photo: PhotoData) => {
     if (photo === undefined) {
-      return;
+      return false;
     }
-    if (DidUserLikePhoto(userEmail, photoID)) {
+    if (DidUserLikePhoto(userEmail, photo)) {
       photo.likes = photo.likes.filter((like) => like !== userEmail);
+      return false;
     } else {
       photo.likes.push(userEmail);
+      return true;
     }
+  };
+  const GetLikes = (photo: PhotoData) => {
+    return photo.likes.length;
   };
   const AddPhoto = (data: PhotoData) => {
     if (data === undefined) {
@@ -178,7 +182,9 @@ export function TravelsContextProvider({
     if (!data || !data.parentStage) {
       return;
     }
-    data.parentStage.photos.filter((p) => p.id !== data.id);
+    data.parentStage.photos = data.parentStage.photos.filter(
+      (p) => p.id !== data.id
+    );
   };
   const UpdatePhoto = (newData: PhotoData) => {
     if (!newData || !newData.parentStage) {
@@ -234,6 +240,7 @@ export function TravelsContextProvider({
         GetPublicPhotos,
         DidUserLikePhoto,
         LikeDislikePhoto,
+        GetLikes,
         AddPhoto,
         DeletePhoto,
         UpdatePhoto,

@@ -38,7 +38,7 @@ function MemoryCard({
     >
       <img
         src={data.imageSource}
-        alt={"Travel photo"}
+        alt={"Travel memory"}
         className="object-cover aspect-square w-full"
       />
       <LikesDisplay photoData={data} />

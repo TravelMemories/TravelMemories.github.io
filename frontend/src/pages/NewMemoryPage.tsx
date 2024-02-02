@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TiLocation } from "react-icons/ti";
 import { FaMap } from "react-icons/fa";
 import { PhotoData } from "../model/PhotoData";
@@ -16,8 +16,15 @@ import LocationPicker from "../components/general-purpose/LocationPicker";
 import NewTravelPage from "./NewTravelPage";
 import NewStagePage from "./NewStagePage";
 import { useNavigate } from "react-router-dom";
-
-function NewMemoryPage() {
+interface EditPageProps {
+  photoData: PhotoData;
+  setPhotoData: (newData: PhotoData) => void;
+  cancelEditing: () => void;
+}
+interface Props {
+  editPage?: EditPageProps;
+}
+function NewMemoryPage({ editPage }: Props) {
   const { GetUserTravels, AddPhoto, GetNewPhotoID } = useTravelsContext();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
 
@@ -67,8 +74,8 @@ function NewMemoryPage() {
     );
   };
   const onStageSelect = (stage: StageData) => {
-    setNewMemory((prev) => ({ ...prev, parentStage: stage } as PhotoData));
     onLocationSelect(stage.lat, stage.lng, stage.location as string);
+    setNewMemory((prev) => ({ ...prev, parentStage: stage } as PhotoData));
     setSelectingStage(false);
   };
   const onTravelSelect = (travel: TravelData) => {
@@ -76,6 +83,12 @@ function NewMemoryPage() {
     setSelectingTravel(false);
     setSelectingStage(true);
   };
+  useEffect(() => {
+    if (editPage) {
+      setImage(editPage.photoData.imageSource);
+      setNewMemory(editPage.photoData);
+    }
+  }, []);
 
   return (
     <>
@@ -118,12 +131,21 @@ function NewMemoryPage() {
             ) {
               return;
             }
+            if (editPage) {
+              editPage.setPhotoData(newMemory);
+              return;
+            }
             AddPhoto(newMemory);
             navigate(
               `/stage/${newMemory.parentStage.parentTravel.id}/${newMemory.parentStage.id}`
             );
           }}
         >
+          {editPage && (
+            <h1 className="text-center text-lg w-full text-background-400">
+              Edit your memory
+            </h1>
+          )}
           <img
             src={image}
             alt=""
@@ -152,6 +174,7 @@ function NewMemoryPage() {
               setSelectingTravel(true);
               setSelectingStage(false);
             }}
+            disabled={editPage !== undefined}
           >
             <FaMap />
             <p>Stage of travel</p>
@@ -219,12 +242,12 @@ function NewMemoryPage() {
               className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
               type="submit"
             >
-              Create
+              {editPage ? "Update" : "Create"}
             </button>
             <button
               className="flex text-center justify-center items-center gap-2 bg-secondary-500 hover:bg-secondary-600 p-2 rounded-lg text-background-50 transition-colors"
               type="button"
-              onClick={cancelEditing}
+              onClick={editPage ? editPage.cancelEditing : cancelEditing}
             >
               Cancel
             </button>
@@ -304,7 +327,7 @@ function NewMemoryPage() {
                 defaultParentTravel={selectedTravel}
                 newPhotoPage={(stageData: StageData | undefined) => {
                   if (stageData !== undefined) {
-                    setSelectingStage(false);
+                    setSelectingStage(true);
                     setSelectingTravel(false);
                   }
                   setCreatingStage(false);
