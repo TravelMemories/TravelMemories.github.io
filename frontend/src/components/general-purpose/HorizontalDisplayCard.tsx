@@ -6,11 +6,11 @@ import { FormatDate } from "../../helpers/helpers";
 import { NavLink } from "react-router-dom";
 import { StageData } from "../../model/StageData";
 import { PhotoData } from "../../model/PhotoData";
-interface Props {
+interface Props<T = any> {
   travel?: TravelData;
   stage?: StageData;
   photo?: PhotoData;
-  newPhotoOnSelect?: (data: TravelData | StageData | PhotoData) => void;
+  newPhotoOnSelect?: (data: T) => void;
 }
 function HorizontalDisplayCard({
   travel,
@@ -40,8 +40,8 @@ function HorizontalDisplayCard({
       }}
     >
       <motion.button
-        className={`flex flex-col items-center p-3 shadow-md ${
-          travel !== undefined
+        className={`flex flex-col items-center p-3 shadow-md max-w-full ${
+          travel !== undefined && newPhotoOnSelect === undefined
             ? "bg-background-100 w-80"
             : "bg-background-50 w-52"
         } `}
@@ -76,7 +76,7 @@ function HorizontalDisplayCard({
           alt=""
           className="object-cover aspect-square w-full mb-4"
         />
-        <h1 className="text-lg truncate">
+        <h1 className="text-lg truncate max-w-full">
           {" "}
           {travel
             ? travel.location

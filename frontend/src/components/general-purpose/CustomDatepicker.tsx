@@ -32,7 +32,10 @@ function CustomDatepicker({
 
   return (
     <div
-      className={cn("pointer-events-auto cursor-pointer absolute", className)}
+      className={cn(
+        "pointer-events-auto cursor-pointer absolute z-30",
+        className
+      )}
       style={{
         left: "53%",
         bottom: "50%",

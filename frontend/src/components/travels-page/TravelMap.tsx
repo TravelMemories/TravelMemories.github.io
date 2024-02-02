@@ -11,7 +11,7 @@ function TravelMap({ lat, lng: lon }: Props) {
     return <p>Map not available</p>;
   }
   return (
-    <div className="h-80 aspect-square overflow-hidden rounded-md shadow-lg border-2 border-background-200">
+    <div className="h-80 aspect-square overflow-hidden rounded-md shadow-lg border-2 border-background-200 flex-shrink-0">
       <GoogleMap
         center={{ lat: lat, lng: lon }}
         zoom={15}

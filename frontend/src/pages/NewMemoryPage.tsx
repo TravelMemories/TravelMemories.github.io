@@ -13,17 +13,26 @@ import TravelsDisplay from "../components/travels-page/TravelsDisplay";
 import { StageData } from "../model/StageData";
 import { TravelData } from "../model/TravelData";
 import StagesDisplay from "../components/travels-page/StagesDisplay";
+import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
+import LocationPicker from "../components/general-purpose/LocationPicker";
+import NewTravelPage from "./NewTravelPage";
+import NewStagePage from "./NewStagePage";
 
 function NewMemoryPage() {
-  const { GetTravelByStageID } = useTravelsContext();
+  const { travels } = useTravelsContext();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
 
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());
   const [image, setImage] = useState<string | undefined>();
+  const [selectedStage, setSelectedStage] = useState<StageData>();
+  const [selectedTravel, setSelectedTravel] = useState<TravelData>();
+
+  const [selectingTravel, setSelectingTravel] = useState(false);
+  const [selectingStage, setSelectingStage] = useState(false);
+  const [creatingTravel, setCreatingTravel] = useState(false);
+  const [creatingStage, setCreatingStage] = useState(false);
 
   const [datepickerVisible, setDatepickerVisible] = useState(false);
-  const [selectingTravel, setSelectingTravel] = useState(false);
-  const [selectingStage, setSelectingStage] = useState<TravelData>();
   const [mapVisible, setMapVisible] = useState(false);
 
   const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
@@ -50,10 +59,24 @@ function NewMemoryPage() {
     setImage(undefined);
     setNewMemory(undefined);
   };
-  const onStageSelect = (stage: StageData) => {};
+  const onStageSelect = (stage: StageData) => {
+    setNewMemory(
+      (prev) => ({ ...prev, stageId: selectedStage?.id } as PhotoData)
+    );
+    setSelectedStage(stage);
+    setSelectingStage(false);
+  };
   const onTravelSelect = (travel: TravelData) => {
+    setSelectedTravel(travel);
     setSelectingTravel(false);
-    setSelectingStage(travel);
+    setSelectingStage(true);
+  };
+  const onLocationSelect = (lat: number, lng: number, location: string) => {
+    setMapVisible(false);
+    setNewMemory(
+      (prev) =>
+        ({ ...prev, location: location, lat: lat, lng: lng } as PhotoData)
+    );
   };
   return (
     <>
@@ -63,6 +86,7 @@ function NewMemoryPage() {
             Add new memory
           </h1>
           <form
+            id="new-memory"
             onSubmit={(e) => e.preventDefault()}
             className="flex flex-col items-center gap-2 justify-center max-w-[30rem] w-full bg-background-50 p-4 h-[30rem] rounded-lg border-dashed border-2 border-primary-800"
           >
@@ -101,16 +125,21 @@ function NewMemoryPage() {
             }}
           />
           <DataEditButton
-            data={GetTravelByStageID(newMemory?.stageId as number)?.location}
+            data={
+              selectedStage === undefined
+                ? ""
+                : `${selectedStage?.location} | ${selectedStage?.description}`
+            }
             onClick={() => {
               setSelectingTravel(true);
+              setSelectingStage(false);
             }}
           >
             <FaMap />
-            <p>Travel</p>
+            <p>Stage of travel</p>
           </DataEditButton>
           <DataEditButton
-            data={undefined}
+            data={newMemory?.location}
             onClick={() => {
               setMapVisible(true);
             }}
@@ -186,25 +215,82 @@ function NewMemoryPage() {
                   setSelectingTravel(false);
                 }}
               />
-              <TravelsDisplay onTravelSelect={onTravelSelect} />
+              <HorizontalDisplay
+                newPhotoOnSelect={onTravelSelect}
+                newPhotoCreatingNew={setCreatingTravel}
+                newPhotoBackButton={() => {
+                  setSelectedTravel(undefined);
+                  setSelectingTravel(false);
+                }}
+                travels={travels}
+              />
             </>
           )}
-          {selectingStage !== undefined && (
+          {selectingStage && selectedTravel !== undefined && (
             <>
               <div
                 className="fixed inset-0 bg-primary-950/50"
                 onClick={() => {
-                  setSelectingStage(undefined);
+                  setSelectingStage(false);
                 }}
               />
-              <StagesDisplay
-                stages={selectingStage.stages}
-                travelID={selectingStage.id as number}
-                onStageSelect={onStageSelect}
+              <HorizontalDisplay
+                newPhotoOnSelect={onStageSelect}
+                newPhotoCreatingNew={setCreatingStage}
+                newPhotoBackButton={() => {
+                  setSelectedStage(undefined);
+                  setSelectingTravel(true);
+                  setSelectingStage(false);
+                }}
+                stages={selectedTravel.stages}
               />
             </>
           )}
-          {/* {mapVisible && <MapPicker setMapVisible={setMapVisible} />} */}
+          {mapVisible && (
+            <LocationPicker
+              setVisible={setMapVisible}
+              onSelect={onLocationSelect}
+            />
+          )}
+          {creatingTravel && (
+            <>
+              <div
+                className="fixed inset-0 bg-primary-950/50"
+                onClick={() => {
+                  setCreatingTravel(false);
+                }}
+              />
+              <NewTravelPage
+                newPhotoPage={(travelData: TravelData | undefined) => {
+                  if (travelData !== undefined) {
+                    setSelectedTravel(travelData);
+                  }
+                  setCreatingTravel(false);
+                }}
+              />
+            </>
+          )}
+          {creatingStage && (
+            <>
+              <div
+                className="fixed inset-0 bg-primary-950/50"
+                onClick={() => {
+                  setCreatingStage(false);
+                }}
+              />
+              <NewStagePage
+                defaultParentTravel={selectedTravel}
+                newPhotoPage={(stageData: StageData | undefined) => {
+                  if (stageData !== undefined) {
+                    setSelectedStage(stageData);
+                    setSelectingStage(false);
+                    setSelectingTravel(false);
+                  }
+                  setCreatingStage(false);
+                }}
+              />
+            </>
+          )}
         </form>
       )}
     </>

@@ -17,8 +17,10 @@ interface EditPageProps {
 }
 interface Props {
   editPage?: EditPageProps;
+  newPhotoPage?: (stageData: StageData | undefined) => void;
+  defaultParentTravel?: TravelData;
 }
-function NewStagePage({ editPage }: Props) {
+function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
   const { travelID } = useParams();
   const [newStage, setNewStage] = useState<StageData | undefined>();
   const [parentTravel, setParentTravel] = useState<TravelData | undefined>();
@@ -31,9 +33,11 @@ function NewStagePage({ editPage }: Props) {
 
   useEffect(() => {
     setParentTravel(
-      GetTravelByID(
-        editPage === undefined ? Number(travelID) : editPage.travelID
-      )
+      defaultParentTravel
+        ? defaultParentTravel
+        : GetTravelByID(
+            editPage === undefined ? Number(travelID) : editPage.travelID
+          )
     );
     if (parentTravel === undefined) {
       return;
@@ -68,21 +72,13 @@ function NewStagePage({ editPage }: Props) {
 
   return (
     <>
-      <form
-        className=" max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (newStage !== undefined) {
-            if (editPage === undefined) {
-              AddStage(newStage, parentTravel.id as number);
-              navigate(`/travel/${travelID}`);
-            } else {
-              UpdateStage(newStage);
-              editPage.setStageData(newStage);
-              navigate(`/stage/${editPage.stageData.id}`);
-            }
-          }
-        }}
+      <div
+        className={`mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md z-20 
+        ${
+          newPhotoPage
+            ? "w-[90vw] h-5/6 fixed top-0 left-[50%] -translate-x-[50%]"
+            : "w-full max-w-[40rem]"
+        }`}
       >
         <div className="w-full bg-background-100 rounded-lg shadow-md mb-4">
           <h1 className="text-center w-full">
@@ -133,7 +129,24 @@ function NewStagePage({ editPage }: Props) {
         <div className="flex items-center justify-between w-full mt-5 ">
           <button
             className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
-            type="submit"
+            type="button"
+            onClick={(e) => {
+              if (newStage !== undefined && newStage.location !== undefined) {
+                if (newPhotoPage !== undefined) {
+                  AddStage(newStage, parentTravel.id as number);
+                  newPhotoPage(newStage);
+                  return;
+                }
+                if (editPage === undefined) {
+                  AddStage(newStage, parentTravel.id as number);
+                  navigate(`/travel/${travelID}`);
+                } else {
+                  UpdateStage(newStage);
+                  editPage.setStageData(newStage);
+                  navigate(`/stage/${editPage.stageData.id}`);
+                }
+              }
+            }}
           >
             {editPage === undefined ? "Create" : "Confirm"}
           </button>
@@ -141,6 +154,10 @@ function NewStagePage({ editPage }: Props) {
             className="flex text-center justify-center items-center gap-2 bg-secondary-400 hover:bg-secondary-500 p-2 rounded-lg text-background-50 transition-colors px-6"
             type="button"
             onClick={() => {
+              if (newPhotoPage !== undefined) {
+                newPhotoPage(undefined);
+                return;
+              }
               if (editPage === undefined) {
                 navigate(`/travel/${travelID}`);
               } else {
@@ -151,7 +168,7 @@ function NewStagePage({ editPage }: Props) {
             Cancel
           </button>
         </div>
-      </form>
+      </div>
       {datepickerVisible && (
         <CustomDatepicker
           date={stageDate}
