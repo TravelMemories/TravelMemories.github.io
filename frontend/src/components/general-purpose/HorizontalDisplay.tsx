@@ -57,9 +57,9 @@ function HorizontalDisplay({
           travels
             ? "/new-travel"
             : stages && parentTravel
-            ? `/new-stage/${parentTravel}`
+            ? `/new-stage/${parentTravel.id}`
             : photos && parentStage
-            ? `/new-memory/${parentStage}`
+            ? `/new-memory/${parentStage.id}`
             : "/"
         }
         onClick={(e) => {

@@ -110,7 +110,10 @@ function TravelPage() {
           </div>
           <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
             <div className="text-3xl uppercase">stages:</div>
-            <HorizontalDisplay stages={travelData?.stages} />
+            <HorizontalDisplay
+              stages={travelData?.stages}
+              parentTravel={travelData}
+            />
           </div>
           <motion.button
             className="flex items-center justify-center bg-secondary-500 text-4xl p-4 h-full text-primary-50 shadow-md hover:bg-secondary-600 transition-colors rounded-full mb-8"

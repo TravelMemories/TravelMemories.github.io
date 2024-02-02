@@ -125,7 +125,10 @@ function StagePage() {
           {
             <div className="flex flex-col items-center bg-background-100 rounded-lg pt-3 text-background-600 font-bold w-5/6 mx-auto">
               <div className="text-3xl uppercase">photos:</div>
-              <HorizontalDisplay photos={stageData.photos} />
+              <HorizontalDisplay
+                photos={stageData.photos}
+                parentStage={stageData}
+              />
             </div>
           }
         </div>

@@ -62,12 +62,12 @@ function HorizontalDisplayCard({
       >
         <img
           src={
-            travel !== undefined
+            travel
               ? travel?.stages.length === 0 ||
                 travel?.stages[0].photos.length === 0
                 ? Placeholder
                 : travel?.stages[0].photos[0].imageSource
-              : stage !== undefined
+              : stage
               ? stage.photos.length === 0
                 ? Placeholder
                 : stage.photos[0].imageSource

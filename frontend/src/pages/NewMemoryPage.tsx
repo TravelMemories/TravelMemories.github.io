@@ -17,9 +17,10 @@ import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 import LocationPicker from "../components/general-purpose/LocationPicker";
 import NewTravelPage from "./NewTravelPage";
 import NewStagePage from "./NewStagePage";
+import { useNavigate } from "react-router-dom";
 
 function NewMemoryPage() {
-  const { travels } = useTravelsContext();
+  const { travels, AddPhoto, GetNewPhotoID } = useTravelsContext();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
 
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());
@@ -35,6 +36,8 @@ function NewMemoryPage() {
   const [datepickerVisible, setDatepickerVisible] = useState(false);
   const [mapVisible, setMapVisible] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
@@ -42,12 +45,12 @@ function NewMemoryPage() {
 
     setImage(URL.createObjectURL(target.files[0]));
     setNewMemory({
-      id: undefined,
+      id: GetNewPhotoID(),
       stageId: undefined,
       description: undefined,
       date: new Date(),
       photoData: target.files[0],
-      imageSource: image,
+      imageSource: URL.createObjectURL(target.files[0]),
       privacy: PrivacyData.Private,
       likes: [],
       location: "",
@@ -59,10 +62,16 @@ function NewMemoryPage() {
     setImage(undefined);
     setNewMemory(undefined);
   };
-  const onStageSelect = (stage: StageData) => {
+  const onLocationSelect = (lat: number, lng: number, location: string) => {
+    setMapVisible(false);
     setNewMemory(
-      (prev) => ({ ...prev, stageId: selectedStage?.id } as PhotoData)
+      (prev) =>
+        ({ ...prev, location: location, lat: lat, lng: lng } as PhotoData)
     );
+  };
+  const onStageSelect = (stage: StageData) => {
+    setNewMemory((prev) => ({ ...prev, stageId: stage.id } as PhotoData));
+    onLocationSelect(stage.lat, stage.lng, stage.location as string);
     setSelectedStage(stage);
     setSelectingStage(false);
   };
@@ -71,13 +80,7 @@ function NewMemoryPage() {
     setSelectingTravel(false);
     setSelectingStage(true);
   };
-  const onLocationSelect = (lat: number, lng: number, location: string) => {
-    setMapVisible(false);
-    setNewMemory(
-      (prev) =>
-        ({ ...prev, location: location, lat: lat, lng: lng } as PhotoData)
-    );
-  };
+
   return (
     <>
       {image === undefined ? (
@@ -106,12 +109,29 @@ function NewMemoryPage() {
         </div>
       ) : (
         // Image is uploaded
-        <form className="max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md">
+        <form
+          className="max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (
+              image === undefined ||
+              newMemory === undefined ||
+              newMemory.location === undefined ||
+              newMemory.stageId === undefined ||
+              selectedStage === undefined
+            ) {
+              return;
+            }
+            AddPhoto(newMemory, selectedStage);
+            navigate(`/stage/${selectedStage.id}`);
+          }}
+        >
           <img
             src={image}
             alt=""
             className="object-cover aspect-square h-[30rem] rounded-md mx-auto shadow-md mb-4"
           />
+
           <textarea
             className="flex h-40 w-full bg-background text-lg  file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md resize-none"
             id="description"
@@ -188,13 +208,16 @@ function NewMemoryPage() {
               }}
               visible={datepickerVisible}
               setVisible={setDatepickerVisible}
+              minDate={
+                selectedStage === undefined ? undefined : selectedStage.date
+              }
             />
           )}
 
           <div className="flex items-center justify-between w-full mt-5">
             <button
               className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
-              type="button"
+              type="submit"
             >
               Create
             </button>

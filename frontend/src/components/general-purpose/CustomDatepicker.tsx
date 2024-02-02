@@ -9,6 +9,7 @@ interface Props {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   maxDate?: Date;
+  minDate?: Date;
 }
 function CustomDatepicker({
   className,
@@ -17,13 +18,14 @@ function CustomDatepicker({
   visible,
   setVisible,
   maxDate,
+  minDate,
 }: Props) {
   const options = {
     autoHide: true,
     todayBtn: false,
     clearBtn: false,
     maxDate: maxDate === undefined ? new Date() : maxDate,
-    minDate: new Date("1950-01-01"),
+    minDate: minDate === undefined ? new Date("1950-01-01") : minDate,
     defaultDate: new Date(),
   };
   const handleClose = (state: boolean) => {

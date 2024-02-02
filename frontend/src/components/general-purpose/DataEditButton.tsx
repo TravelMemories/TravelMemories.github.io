@@ -7,7 +7,7 @@ interface Props {
 }
 function DataEditButton({ children, onClick, data }: Props) {
   return (
-    <div className="flex gap-2 w-full items-center text-xl max-w-full truncate">
+    <div className="flex gap-2 w-full items-center text-xl max-w-full">
       {data === undefined || data === "" ? (
         <>
           <motion.button
@@ -19,7 +19,7 @@ function DataEditButton({ children, onClick, data }: Props) {
           >
             Select
           </motion.button>
-          <p className="flex gap-1 items-center text-center text-primary-800 pointer-events-none">
+          <p className="flex gap-1 items-center text-center text-primary-800 pointer-events-none whitespace-nowrap">
             {children}:
           </p>
           <p className="text-primary-400">None</p>
@@ -35,10 +35,10 @@ function DataEditButton({ children, onClick, data }: Props) {
           >
             Change
           </motion.button>
-          <p className="flex gap-1 items-center text-center text-primary-800 pointer-events-none">
+          <p className="flex gap-1 items-center text-center text-primary-800 pointer-events-none whitespace-nowrap">
             {children}:
           </p>
-          <p className="truncate w-full">{data}</p>
+          <p className="w-full">{data}</p>
         </>
       )}
     </div>
