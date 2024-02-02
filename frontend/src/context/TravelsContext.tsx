@@ -1,20 +1,32 @@
-import React, { ReactNode, createContext, useContext, useState } from "react";
+import React, {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { TravelData } from "../model/TravelData";
 import ExampleTravels from "../examples/ExampleTravels";
 import { StageData } from "../model/StageData";
 import { PhotoData } from "../model/PhotoData";
 import { PrivacyData } from "../model/PrivacyData";
+import { useUserContext } from "./UserContext";
 
 interface TravelsContextProviderProps {
   children: ReactNode;
 }
 interface TravelsContextProps {
   travels: TravelData[];
+  GetUserTravels: () => TravelData[];
+  LoadTravels: () => void;
+
   AddTravel: (data: TravelData) => void;
   DeleteTravel: (id: number) => void;
   UpdateTravel: (newData: TravelData) => void;
   GetNewTravelID: () => number;
   GetTravelByID: (id: number) => TravelData | undefined;
+  GetUserTravelByID: (id: number) => TravelData | undefined;
 
   AddStage: (data: StageData, travelId: number) => void;
   DeleteStage: (id: number) => void;
@@ -26,7 +38,7 @@ interface TravelsContextProps {
   DidUserLikePhoto: (userEmail: string, photoID: number) => boolean;
   LikeDislikePhoto: (userEmail: string, photoID: number) => void;
 
-  AddPhoto: (data: PhotoData, stageData: StageData) => void;
+  AddPhoto: (data: PhotoData) => void;
   DeletePhoto: (data: PhotoData) => void;
   UpdatePhoto: (newData: PhotoData) => void;
   GetNewPhotoID: () => number;
@@ -35,7 +47,7 @@ interface TravelsContextProps {
     stageID: number,
     photoID: number
   ) => PhotoData | undefined;
-  IsUserOwner: (email: string, travel: TravelData) => boolean;
+  IsUserOwner: (travel: TravelData) => boolean;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -47,6 +59,11 @@ export function TravelsContextProvider({
   children,
 }: TravelsContextProviderProps) {
   const [travels, setTravels] = useState<TravelData[]>(ExampleTravels);
+  const { userData } = useUserContext();
+
+  const GetUserTravels = () => {
+    return travels.filter((t) => t.userEmail === userData?.email);
+  };
 
   const GetTravelByStageID = (stageID: number) => {
     for (const travel of travels) {
@@ -75,6 +92,9 @@ export function TravelsContextProvider({
   };
   const GetTravelByID = (id: number) => {
     return travels.find((travel) => travel.id === id);
+  };
+  const GetUserTravelByID = (id: number) => {
+    return GetUserTravels().find((travel) => travel.id === id);
   };
   const AddStage = (data: StageData, travelId: number) => {
     const travel = GetTravelByID(travelId);
@@ -148,11 +168,11 @@ export function TravelsContextProvider({
       photo.likes.push(userEmail);
     }
   };
-  const AddPhoto = (data: PhotoData, stageData: StageData) => {
-    if (stageData === undefined || data === undefined) {
+  const AddPhoto = (data: PhotoData) => {
+    if (data === undefined) {
       return;
     }
-    stageData.photos.push(data);
+    data.parentStage?.photos.push(data);
   };
   const DeletePhoto = (data: PhotoData) => {
     if (!data || !data.parentStage) {
@@ -186,18 +206,26 @@ export function TravelsContextProvider({
       ?.photos.find((p) => p.id === photoID);
     return photo;
   };
-  const IsUserOwner = (email: string, travel: TravelData) => {
-    return travel.userEmail === email;
+  const IsUserOwner = (travel: TravelData) => {
+    return travel.userEmail === userData?.email;
   };
+  const LoadTravels = useCallback(() => {
+    //call api to load all travels
+  }, []);
+  useEffect(() => {
+    LoadTravels();
+  }, [LoadTravels]);
   return (
     <TravelsContext.Provider
       value={{
         travels,
+        GetUserTravels,
         AddTravel,
         DeleteTravel,
         UpdateTravel,
         GetNewTravelID,
         GetTravelByID,
+        GetUserTravelByID,
         AddStage,
         DeleteStage,
         UpdateStage,
@@ -212,6 +240,7 @@ export function TravelsContextProvider({
         GetNewPhotoID,
         GetPhoto,
         IsUserOwner,
+        LoadTravels,
       }}
     >
       {children}

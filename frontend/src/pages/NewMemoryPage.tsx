@@ -18,12 +18,11 @@ import NewStagePage from "./NewStagePage";
 import { useNavigate } from "react-router-dom";
 
 function NewMemoryPage() {
-  const { travels, AddPhoto, GetNewPhotoID } = useTravelsContext();
+  const { GetUserTravels, AddPhoto, GetNewPhotoID } = useTravelsContext();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
 
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());
   const [image, setImage] = useState<string | undefined>();
-  const [selectedStage, setSelectedStage] = useState<StageData>();
   const [selectedTravel, setSelectedTravel] = useState<TravelData>();
 
   const [selectingTravel, setSelectingTravel] = useState(false);
@@ -68,9 +67,8 @@ function NewMemoryPage() {
     );
   };
   const onStageSelect = (stage: StageData) => {
-    setNewMemory((prev) => ({ ...prev, stageId: stage.id } as PhotoData));
+    setNewMemory((prev) => ({ ...prev, parentStage: stage } as PhotoData));
     onLocationSelect(stage.lat, stage.lng, stage.location as string);
-    setSelectedStage(stage);
     setSelectingStage(false);
   };
   const onTravelSelect = (travel: TravelData) => {
@@ -107,6 +105,7 @@ function NewMemoryPage() {
         </div>
       ) : (
         // Image is uploaded
+
         <form
           className="max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md"
           onSubmit={(e) => {
@@ -115,13 +114,14 @@ function NewMemoryPage() {
               image === undefined ||
               newMemory === undefined ||
               newMemory.location === undefined ||
-              newMemory.parentStage === undefined ||
-              selectedStage === undefined
+              newMemory.parentStage === undefined
             ) {
               return;
             }
-            AddPhoto(newMemory, selectedStage);
-            navigate(`/stage/${selectedStage.id}`);
+            AddPhoto(newMemory);
+            navigate(
+              `/stage/${newMemory.parentStage.parentTravel.id}/${newMemory.parentStage.id}`
+            );
           }}
         >
           <img
@@ -144,9 +144,9 @@ function NewMemoryPage() {
           />
           <DataEditButton
             data={
-              selectedStage === undefined
+              newMemory?.parentStage === undefined
                 ? ""
-                : `${selectedStage?.location} | ${selectedStage?.description}`
+                : `${newMemory.parentStage?.location} | ${newMemory.parentStage?.description}`
             }
             onClick={() => {
               setSelectingTravel(true);
@@ -207,7 +207,9 @@ function NewMemoryPage() {
               visible={datepickerVisible}
               setVisible={setDatepickerVisible}
               minDate={
-                selectedStage === undefined ? undefined : selectedStage.date
+                newMemory?.parentStage === undefined
+                  ? undefined
+                  : newMemory.parentStage.date
               }
             />
           )}
@@ -243,7 +245,7 @@ function NewMemoryPage() {
                   setSelectedTravel(undefined);
                   setSelectingTravel(false);
                 }}
-                travels={travels}
+                travels={GetUserTravels()}
               />
             </>
           )}
@@ -259,7 +261,6 @@ function NewMemoryPage() {
                 newPhotoOnSelect={onStageSelect}
                 newPhotoCreatingNew={setCreatingStage}
                 newPhotoBackButton={() => {
-                  setSelectedStage(undefined);
                   setSelectingTravel(true);
                   setSelectingStage(false);
                 }}
@@ -303,7 +304,6 @@ function NewMemoryPage() {
                 defaultParentTravel={selectedTravel}
                 newPhotoPage={(stageData: StageData | undefined) => {
                   if (stageData !== undefined) {
-                    setSelectedStage(stageData);
                     setSelectingStage(false);
                     setSelectingTravel(false);
                   }

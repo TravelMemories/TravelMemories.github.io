@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTravelsContext } from "../context/TravelsContext";
 import { FormatDate } from "../helpers/helpers";
-import { StageData } from "../model/StageData";
-import TravelMap from "../components/travels-page/TravelMap";
 import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
 import { PhotoData } from "../model/PhotoData";
 import LikesDisplay from "../components/public-memories/LikesDisplay";
 import { useUserContext } from "../context/UserContext";
-
-function MemoryPage() {
+interface Props {
+  discover?: boolean;
+}
+function MemoryPage({ discover }: Props) {
   const { travelID, stageID, memoryID } = useParams();
   const { GetPhoto, DeletePhoto, IsUserOwner } = useTravelsContext();
   const { userData } = useUserContext();
@@ -45,31 +45,28 @@ function MemoryPage() {
           <BackButton
             navigateTo={
               userData &&
-              IsUserOwner(userData?.email, photoData.parentStage.parentTravel)
+              IsUserOwner(photoData.parentStage.parentTravel) &&
+              discover === undefined
                 ? `/stage/${photoData.parentStage?.parentTravel.id}/${photoData.parentStage?.id}`
                 : "/public-memories"
             }
           />
-          {userData &&
-            IsUserOwner(
-              userData?.email,
-              photoData.parentStage.parentTravel
-            ) && (
-              <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
-                <CustomButton
-                  variant={"edit"}
-                  onClick={() => {
-                    setEditWindow(true);
-                  }}
-                ></CustomButton>
-                <CustomButton
-                  variant={"delete"}
-                  onClick={() => {
-                    setDeleteWindow(true);
-                  }}
-                ></CustomButton>
-              </div>
-            )}
+          {userData && IsUserOwner(photoData.parentStage.parentTravel) && (
+            <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
+              <CustomButton
+                variant={"edit"}
+                onClick={() => {
+                  setEditWindow(true);
+                }}
+              ></CustomButton>
+              <CustomButton
+                variant={"delete"}
+                onClick={() => {
+                  setDeleteWindow(true);
+                }}
+              ></CustomButton>
+            </div>
+          )}
           {deleteWindow && (
             <div className="fixed z-30 inset-0 flex items-center justify-center">
               <div

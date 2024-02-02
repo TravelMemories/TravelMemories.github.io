@@ -7,8 +7,13 @@ import { useNavigate } from "react-router-dom";
 interface MemoryCardProps {
   data: PhotoData;
   isUserLogged: boolean;
+  publicMemoriesPage?: any;
 }
-function MemoryCard({ data, isUserLogged }: MemoryCardProps) {
+function MemoryCard({
+  data,
+  isUserLogged,
+  publicMemoriesPage,
+}: MemoryCardProps) {
   const navigate = useNavigate();
   if (data === undefined) {
     return <div>No photo data</div>;
@@ -25,7 +30,9 @@ function MemoryCard({ data, isUserLogged }: MemoryCardProps) {
         e.stopPropagation();
         e.preventDefault();
         navigate(
-          `/memory/${data.parentStage?.parentTravel.id}/${data.parentStage?.id}/${data.id}`
+          `/memory/${data.parentStage?.parentTravel.id}/${
+            data.parentStage?.id
+          }/${data.id}${publicMemoriesPage !== undefined ? "/discover" : ""}`
         );
       }}
     >

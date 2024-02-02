@@ -13,7 +13,12 @@ function PublicMemoriesPage() {
       <div className="w-full min-h-[100vh] flex justify-center">
         <div className="pt-20 p-8 container w-full gap-8 flex flex-wrap">
           {GetPublicPhotos().map((photo, idx) => (
-            <MemoryCard key={idx} data={photo} isUserLogged={isLoggedIn} />
+            <MemoryCard
+              key={idx}
+              data={photo}
+              isUserLogged={isLoggedIn}
+              publicMemoriesPage={true}
+            />
           ))}
         </div>
       </div>

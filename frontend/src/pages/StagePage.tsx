@@ -12,7 +12,7 @@ import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 
 function StagePage() {
   const { travelID, stageID } = useParams();
-  const { DeleteStage, GetTravelByID } = useTravelsContext();
+  const { DeleteStage, GetUserTravelByID, IsUserOwner } = useTravelsContext();
   const navigate = useNavigate();
   const [stageData, setStageData] = useState<StageData | undefined>();
   const [parentTravel, setParentTravel] = useState<TravelData | undefined>();
@@ -21,8 +21,8 @@ function StagePage() {
   const [editWindow, setEditWindow] = useState(false);
 
   useEffect(() => {
-    const travel = GetTravelByID(Number(travelID));
-    if (travel === undefined) {
+    const travel = GetUserTravelByID(Number(travelID));
+    if (travel === undefined || !IsUserOwner(travel)) {
       navigate("/travels");
     } else {
       const stage = travel.stages.find((stage) => stage.id === Number(stageID));
@@ -33,7 +33,7 @@ function StagePage() {
         setParentTravel(travel);
       }
     }
-  }, [navigate, GetTravelByID, stageID, travelID]);
+  }, [navigate, GetUserTravelByID, stageID, travelID, IsUserOwner]);
 
   const editStageData = (newData: StageData) => {
     setStageData(newData);

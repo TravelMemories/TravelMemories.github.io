@@ -12,20 +12,20 @@ import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 
 function TravelPage() {
   const { id } = useParams();
-  const { travels, DeleteTravel } = useTravelsContext();
+  const { DeleteTravel, IsUserOwner, GetUserTravels } = useTravelsContext();
   const navigate = useNavigate();
   const [travelData, setTravelData] = useState<TravelData | undefined>();
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [editWindow, setEditWindow] = useState(false);
 
   useEffect(() => {
-    const travel = travels.find((trav) => trav.id === Number(id));
-    if (travel === undefined) {
+    const travel = GetUserTravels().find((trav) => trav.id === Number(id));
+    if (travel === undefined || !IsUserOwner(travel)) {
       navigate("/travels");
     } else {
       setTravelData(travel);
     }
-  }, [id, navigate, travels]);
+  }, [id, navigate, GetUserTravels, IsUserOwner]);
 
   const editTravelData = (newData: TravelData) => {
     setTravelData(newData);

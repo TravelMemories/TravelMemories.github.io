@@ -38,7 +38,13 @@ function App() {
           {isLoggedIn && (
             <Route
               path="/memory/:travelID/:stageID/:memoryID"
-              element={<MemoryPage />}
+              element={<MemoryPage discover={undefined} />}
+            />
+          )}
+          {isLoggedIn && (
+            <Route
+              path="/memory/:travelID/:stageID/:memoryID/discover"
+              element={<MemoryPage discover={true} />}
             />
           )}
           {isLoggedIn && (
