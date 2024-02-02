@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { UserData } from "../model/UserData";
 import { CookiesProvider, useCookies } from "react-cookie";
+import { IoMdReturnLeft } from "react-icons/io";
 
 interface UserContextProviderProps {
   children: ReactNode;
@@ -17,6 +18,7 @@ interface UserContextProps {
   LogOut: () => void;
   userData: UserData | undefined;
   LoginCookies: () => void;
+  DeleteAccount: () => void;
 }
 const UserContext = createContext({} as UserContextProps);
 
@@ -45,11 +47,26 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
       LogIn(storedUserData);
     }
   };
+  const DeleteAccount = () => {
+    if (!userData) {
+      return;
+    }
+    //call api and delete all of content
+    setUserData(undefined);
+    LogOut();
+  };
 
   return (
     <CookiesProvider>
       <UserContext.Provider
-        value={{ isLoggedIn, LogIn, LogOut, userData, LoginCookies }}
+        value={{
+          isLoggedIn,
+          LogIn,
+          LogOut,
+          userData,
+          LoginCookies,
+          DeleteAccount,
+        }}
       >
         {children}
       </UserContext.Provider>

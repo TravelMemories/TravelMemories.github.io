@@ -6,7 +6,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 
 const variants = cva(
-  "flex items-center justify-center px-2 py-1 rounded-md shadow-sm transition-colors text-center",
+  "flex items-center justify-center px-2 py-1 rounded-md shadow-sm transition-colors text-center mx-auto",
   {
     variants: {
       variant: {
@@ -39,12 +39,16 @@ function CustomButton({
   ...props
 }: Props) {
   return (
-    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 1.01 }}>
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 1.01 }}
+      className="w-full mx-auto"
+    >
       <button
         {...props}
         className={cn(
           variants({ variant, className }),
-          `${rounded ? "rounded-full px-2 py-2" : ""}`
+          `${rounded ? "rounded-full px-2 py-2 " : ""}`
         )}
       >
         {variant === "edit" && (
