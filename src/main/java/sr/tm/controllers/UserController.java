@@ -11,7 +11,7 @@ import sr.tm.services.UserService;
 @Controller
 @RequestMapping( value = "/api")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService){
@@ -20,15 +20,27 @@ public class UserController {
 
     @GetMapping("/user/checkPassword")
     public ResponseEntity<String> checkPassword(
-            @RequestParam(name = "username") String username,
+            @RequestParam(name = "email") String email,
             @RequestParam(name = "password") String password) {
 
-        boolean passwordMatch = userService.checkPassword(username, password);
+        boolean passwordMatch = userService.checkPassword(email, password);
 
         if (passwordMatch) {
             return ResponseEntity.ok("Password is correct.");
         } else {
             return ResponseEntity.badRequest().body("Password is incorrect.");
+        }
+    }
+
+    @PostMapping("/user/changePassword")
+    public ResponseEntity<String> changePassword(
+            @RequestParam(name = "email") String email,
+            @RequestParam(name = "newPassword") String newPassword){
+        boolean passwordChanged = userService.updatePasswordHashForUser(email, newPassword);
+        if(passwordChanged){
+            return ResponseEntity.ok("Password has been changed.");
+        } else{
+            return ResponseEntity.badRequest().body("Something went wrong.");
         }
     }
 
@@ -45,7 +57,6 @@ public class UserController {
     public ResponseEntity<User> createNewUser(@RequestBody User user){
         User addedUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedUser);
-
     }
 
 }

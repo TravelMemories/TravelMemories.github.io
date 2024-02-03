@@ -29,12 +29,12 @@ public class LikesService {
             return likesDAORepository.findAll(pageable);
         }
         if(Objects.equals(userId, "") && !Objects.equals(photoId, "")){
-            return likesDAORepository.findAllByPhotoId(photoId, pageable);
+            return likesDAORepository.findAllByPhotoId(Long.valueOf(photoId), pageable);
         }
         if(!Objects.equals(userId, "") && Objects.equals(photoId, "")){
-            return likesDAORepository.findAllByUserId(userId, pageable);
+            return likesDAORepository.findAllByUserId(Long.valueOf(userId), pageable);
         }
-        return likesDAORepository.findAllByPhotoIdAndUserId(photoId, userId, pageable);
+        return likesDAORepository.findAllByPhotoIdAndUserId(Long.valueOf(photoId), Long.valueOf(userId), pageable);
     }
 
     public int getCountOfLikesByPhotoId(String photoId){

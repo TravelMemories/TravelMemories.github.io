@@ -15,7 +15,7 @@ public class Travel {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "email")
     private String email;
 
     @Column(name = "travel_date")

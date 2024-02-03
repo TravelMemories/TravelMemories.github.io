@@ -24,12 +24,12 @@ public class StageService {
             if(travelId == null){
                 return stageDAORepository.findAllByOrderByStageDateAsc(pageable);
             }
-            return stageDAORepository.findAllByTravelIdOrderByStageDateAsc(travelId, pageable);
+            return stageDAORepository.findAllByTravelIdOrderByStageDateAsc(Long.valueOf(travelId), pageable);
         } else {
             if(travelId == null){
                 return stageDAORepository.findAllByOrderByStageDateDesc(pageable);
             }
-            return stageDAORepository.findAllByTravelIdOrderByStageDateDesc(travelId, pageable);
+            return stageDAORepository.findAllByTravelIdOrderByStageDateDesc(Long.valueOf(travelId), pageable);
         }
     }
 

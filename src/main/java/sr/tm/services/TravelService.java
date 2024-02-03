@@ -21,17 +21,17 @@ public class TravelService {
         this.travelDAORepository = travelDAORepository;
     }
 
-    public Page<Travel> getTravelsByUsername(String username, Pageable pageable, String sort){
-        if(username == null){
+    public Page<Travel> getTravelsByEmail(String email, Pageable pageable, String sort){
+        if(email == null){
             if(Objects.equals(sort, "latest")){
                 return travelDAORepository.findAllByOrderByTravelDateDesc(pageable);
             }
             return travelDAORepository.findAllByOrderByTravelDateAsc(pageable);
         }
         if(Objects.equals(sort, "latest")){
-            return travelDAORepository.findAllByUsernameOrderByTravelDateDesc(username, pageable);
+            return travelDAORepository.findAllByEmailOrderByTravelDateDesc(email, pageable);
         }
-        return travelDAORepository.findAllByUsernameOrderByTravelDateAsc(username, pageable);
+        return travelDAORepository.findAllByEmailOrderByTravelDateAsc(email, pageable);
     }
     public boolean deleteTravel(Long id) {
         try {

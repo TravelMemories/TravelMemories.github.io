@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import sr.tm.models.Likes;
 
 public interface LikesDAORepository extends JpaRepository<Likes, Long> {
-    Page<Likes> findAllByUserId(String userId, Pageable pageable);
-    Page<Likes> findAllByPhotoId(String photoId, Pageable pageable);
-    Page<Likes> findAllByPhotoIdAndUserId(String photoId, String userId, Pageable pageable);
+    Page<Likes> findAllByUserId(Long user_id, Pageable pageable);
+    Page<Likes> findAllByPhotoId(Long photo_id, Pageable pageable);
+    Page<Likes> findAllByPhotoIdAndUserId(Long photo_id, Long user_id, Pageable pageable);
     int countByPhotoId(Long photoId);
 }

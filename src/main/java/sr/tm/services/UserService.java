@@ -10,7 +10,7 @@ import sr.tm.repositories.UserDAORepository;
 @Service
 @Transactional
 public class UserService {
-    private UserDAORepository userDAORepository;
+    private final UserDAORepository userDAORepository;
 
     @Autowired
     public UserService(UserDAORepository userDAORepository) {
@@ -30,7 +30,11 @@ public class UserService {
         return this.userDAORepository.save(user);
     }
 
-    public boolean checkPassword(String username, String password){
-        return userDAORepository.checkPassword(username, password) == 1;
+    public boolean checkPassword(String email, String password){
+        return userDAORepository.checkPassword(email, password) == 1;
+    }
+
+    public boolean updatePasswordHashForUser(String email, String newPasswordHash){
+        return userDAORepository.updatePasswordHashForUser(email, newPasswordHash) == 1;
     }
 }

@@ -27,28 +27,28 @@ public class TravelController {
 
     @GetMapping("/travel")
     public Page<Travel> getTravels(
-            @RequestParam(name = "Username", required = false) String username,
+            @RequestParam(name = "email", required = false) String email,
             @RequestParam(name = "sort", defaultValue = "latest") String sort,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "20") int pageSize){
         PageRequest pageRequest = PageRequest.of(page, pageSize);
-        return travelService.getTravelsByUsername(username, pageRequest, sort);
+        return travelService.getTravelsByEmail(email, pageRequest, sort);
     }
 
     @DeleteMapping("/travel/delete")
-    public ResponseEntity<Page<Travel>> deleteTravel(@RequestParam(name = "id") Long id){
+    public ResponseEntity<Page<Travel>>  deleteTravel(@RequestParam(name = "id") Long id){
         boolean deleteSuccessful = travelService.deleteTravel(id);
         PageRequest pageRequest = PageRequest.of(0, 20);
         if(deleteSuccessful){
-            return ResponseEntity.ok(travelService.getTravelsByUsername(null, pageRequest, "latest"));
+            return ResponseEntity.ok().body(travelService.getTravelsByEmail(null, pageRequest, "latest"));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(travelService.getTravelsByUsername(null, pageRequest, "latest"));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(travelService.getTravelsByEmail(null, pageRequest, "latest"));
     }
 
     @PutMapping("/travel/add")
     public ResponseEntity<Page<Travel>> addTravel(@RequestBody Travel travel){
         travelService.save(travel);
         PageRequest pageRequest = PageRequest.of(0, 20);
-        return ResponseEntity.status(HttpStatus.CREATED).body(travelService.getTravelsByUsername(null, pageRequest, "latest"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(travelService.getTravelsByEmail(null, pageRequest, "latest"));
     }
 }
