@@ -29,6 +29,7 @@ interface Props
   className?: string;
   children?: ReactNode;
   rounded?: boolean;
+  disableScaleAnimation?: boolean;
 }
 
 function CustomButton({
@@ -36,12 +37,13 @@ function CustomButton({
   children,
   variant,
   rounded,
+  disableScaleAnimation,
   ...props
 }: Props) {
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 1.01 }}
+      whileHover={disableScaleAnimation ? {} : { scale: 1.05 }}
+      whileTap={disableScaleAnimation ? {} : { scale: 1.01 }}
       className="w-full mx-auto"
     >
       <button

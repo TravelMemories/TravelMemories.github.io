@@ -9,6 +9,7 @@ import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
 import NewTravelPage from "./NewTravelPage";
 import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
+import Slideshow from "../components/travels-page/Slideshow";
 
 function TravelPage() {
   const { id } = useParams();
@@ -17,6 +18,7 @@ function TravelPage() {
   const [travelData, setTravelData] = useState<TravelData | undefined>();
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [editWindow, setEditWindow] = useState(false);
+  const [slideshowVisible, setSlideshowVisible] = useState(true);
 
   useEffect(() => {
     const travel = GetUserTravels().find((trav) => trav.id === Number(id));
@@ -39,6 +41,14 @@ function TravelPage() {
     <>
       {!editWindow ? (
         <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8 pb-10">
+          {slideshowVisible && (
+            <Slideshow
+              travelData={travelData}
+              onExit={() => {
+                setSlideshowVisible(false);
+              }}
+            />
+          )}
           <h1 className="text-3xl text-background-300">Your travel</h1>
           <BackButton navigateTo="/travels" />
           <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
@@ -104,6 +114,15 @@ function TravelPage() {
                     travelData.stages.length === 0 ||
                     travelData.stages[0].photos.length === 0
                   }
+                  onClick={() => {
+                    if (
+                      travelData.stages.length === 0 ||
+                      travelData.stages[0].photos.length === 0
+                    ) {
+                      return;
+                    }
+                    setSlideshowVisible(true);
+                  }}
                 >
                   Create slideshow
                 </motion.button>
