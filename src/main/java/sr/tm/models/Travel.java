@@ -16,13 +16,14 @@ public class Travel {
     private Long id;
 
     @Column(name = "username")
-    private String username;
+    private String email;
 
     @Column(name = "travel_date")
     private String travelDate;
 
-    @Column(name = "place")
-    private String place;
+    @Column(name = "location_name")
+    private String locationName;
+
     @Column(name = "latitude")
     private Double latitude;
 
@@ -31,6 +32,12 @@ public class Travel {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "attraction")
+    private String attraction;
+
+    @Column(name = "attraction_link")
+    private String attractionLink;
 
     @JsonIgnore
     @OneToMany(mappedBy = "travel", cascade = CascadeType.ALL, orphanRemoval = true)

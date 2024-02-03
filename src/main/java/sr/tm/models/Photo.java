@@ -27,6 +27,15 @@ public class Photo {
     @Column(name = "photo_date")
     private String photoDate;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "location_name")
+    private String locationName;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "stage_id")

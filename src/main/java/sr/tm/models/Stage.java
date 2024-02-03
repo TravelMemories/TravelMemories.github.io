@@ -18,6 +18,9 @@ public class Stage {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "location_name")
+    private String locationName;
+
     @Column(name = "stage_date")
     private String stageDate;
 
@@ -26,6 +29,17 @@ public class Stage {
     @JoinColumn(name = "travel_id")
     private Travel travel;
 
+    @Column(name = "attraction")
+    private String attraction;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "attraction_link")
+    private String attractionLink;
 
     @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos;
