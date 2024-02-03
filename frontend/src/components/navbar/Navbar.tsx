@@ -11,11 +11,10 @@ import RegisterButton from "./RegisterButton";
 import NewMemoryButton from "./NewMemoryButton";
 
 function Navbar() {
-  //const [navbarButtons, setNavbarButtons] = useState<NavbarButtonProps[]>([
   const navbarButtons: NavbarButtonProps[] = [
     {
-      text: "Your Memories",
-      route: "/memories",
+      text: "Your Travels",
+      route: "/travels",
     },
     {
       text: "Discover",
@@ -42,7 +41,7 @@ function Navbar() {
   const { isLoggedIn } = useUserContext();
 
   return (
-    <nav className="fixed flex items-center top-0 left-0 right-0 z-50 font-primary w-full border-b text-primary-950 bg-background-50 py-4 sm:py-3">
+    <nav className="fixed flex items-center top-0 left-0 z-50 font-primary w-[100vw] border-b text-primary-950 bg-background-50 py-4 sm:py-3">
       <div
         className={` flex items-center flex-grow ${
           isLoggedIn ? "max-w-[80%]" : "max-w-[97%] sm:max-w-[80%]"
