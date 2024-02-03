@@ -11,6 +11,7 @@ import sr.tm.services.LikesService;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin("http://localhost:8080")
 public class LikesController {
     private final LikesService likesService;
 

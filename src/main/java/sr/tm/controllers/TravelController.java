@@ -13,6 +13,7 @@ import sr.tm.services.TravelService;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin("http://localhost:8080")
 public class TravelController {
     PhotoService photoService;
     StageService stageService;

@@ -11,6 +11,7 @@ import sr.tm.services.PhotoService;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin("http://localhost:8080")
 public class PhotoController {
     PhotoService photoService;
     @Autowired

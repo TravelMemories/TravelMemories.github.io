@@ -11,6 +11,7 @@ import sr.tm.services.StageService;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin("http://localhost:8080")
 public class StageController {
     private final StageService stageService;
 

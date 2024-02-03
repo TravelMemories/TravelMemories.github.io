@@ -10,6 +10,7 @@ import sr.tm.services.UserService;
 
 @Controller
 @RequestMapping( value = "/api")
+@CrossOrigin("http://localhost:8080")
 public class UserController {
     private final UserService userService;
 
