@@ -38,7 +38,7 @@ function TravelPage() {
   return (
     <>
       {!editWindow ? (
-        <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8">
+        <div className="relative mt-20 flex flex-col items-center bg-background-50 w-[90%] mx-auto p-2 gap-8 pb-10">
           <h1 className="text-3xl text-background-300">Your travel</h1>
           <BackButton navigateTo="/travels" />
           <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
@@ -92,11 +92,30 @@ function TravelPage() {
           )}
           <div className="flex gap-10 items-start w-full mx-auto max-w-[60%]">
             {travelData !== undefined && (
-              <TravelMap
-                lat={travelData?.lat as number}
-                lng={travelData?.lng as number}
-              />
+              <div className="flex flex-col items-center gap-4">
+                <TravelMap
+                  lat={travelData?.lat as number}
+                  lng={travelData?.lng as number}
+                />
+                <motion.button
+                  className="flex disabled:bg-primary-500/50 items-center justify-center bg-secondary-500 text-2xl p-4 py-1 text-primary-50 shadow-md hover:bg-secondary-600 transition-colors rounded-md mb-8 w-full"
+                  whileHover={{ scale: 1.01 }}
+                  disabled={
+                    travelData.stages.length === 0 ||
+                    travelData.stages[0].photos.length === 0
+                  }
+                >
+                  Create slideshow
+                </motion.button>
+                {(travelData.stages.length === 0 ||
+                  travelData.stages[0].photos.length === 0) && (
+                  <p className="-mt-10 text-primary-900 text-center">
+                    Add at least 1 photo to enable slideshow.
+                  </p>
+                )}
+              </div>
             )}
+
             <div className="flex flex-col items-start gap-2">
               <h1 className="text-6xl">{travelData?.location}</h1>
               <h2 className="text-4xl font-thin">
@@ -113,12 +132,6 @@ function TravelPage() {
               parentTravel={travelData}
             />
           </div>
-          <motion.button
-            className="flex items-center justify-center bg-secondary-500 text-4xl p-4 h-full text-primary-50 shadow-md hover:bg-secondary-600 transition-colors rounded-full mb-8"
-            whileHover={{ scale: 1.02 }}
-          >
-            Create slideshow
-          </motion.button>
         </div>
       ) : (
         <NewTravelPage

@@ -42,9 +42,9 @@ function HorizontalDisplay({
           : "w-full"
       } sm:h-auto mx-auto ${
         travels !== undefined && newPhotoOnSelect === undefined
-          ? "bg-background-50"
-          : "bg-background-100"
-      } p-8 gap-4 flex sm:flex-row flex-col items-center overflow-x-scroll text-primary-950`}
+          ? "bg-background-50 p-8"
+          : "bg-background-100 p-4 py-1"
+      }  gap-4 flex sm:flex-row flex-col items-center overflow-x-scroll text-primary-950 shadow-md`}
     >
       {newPhotoBackButton && (
         <CustomButton
