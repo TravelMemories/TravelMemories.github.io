@@ -21,12 +21,11 @@ function MemoryCard({
   return (
     <motion.button
       className="max-w-[20rem] p-4 h-fit shadow-md bg-background-50 flex flex-col"
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
       whileHover={{ scale: 1.008 }}
       transition={{ type: "spring", duration: 0.2 }}
       onClick={(e) => {
-        if (!isUserLogged) {
-          return;
-        }
         e.stopPropagation();
         e.preventDefault();
         navigate(

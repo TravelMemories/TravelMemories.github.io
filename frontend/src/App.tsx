@@ -41,12 +41,10 @@ function App() {
               element={<MemoryPage discover={undefined} />}
             />
           )}
-          {isLoggedIn && (
-            <Route
-              path="/memory/:travelID/:stageID/:memoryID/discover"
-              element={<MemoryPage discover={true} />}
-            />
-          )}
+          <Route
+            path="/memory/:travelID/:stageID/:memoryID/discover"
+            element={<MemoryPage discover={true} />}
+          />
           {isLoggedIn && (
             <Route path="/new-travel" element={<NewTravelPage />} />
           )}
