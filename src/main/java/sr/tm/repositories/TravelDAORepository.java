@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import sr.tm.models.Travel;
 
 public interface TravelDAORepository extends JpaRepository<Travel, Long> {
-    public Page<Travel> findAllByEmailOrderByTravelDateDesc(String email, Pageable pageable);
-    public Page<Travel> findAllByEmailOrderByTravelDateAsc(String email, Pageable pageable);
+    public Page<Travel> findAllByUserIdOrderByTravelDateDesc(Long userId, Pageable pageable);
+    public Page<Travel> findAllByUserIdOrderByTravelDateAsc(Long userId, Pageable pageable);
     public Page<Travel> findAllByOrderByTravelDateDesc(Pageable pageable);
     public Page<Travel> findAllByOrderByTravelDateAsc(Pageable pageable);
 }

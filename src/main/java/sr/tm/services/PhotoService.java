@@ -19,18 +19,18 @@ public class PhotoService {
         this.photoDAORepository = photoDAORepository;
     }
 
-    public Page<Photo> getAllPhotosByStageId(String stageId, Pageable pageable, String sort, String privacy){
+    public Page<Photo> getAllPhotosByStageId(String stageId, Pageable pageable, String sort, Long privacy){
         if(sort.equals("latest")){
             if(stageId == null){
-                return photoDAORepository.findAllByPrivacyOrderByPhotoDateDesc(pageable, privacy);
+                return photoDAORepository.findAllByPrivacyOrderByPhotoDateDesc(privacy, pageable);
             } else{
-                return photoDAORepository.findAllByStageIdAndPrivacyOrderByPhotoDateDesc(Long.valueOf(stageId), pageable, privacy);
+                return photoDAORepository.findAllByStageIdAndPrivacyOrderByPhotoDateDesc(Long.valueOf(stageId), privacy, pageable);
             }
         } else {
             if(stageId == null){
-                return photoDAORepository.findAllByPrivacyOrderByPhotoDateAsc(pageable, privacy);
+                return photoDAORepository.findAllByPrivacyOrderByPhotoDateAsc(privacy, pageable);
             } else {
-                return photoDAORepository.findAllByStageIdAndPrivacyOrderByPhotoDateAsc(Long.valueOf(stageId), pageable, privacy);
+                return photoDAORepository.findAllByStageIdAndPrivacyOrderByPhotoDateAsc(Long.valueOf(stageId), privacy, pageable);
             }
         }
     }

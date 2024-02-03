@@ -15,8 +15,10 @@ public class Travel {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email")
-    private String email;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "travel_date")
     private String travelDate;

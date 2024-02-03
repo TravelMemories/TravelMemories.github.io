@@ -15,6 +15,6 @@ public class Likes {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "photo_id")
+    @JoinColumn(name = "photo_id", nullable = false)
     private Photo photo;
 }
