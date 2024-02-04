@@ -5,6 +5,8 @@ import { StageData } from "../model/StageData";
 import homeImage2 from "../images/homeImage2.jpg";
 import homeImage1 from "../images/homeImage1.jpg";
 import homeImage3 from "../images/homeImage3.jpg";
+import CartagenaProvince1 from "../images/CartagenaProvince1.jpg";
+import CartagenaProvince2 from "../images/CartagenaProvince2.jpg";
 
 const ExampleTravels: TravelData[] = [
   {
@@ -33,9 +35,19 @@ const CartagenaStages: StageData[] = [
     id: 0,
     description: "Arrival",
     photos: [],
-    location: "Cartagena airport",
+    location: "Cartagena beach",
     lat: 10.433118,
     lng: -75.534791,
+    date: new Date(),
+    parentTravel: ExampleTravels[0],
+  },
+  {
+    id: 3,
+    description: "Cartagena province sightseeing",
+    photos: [],
+    location: "Streets of Cartagena de Indias, Colombia, Cartagena",
+    lat: 10.422801,
+    lng: -75.544146,
     date: new Date(),
     parentTravel: ExampleTravels[0],
   },
@@ -81,6 +93,34 @@ const LudingtonPhotos: PhotoData[] = [
     parentStage: LudingtonStages[0],
   },
 ];
+const CartagenaPhotos2: PhotoData[] = [
+  {
+    id: 4,
+    description: "Cartagena province sightseeing",
+    date: new Date(),
+    photoData: CartagenaProvince1,
+    imageSource: CartagenaProvince1,
+    privacy: PrivacyData.Public,
+    likes: ["test1"],
+    location: "Streets of Cartagena de Indias",
+    lat: 10.422801,
+    lng: -75.544146,
+    parentStage: CartagenaStages[1],
+  },
+  {
+    id: 5,
+    description: "Beautiful streets!",
+    date: new Date(),
+    photoData: CartagenaProvince2,
+    imageSource: CartagenaProvince2,
+    privacy: PrivacyData.Public,
+    likes: ["test1"],
+    location: "Streets of Cartagena de Indias",
+    lat: 10.422801,
+    lng: -75.544146,
+    parentStage: CartagenaStages[1],
+  },
+];
 const CartagenaPhotos: PhotoData[] = [
   {
     id: 3,
@@ -99,6 +139,7 @@ const CartagenaPhotos: PhotoData[] = [
 ExampleTravels[0].stages = CartagenaStages;
 ExampleTravels[1].stages = LudingtonStages;
 CartagenaStages[0].photos = CartagenaPhotos;
+CartagenaStages[1].photos = CartagenaPhotos2;
 LudingtonStages[0].photos = LudingtonPhotos;
 
 export default ExampleTravels;

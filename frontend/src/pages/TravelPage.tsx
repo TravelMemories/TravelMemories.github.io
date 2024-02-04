@@ -18,7 +18,7 @@ function TravelPage() {
   const [travelData, setTravelData] = useState<TravelData | undefined>();
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [editWindow, setEditWindow] = useState(false);
-  const [slideshowVisible, setSlideshowVisible] = useState(true);
+  const [slideshowVisible, setSlideshowVisible] = useState(false);
 
   useEffect(() => {
     const travel = GetUserTravels().find((trav) => trav.id === Number(id));
