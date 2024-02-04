@@ -41,9 +41,9 @@ function MemoryCard({
         className="object-cover aspect-square w-full"
       />
       <LikesDisplay photoData={data} />
-      <div className="flex items-center text-center text-lg font-bold truncate">
+      <div className="flex items-center text-center text-lg font-bold max-w-full">
         <TiLocation />
-        <h1>{data.location}</h1>
+        <h1 className="truncate max-w-full">{data.location}</h1>
       </div>
     </motion.button>
   );

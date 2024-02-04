@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TravelData } from "../../model/TravelData";
 import {
+  AnimatePresence,
   AnimationSequence,
   ElementOrSelector,
   Keyframes,
@@ -11,6 +12,7 @@ import CustomButton from "../general-purpose/CustomButton";
 import { PhotoData } from "../../model/PhotoData";
 import { FormatDate } from "../../helpers/helpers";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
+import SlideshowCard, { SlideDirection } from "./SlideshowCard";
 interface Props {
   travelData: TravelData;
   onExit: () => void;
@@ -23,11 +25,17 @@ const fadeAnimation = {
 function Slideshow({ travelData, onExit }: Props) {
   const [scope, animate] = useAnimate();
   const [startSlideshow, setStartSlideshow] = useState(false);
+  const [lastSlide, setLastSlide] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState<SlideDirection>(
+    SlideDirection.Left
+  );
   const [photos, setPhotos] = useState<PhotoData[]>([]);
-  const [photoIndex, setPhotoIndex] = useState(0);
   const [visiblePhotos, setVisiblePhotos] = useState<(PhotoData | undefined)[]>(
     []
   );
+  const [indexes, setIndexes] = useState<number[]>([0, 1, 2, 3, 4]);
+  const [photoIndex, setPhotoIndex] = useState(0);
+
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -41,8 +49,10 @@ function Slideshow({ travelData, onExit }: Props) {
     setPhotos(newPhotos);
     setVisiblePhotos([
       undefined,
+      undefined,
       newPhotos[0],
-      newPhotos.length <= 1 ? undefined : newPhotos[1],
+      newPhotos.length < 2 ? undefined : newPhotos[1],
+      newPhotos.length < 3 ? undefined : newPhotos[2],
     ]);
   };
 
@@ -50,24 +60,40 @@ function Slideshow({ travelData, onExit }: Props) {
     if (photoIndex === photos.length - 1) {
       return;
     }
+    setScrollDirection(SlideDirection.Left);
     const newIndex = photoIndex + 1;
+    if (newIndex === photos.length - 1) {
+      setLastSlide(true);
+    }
     setPhotoIndex(newIndex);
-    setVisiblePhotos(() => [
-      newIndex - 1 < 0 ? undefined : photos[newIndex - 1],
-      photos[newIndex],
-      newIndex + 1 >= photos.length ? undefined : photos[newIndex + 1],
+
+    setIndexes((prev) => [prev[4], prev[0], prev[1], prev[2], prev[3]]);
+    setVisiblePhotos((prev) => [
+      prev[1],
+      prev[2],
+      prev[3],
+      prev[4],
+      newIndex >= photos.length - 2 ? undefined : photos[newIndex + 2],
     ]);
   };
   const previousPhoto = () => {
     if (photoIndex === 0) {
       return;
     }
+    setScrollDirection(SlideDirection.Right);
     const newIndex = photoIndex - 1;
     setPhotoIndex(newIndex);
-    setVisiblePhotos(() => [
-      newIndex - 1 < 0 ? undefined : photos[newIndex - 1],
-      photos[newIndex],
-      newIndex + 1 >= photos.length ? undefined : photos[newIndex + 1],
+    if (lastSlide) {
+      setLastSlide(false);
+    }
+
+    setIndexes((prev) => [prev[1], prev[2], prev[3], prev[4], prev[0]]);
+    setVisiblePhotos((prev) => [
+      newIndex <= 1 ? undefined : photos[newIndex - 2],
+      prev[0],
+      prev[1],
+      prev[2],
+      prev[3],
     ]);
   };
   const introAnimation = async () => {
@@ -128,6 +154,17 @@ function Slideshow({ travelData, onExit }: Props) {
   useEffect(() => {
     loadPhotos();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (startSlideshow) {
+        nextPhoto();
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [startSlideshow, nextPhoto]);
+
   useEffect(() => {
     introAnimation();
   }, [introAnimation]);
@@ -183,39 +220,53 @@ function Slideshow({ travelData, onExit }: Props) {
             Stage:
           </p>
           <p className="text-center max-w-full truncate text-xl ">
-            {FormatDate(visiblePhotos[1]?.parentStage?.date)} -{" "}
-            {visiblePhotos[1]?.parentStage?.location}
+            {FormatDate(photos[photoIndex].parentStage?.date)} -{" "}
+            {photos[photoIndex].parentStage?.location}
           </p>
-          <div className="w-[95%] flex items-center justify-between">
+          {/* Img display */}
+          <motion.div
+            className="w-[95%] flex items-center justify-between relative"
+            layout
+          >
+            {/* Left arrow */}
             <motion.button
-              className="text-4xl"
+              className={`text-4xl z-50 ${photoIndex === 0 ? "opacity-0" : ""}`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               onClick={previousPhoto}
             >
               <FaAngleDoubleLeft />
             </motion.button>
-            <div className="p-4 pb-8 bg-background-50 mt-10">
-              <img
-                src={visiblePhotos[1]?.imageSource}
-                alt="You photo"
-                className="object-cover aspect-square w-[30rem] shadow-md"
-              />
-              <p className="text-primary-950 text-lg">
-                {FormatDate(visiblePhotos[1]?.date)}
-              </p>
+
+            <div className="realtive w-[35rem] aspect-square mt-10">
+              <div className="ml-8">
+                {indexes.map((idx) => (
+                  <AnimatePresence>
+                    <SlideshowCard
+                      key={idx}
+                      index={idx}
+                      photoData={visiblePhotos[idx]}
+                      to={scrollDirection}
+                    />
+                  </AnimatePresence>
+                ))}
+              </div>
             </div>
+
+            {/* Right arrow */}
             <motion.button
-              className="text-4xl"
+              className={`text-4xl z-50 ${
+                photoIndex === photos.length - 1 ? "opacity-0" : ""
+              }`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               onClick={nextPhoto}
             >
               <FaAngleDoubleRight />
             </motion.button>
-          </div>
+          </motion.div>
           <p className="text-3xl mt-10 text-background-100 max-w-full">
-            {visiblePhotos[1]?.description}
+            {photos[photoIndex].description}
           </p>
         </motion.div>
       )}

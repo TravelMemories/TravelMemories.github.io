@@ -48,7 +48,7 @@ function HorizontalDisplay({
     >
       {newPhotoBackButton && (
         <CustomButton
-          className="-ml-6 bg-secondary-400 hover:bg-secondary-500"
+          className=" bg-secondary-400 hover:bg-secondary-500"
           onClick={newPhotoBackButton}
         >
           Back

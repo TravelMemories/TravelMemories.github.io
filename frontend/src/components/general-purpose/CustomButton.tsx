@@ -44,7 +44,7 @@ function CustomButton({
     <motion.button
       whileHover={disableScaleAnimation ? {} : { scale: 1.05 }}
       whileTap={disableScaleAnimation ? {} : { scale: 1.01 }}
-      className="w-full mx-auto"
+      className=""
     >
       <button
         {...props}

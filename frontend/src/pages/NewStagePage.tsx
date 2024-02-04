@@ -102,6 +102,7 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
           onClick={() => {
             setMapVisible(true);
           }}
+          disabled={false}
         >
           <TiLocation />
           <p>Location</p>
@@ -128,6 +129,7 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
           onClick={() => {
             setDatepickerVisible((prev) => !prev);
           }}
+          disabled={false}
         >
           <MdDateRange />
           <p>Date</p>

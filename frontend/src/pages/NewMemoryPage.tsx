@@ -184,6 +184,7 @@ function NewMemoryPage({ editPage }: Props) {
             onClick={() => {
               setMapVisible(true);
             }}
+            disabled={false}
           >
             <TiLocation />
             <p>Location</p>
@@ -192,6 +193,7 @@ function NewMemoryPage({ editPage }: Props) {
             data={
               newMemory?.privacy === PrivacyData.Private ? "Private" : "Public"
             }
+            disabled={false}
             onClick={() => {
               setNewMemory(
                 (prev) =>
@@ -209,6 +211,7 @@ function NewMemoryPage({ editPage }: Props) {
             <p>Privacy</p>
           </DataEditButton>
           <DataEditButton
+            disabled={false}
             data={FormatDate(newMemory?.date)}
             onClick={() => {
               setDatepickerVisible((prev) => !prev);

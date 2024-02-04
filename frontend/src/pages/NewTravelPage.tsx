@@ -71,6 +71,7 @@ function NewTravelPage({ editPage, newPhotoPage }: Props) {
           onClick={() => {
             setMapVisible(true);
           }}
+          disabled={false}
         >
           <TiLocation />
           <p>Location</p>
@@ -97,6 +98,7 @@ function NewTravelPage({ editPage, newPhotoPage }: Props) {
           onClick={() => {
             setDatepickerVisible((prev) => !prev);
           }}
+          disabled={false}
         >
           <MdDateRange />
           <p>Date</p>
