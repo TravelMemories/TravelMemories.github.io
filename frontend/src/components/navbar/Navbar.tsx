@@ -15,14 +15,29 @@ function Navbar() {
     {
       text: "Your Travels",
       route: "/travels",
+      onClick: () => {
+        if (isMobileMenuOpen) {
+          setIsMobileMenuOpen(false);
+        }
+      },
     },
     {
       text: "Discover",
       route: "/public-memories",
+      onClick: () => {
+        if (isMobileMenuOpen) {
+          setIsMobileMenuOpen(false);
+        }
+      },
     },
     {
       text: "Profile",
       route: "/profile",
+      onClick: () => {
+        if (isMobileMenuOpen) {
+          setIsMobileMenuOpen(false);
+        }
+      },
     },
   ];
 
@@ -89,6 +104,7 @@ function Navbar() {
                 key={index}
                 text={button.text}
                 route={button.route}
+                onClick={() => {}}
               />
             ))}
           {!isLoggedIn && <LoginButton />}
@@ -115,6 +131,13 @@ function Navbar() {
         {isInView && isMobileMenuOpen && (
           <AnimatePresence>
             <motion.div className="absolute w-screen h-screen top-0 left-0 bg-black/40 z-50 overflow-hidden">
+              <div
+                className="absolute inset-0"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMobileMenuOpen(false);
+                }}
+              />
               <motion.ul
                 initial={{ x: 500 }}
                 animate={{ x: 0 }}
@@ -136,6 +159,9 @@ function Navbar() {
                       key={index}
                       text={button.text}
                       route={button.route}
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                      }}
                     />
                   ))}
                 {!isLoggedIn && <LoginButton />}

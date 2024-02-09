@@ -21,7 +21,7 @@ function LikesDisplay({ photoData, className }: Props) {
       return;
     }
     setLikes(GetLikes(photoData));
-    setLiked(DidUserLikePhoto(userData.email, photoData));
+    setLiked(DidUserLikePhoto(userData, photoData));
   }, [userData, GetLikes]);
 
   if (photoData === undefined) {
@@ -35,12 +35,9 @@ function LikesDisplay({ photoData, className }: Props) {
         onClick={(e) => {
           e.stopPropagation();
           if (!isLoggedIn) return;
-          LikeDislikePhoto(
-            userData === undefined ? "" : userData?.email,
-            photoData
-          );
+          LikeDislikePhoto(userData, photoData);
           setLikes(GetLikes(photoData));
-          setLiked(DidUserLikePhoto(userData?.email as string, photoData));
+          setLiked(DidUserLikePhoto(userData, photoData));
         }}
       >
         {userData && liked ? <IoMdHeart /> : <IoIosHeartEmpty />}

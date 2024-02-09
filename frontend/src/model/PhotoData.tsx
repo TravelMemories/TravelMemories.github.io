@@ -2,15 +2,15 @@ import { PrivacyData } from "./PrivacyData";
 import { StageData } from "./StageData";
 
 export interface PhotoData {
-  id: number;
+  id: number | undefined;
   location: string | undefined;
   lat: number;
   lng: number;
   date: Date;
   description: string;
-  photoData: Blob | undefined;
+  photoData: Blob;
   imageSource: string | undefined;
   privacy: PrivacyData;
-  likes: string[];
+  likes: number[];
   parentStage: StageData | undefined;
 }

@@ -9,10 +9,13 @@ import BackButton from "../components/general-purpose/BackButton";
 import CustomButton from "../components/general-purpose/CustomButton";
 import NewStagePage from "./NewStagePage";
 import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
+import { useUserContext } from "../context/UserContext";
+import { disposeEmitNodes } from "typescript";
 
 function StagePage() {
   const { travelID, stageID } = useParams();
-  const { DeleteStage, GetUserTravelByID, IsUserOwner } = useTravelsContext();
+  const { userData } = useUserContext();
+  const { DeleteStage, IsUserOwner, userTravels } = useTravelsContext();
   const navigate = useNavigate();
   const [stageData, setStageData] = useState<StageData | undefined>();
   const [parentTravel, setParentTravel] = useState<TravelData | undefined>();
@@ -21,19 +24,19 @@ function StagePage() {
   const [editWindow, setEditWindow] = useState(false);
 
   useEffect(() => {
-    const travel = GetUserTravelByID(Number(travelID));
-    if (travel === undefined || !IsUserOwner(travel)) {
-      navigate("/travels");
-    } else {
-      const stage = travel.stages.find((stage) => stage.id === Number(stageID));
-      if (stage === undefined) {
-        navigate("/travels");
-      } else {
-        setStageData(stage);
-        setParentTravel(travel);
-      }
+    const travel = userTravels.find((travel) => travel.id === Number(travelID));
+    if (!travel) {
+      navigate("/travel");
+      return;
     }
-  }, [navigate, GetUserTravelByID, stageID, travelID, IsUserOwner]);
+    const stage = travel.stages.find((s) => s.id === Number(stageID));
+    if (!stage) {
+      navigate("/travel");
+      return;
+    }
+    setStageData(stage);
+    setParentTravel(travel);
+  }, [userTravels]);
 
   const editStageData = (newData: StageData) => {
     setStageData(newData);
@@ -81,9 +84,13 @@ function StagePage() {
                 <div className="mt-2 flex w-full items-center justify-around">
                   <CustomButton
                     className="bg-red-400 hover:bg-red-500 w-60"
-                    onClick={() => {
-                      DeleteStage(stageData.id as number);
-                      navigate(`/travel/${stageData.parentTravel.id}`);
+                    onClick={async () => {
+                      try {
+                        DeleteStage(stageData);
+                        navigate(`/travel/${stageData.parentTravel?.id}`);
+                      } catch (error) {
+                        console.error(error);
+                      }
                     }}
                   >
                     Yes
@@ -122,7 +129,7 @@ function StagePage() {
               <div className="text-3xl uppercase">photos:</div>
               <HorizontalDisplay
                 photos={stageData.photos}
-                parentTravelID={stageData.parentTravel.id}
+                parentTravelID={stageData.parentTravel?.id}
                 parentStage={stageData}
               />
             </div>
@@ -132,7 +139,7 @@ function StagePage() {
         <NewStagePage
           editPage={{
             stageData: stageData,
-            travelID: stageData.parentTravel.id,
+            travelID: stageData.parentTravel?.id as number,
             setStageData: editStageData,
             cancelEditing: () => {
               setEditWindow(false);

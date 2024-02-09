@@ -26,9 +26,7 @@ function App() {
             path="/"
             element={isLoggedIn ? <NewMemoryPage /> : <HomePage />}
           />
-          {isLoggedIn && (
-            <Route path="/travels" element={<YourMemoriesPage />} />
-          )}
+
           <Route path="/public-memories" element={<PublicMemoriesPage />} />
           {isLoggedIn && <Route path="/profile" element={<ProfilePage />} />}
           {isLoggedIn && <Route path="/travel/:id" element={<TravelPage />} />}
@@ -53,6 +51,9 @@ function App() {
           )}
           {!isLoggedIn && <Route path="/login" element={<LoginPage />} />}
           {!isLoggedIn && <Route path="/register" element={<RegisterPage />} />}
+          {isLoggedIn && (
+            <Route path="/travels" element={<YourMemoriesPage />} />
+          )}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

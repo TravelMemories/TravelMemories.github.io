@@ -27,8 +27,7 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
   const [stageDate, setStageDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
   const [mapVisible, setMapVisible] = useState(false);
-  const { AddStage, UpdateStage, GetNewStageID, GetTravelByID } =
-    useTravelsContext();
+  const { AddStage, UpdateStage, GetTravelByID } = useTravelsContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +44,7 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
     setNewStage(
       editPage === undefined
         ? ({
-            id: GetNewStageID(),
+            id: undefined,
             location: parentTravel.location,
             lat: parentTravel.lat,
             lng: parentTravel.lng,
@@ -56,14 +55,7 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
           } as StageData)
         : editPage.stageData
     );
-  }, [
-    GetNewStageID,
-    GetTravelByID,
-    editPage,
-    parentTravel,
-    travelID,
-    defaultParentTravel,
-  ]);
+  }, [GetTravelByID, editPage, parentTravel, travelID, defaultParentTravel]);
 
   const onLocationSelect = (lat: number, lng: number, location: string) => {
     setNewStage(
@@ -142,17 +134,19 @@ function NewStagePage({ editPage, newPhotoPage, defaultParentTravel }: Props) {
             onClick={(e) => {
               if (newStage !== undefined && newStage.location !== undefined) {
                 if (newPhotoPage !== undefined) {
-                  AddStage(newStage, parentTravel.id as number);
+                  AddStage(newStage);
                   newPhotoPage(newStage);
                   return;
                 }
                 if (editPage === undefined) {
-                  AddStage(newStage, parentTravel.id as number);
-                  navigate(`/travel/${travelID}`);
+                  AddStage(newStage);
+                  navigate(`/travel/${parentTravel.id}`);
                 } else {
                   UpdateStage(newStage);
                   editPage.setStageData(newStage);
-                  navigate(`/stage/${editPage.stageData.id}`);
+                  navigate(
+                    `/stage/${newStage.parentTravel?.id}/${newStage.id}`
+                  );
                 }
               }
             }}

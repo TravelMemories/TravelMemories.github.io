@@ -16,6 +16,8 @@ import LocationPicker from "../components/general-purpose/LocationPicker";
 import NewTravelPage from "./NewTravelPage";
 import NewStagePage from "./NewStagePage";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
+import { UserData } from "../model/UserData";
 interface EditPageProps {
   photoData: PhotoData;
   setPhotoData: (newData: PhotoData) => void;
@@ -25,7 +27,13 @@ interface Props {
   editPage?: EditPageProps;
 }
 function NewMemoryPage({ editPage }: Props) {
-  const { GetUserTravels, AddPhoto, GetNewPhotoID } = useTravelsContext();
+  const {
+    LoadUserTravels: GetUserTravels,
+    AddPhoto,
+    AddTravel,
+  } = useTravelsContext();
+  const { userData } = useUserContext();
+  const { userTravels } = useTravelsContext();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
 
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());
@@ -42,25 +50,37 @@ function NewMemoryPage({ editPage }: Props) {
 
   const navigate = useNavigate();
 
-  const handleImageUpload = (e: React.FormEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (selectedTravel !== undefined) {
+      setSelectedTravel((prev) => userTravels.find((t) => t.id === prev?.id));
+    }
+  }, [userTravels]);
+  const handleImageUpload = async (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
     };
-
-    setImage(URL.createObjectURL(target.files[0]));
-    setNewMemory({
-      id: GetNewPhotoID(),
-      parentStage: undefined,
-      description: "",
-      date: new Date(),
-      photoData: target.files[0],
-      imageSource: URL.createObjectURL(target.files[0]),
-      privacy: PrivacyData.Private,
-      likes: [],
-      location: "",
-      lat: 0,
-      lng: 0,
-    });
+    if (target.files[0].size >= 10000000) {
+      window.alert("File max size is 10Mb");
+      return;
+    }
+    try {
+      setImage(URL.createObjectURL(target.files[0]));
+      setNewMemory({
+        id: undefined,
+        parentStage: undefined,
+        description: "",
+        date: new Date(),
+        photoData: target.files[0],
+        imageSource: URL.createObjectURL(target.files[0]),
+        privacy: PrivacyData.Private,
+        likes: [],
+        location: "",
+        lat: 0,
+        lng: 0,
+      });
+    } catch (error) {
+      console.error("Error converting file to byte array:", error);
+    }
   };
   const cancelEditing = () => {
     setImage(undefined);
@@ -137,7 +157,7 @@ function NewMemoryPage({ editPage }: Props) {
             }
             AddPhoto(newMemory);
             navigate(
-              `/stage/${newMemory.parentStage.parentTravel.id}/${newMemory.parentStage.id}`
+              `/stage/${newMemory.parentStage.parentTravel?.id}/${newMemory.parentStage.id}`
             );
           }}
         >
@@ -271,7 +291,7 @@ function NewMemoryPage({ editPage }: Props) {
                   setSelectedTravel(undefined);
                   setSelectingTravel(false);
                 }}
-                travels={GetUserTravels()}
+                travels={userTravels}
               />
             </>
           )}
@@ -313,6 +333,7 @@ function NewMemoryPage({ editPage }: Props) {
                   if (travelData !== undefined) {
                     setSelectedTravel(travelData);
                   }
+
                   setCreatingTravel(false);
                 }}
               />

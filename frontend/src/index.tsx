@@ -11,12 +11,12 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <UserContextProvider>
-      <TravelsContextProvider>
+    <TravelsContextProvider>
+      <UserContextProvider>
         <MapContextProvider>
           <App />
         </MapContextProvider>
-      </TravelsContextProvider>
-    </UserContextProvider>
+      </UserContextProvider>
+    </TravelsContextProvider>
   </React.StrictMode>
 );

@@ -10,24 +10,30 @@ import CustomButton from "../components/general-purpose/CustomButton";
 import NewTravelPage from "./NewTravelPage";
 import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
 import Slideshow from "../components/travels-page/Slideshow";
+import { useUserContext } from "../context/UserContext";
+import { UserData } from "../model/UserData";
 
 function TravelPage() {
   const { id } = useParams();
-  const { DeleteTravel, IsUserOwner, GetUserTravels } = useTravelsContext();
+  const { userData } = useUserContext();
+  const { DeleteTravel, IsUserOwner, userTravels } = useTravelsContext();
   const navigate = useNavigate();
   const [travelData, setTravelData] = useState<TravelData | undefined>();
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [editWindow, setEditWindow] = useState(false);
   const [slideshowVisible, setSlideshowVisible] = useState(false);
 
-  useEffect(() => {
-    const travel = GetUserTravels().find((trav) => trav.id === Number(id));
-    if (travel === undefined || !IsUserOwner(travel)) {
+  const fetchTravels = async () => {
+    const travel = userTravels.find((t) => t.id === Number(id));
+    if (!travel || !IsUserOwner(travel, userData)) {
       navigate("/travels");
-    } else {
-      setTravelData(travel);
+      return;
     }
-  }, [id, navigate, GetUserTravels, IsUserOwner]);
+    setTravelData(travel);
+  };
+  useEffect(() => {
+    fetchTravels();
+  }, [userTravels]);
 
   const editTravelData = (newData: TravelData) => {
     setTravelData(newData);
@@ -80,9 +86,16 @@ function TravelPage() {
                 <div className="mt-2 flex w-full items-center justify-around">
                   <CustomButton
                     className="bg-red-400 hover:bg-red-500 w-60"
-                    onClick={() => {
-                      DeleteTravel(travelData.id as number);
-                      navigate("/travels");
+                    onClick={async () => {
+                      try {
+                        DeleteTravel(
+                          travelData.id as number,
+                          userData as UserData
+                        );
+                        navigate("/travels");
+                      } catch (error) {
+                        console.error(error);
+                      }
                     }}
                   >
                     Yes

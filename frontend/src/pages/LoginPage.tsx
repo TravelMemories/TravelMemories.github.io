@@ -4,6 +4,7 @@ import { SlGlobe } from "react-icons/sl";
 import { motion } from "framer-motion";
 import { useUserContext } from "../context/UserContext";
 import LoginPopup from "../components/login/loginPopup";
+import { FaEye } from "react-icons/fa";
 import api from "../api/api";
 import axios from "axios";
 function LoginPage() {
@@ -11,18 +12,33 @@ function LoginPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const clearMsg = () => {
     if (errorMsg === "") return;
     setErrorMsg("");
   };
   const checkLogin = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/user/checkPassword?username=${username}&password=${password}`
+      const response = await api.get(
+        `/user/checkPassword?email=${username}&password=${password}`
       );
-      console.log(response);
+      if (response.status === 200) {
+        const id: Number = response.data.content[0].id as Number;
+        if (id === undefined) {
+          setErrorMsg("No such user in database");
+          return;
+        }
+        LogIn({
+          email: username,
+          password: password,
+          id: response.data.content[0].id,
+        });
+      } else {
+        setErrorMsg("User or password incorrect");
+      }
     } catch (err) {
       console.log(err);
+      setErrorMsg("User or password incorrect");
     }
   };
   return (
@@ -68,7 +84,7 @@ function LoginPage() {
             }}
           />
         </div>
-        <div className="space-y-2">
+        <div className="relative space-y-2">
           <label
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700"
             htmlFor="password"
@@ -76,34 +92,39 @@ function LoginPage() {
             Password
           </label>
           <input
-            className="flex h-10 w-full bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md"
+            className=" flex h-10 w-full bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md"
             id="password"
             required
             value={password}
-            type="password"
+            type={showPassword ? "text" : "password"}
             onChange={(e) => {
               clearMsg();
               setPassword(e.target.value);
             }}
-          />
+          ></input>
+          <button
+            className="absolute bottom-0 h-10 right-3 z-10"
+            type="button"
+            onClick={() => {
+              setShowPassword((prev) => !prev);
+            }}
+          >
+            <FaEye />
+          </button>
         </div>
         <button
           className="inline-flex items-center justify-center text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 w-full bg-action-400 hover:bg-action-500 text-background-50 p-2 rounded-md transition-colors"
           type="submit"
           onClick={() => {
             clearMsg();
-            //checkLogin();
-            LogIn({ email: username, password: password });
+            if (username === "" || password === "") {
+              return;
+            }
+            checkLogin();
           }}
         >
           Login
         </button>
-        {/* <button
-          className="text-sm text-right block underline text-gray-700"
-          onClick={() => {}}
-        >
-          Forgot your password?
-        </button> */}
         {errorMsg !== "" && <LoginPopup message={errorMsg} />}
       </div>
       <div className="mt-4 text-center text-sm text-background-700">

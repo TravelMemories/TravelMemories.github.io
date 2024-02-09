@@ -9,6 +9,7 @@ import LikesDisplay from "../components/public-memories/LikesDisplay";
 import { useUserContext } from "../context/UserContext";
 import NewMemoryPage from "./NewMemoryPage";
 import { PrivacyData } from "../model/PrivacyData";
+import { TravelData } from "../model/TravelData";
 interface Props {
   discover?: boolean;
 }
@@ -49,28 +50,35 @@ function MemoryPage({ discover }: Props) {
           <BackButton
             navigateTo={
               userData &&
-              IsUserOwner(photoData.parentStage.parentTravel) &&
+              IsUserOwner(
+                photoData.parentStage.parentTravel as TravelData,
+                userData
+              ) &&
               discover === undefined
-                ? `/stage/${photoData.parentStage?.parentTravel.id}/${photoData.parentStage?.id}`
+                ? `/stage/${photoData.parentStage?.parentTravel?.id}/${photoData.parentStage?.id}`
                 : "/public-memories"
             }
           />
-          {userData && IsUserOwner(photoData.parentStage.parentTravel) && (
-            <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
-              <CustomButton
-                variant={"edit"}
-                onClick={() => {
-                  setEditWindow(true);
-                }}
-              ></CustomButton>
-              <CustomButton
-                variant={"delete"}
-                onClick={() => {
-                  setDeleteWindow(true);
-                }}
-              ></CustomButton>
-            </div>
-          )}
+          {userData &&
+            IsUserOwner(
+              photoData.parentStage.parentTravel as TravelData,
+              userData
+            ) && (
+              <div className="absolute top-5 right-5 flex flex-col items-end gap-1 z-20">
+                <CustomButton
+                  variant={"edit"}
+                  onClick={() => {
+                    setEditWindow(true);
+                  }}
+                ></CustomButton>
+                <CustomButton
+                  variant={"delete"}
+                  onClick={() => {
+                    setDeleteWindow(true);
+                  }}
+                ></CustomButton>
+              </div>
+            )}
           {deleteWindow && (
             <div className="fixed z-30 inset-0 flex items-center justify-center">
               <div
@@ -86,11 +94,16 @@ function MemoryPage({ discover }: Props) {
                 <div className="mt-2 flex w-full items-center justify-around">
                   <CustomButton
                     className="bg-red-400 hover:bg-red-500 w-60"
-                    onClick={() => {
-                      DeletePhoto(photoData);
-                      navigate(
-                        `/stage/${photoData.parentStage?.parentTravel.id}/${photoData.parentStage?.id}`
-                      );
+                    onClick={async () => {
+                      try {
+                        DeletePhoto(photoData).then(() => {
+                          navigate(
+                            `/travel/${photoData.parentStage?.parentTravel?.id}`
+                          );
+                        });
+                      } catch (error) {
+                        console.error(error);
+                      }
                     }}
                   >
                     Yes
@@ -129,11 +142,14 @@ function MemoryPage({ discover }: Props) {
               <div className="flex flex-col items-start gap-1 mt-auto">
                 <p className="mt-1 -mb-3 text-background-500">Travel to:</p>
                 <p className="text-2xl">
-                  {photoData?.parentStage.parentTravel.location}
+                  {photoData?.parentStage.parentTravel?.location}
                 </p>
                 <p className=" -mb-3 text-background-500">Stage of travel:</p>
                 <p className="text-2xl">{photoData?.parentStage.location}</p>
-                {IsUserOwner(photoData.parentStage.parentTravel) && (
+                {IsUserOwner(
+                  photoData.parentStage.parentTravel as TravelData,
+                  userData
+                ) && (
                   <>
                     <p className=" -mb-3 text-background-500">Privacy:</p>
                     <p className="text-2xl">

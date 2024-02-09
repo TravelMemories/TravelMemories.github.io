@@ -8,6 +8,7 @@ import React, {
 import { UserData } from "../model/UserData";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { IoMdReturnLeft } from "react-icons/io";
+import { useTravelsContext } from "./TravelsContext";
 
 interface UserContextProviderProps {
   children: ReactNode;
@@ -16,6 +17,7 @@ interface UserContextProps {
   isLoggedIn: boolean;
   LogIn: (userLoginData: UserData) => void;
   LogOut: () => void;
+  GetUserData: () => UserData | undefined;
   userData: UserData | undefined;
   LoginCookies: () => void;
   DeleteAccount: () => void;
@@ -30,11 +32,13 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState<UserData | undefined>(undefined);
   const [userCookie, setUserCookie, removeUserCookie] = useCookies(["user"]);
+  const { LoadUserTravels } = useTravelsContext();
 
   const LogIn = (userLoginData: UserData) => {
     setUserData(userLoginData);
     setIsLoggedIn(true);
     setUserCookie("user", userLoginData, { path: "/" });
+    LoadUserTravels(userLoginData);
   };
   const LogOut = () => {
     setIsLoggedIn(false);
@@ -55,7 +59,9 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     setUserData(undefined);
     LogOut();
   };
-
+  const GetUserData = () => {
+    return userData;
+  };
   return (
     <CookiesProvider>
       <UserContext.Provider
@@ -64,6 +70,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
           LogIn,
           LogOut,
           userData,
+          GetUserData,
           LoginCookies,
           DeleteAccount,
         }}

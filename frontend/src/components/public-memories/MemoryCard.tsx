@@ -29,7 +29,7 @@ function MemoryCard({
         e.stopPropagation();
         e.preventDefault();
         navigate(
-          `/memory/${data.parentStage?.parentTravel.id}/${
+          `/memory/${data.parentStage?.parentTravel?.id}/${
             data.parentStage?.id
           }/${data.id}${publicMemoriesPage !== undefined ? "/discover" : ""}`
         );

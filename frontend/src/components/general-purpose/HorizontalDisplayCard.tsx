@@ -27,9 +27,9 @@ function HorizontalDisplayCard({
         travel
           ? `/travel/${travel.id}`
           : stage
-          ? `/stage/${stage.parentTravel.id}/${stage.id}`
+          ? `/stage/${stage.parentTravel?.id}/${stage.id}`
           : photo
-          ? `/memory/${photo.parentStage?.parentTravel.id}/${photo.parentStage?.id}/${photo.id}`
+          ? `/memory/${photo.parentStage?.parentTravel?.id}/${photo.parentStage?.id}/${photo.id}`
           : "/"
       }
       onClick={(e) => {

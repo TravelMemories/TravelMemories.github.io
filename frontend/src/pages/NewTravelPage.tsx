@@ -9,6 +9,7 @@ import { useTravelsContext } from "../context/TravelsContext";
 import { useNavigate } from "react-router-dom";
 import LocationPicker from "../components/general-purpose/LocationPicker";
 import { useUserContext } from "../context/UserContext";
+import { UserData } from "../model/UserData";
 interface EditPageProps {
   travelData: TravelData;
   setTravelData: (newData: TravelData) => void;
@@ -23,7 +24,7 @@ function NewTravelPage({ editPage, newPhotoPage }: Props) {
   const [travelDate, setTravelDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
   const [mapVisible, setMapVisible] = useState(false);
-  const { AddTravel, UpdateTravel, GetNewTravelID } = useTravelsContext();
+  const { AddTravel, UpdateTravel } = useTravelsContext();
   const navigate = useNavigate();
   const { userData } = useUserContext();
 
@@ -31,14 +32,14 @@ function NewTravelPage({ editPage, newPhotoPage }: Props) {
     setNewTravel(
       editPage === undefined
         ? {
-            id: GetNewTravelID(),
+            id: undefined,
             location: undefined,
             lat: 0,
             lng: 0,
             description: "",
             date: new Date(),
             stages: [],
-            userEmail: userData?.email as string,
+            userID: userData?.id as number,
           }
         : editPage.travelData
     );
@@ -115,17 +116,17 @@ function NewTravelPage({ editPage, newPhotoPage }: Props) {
             onClick={(e) => {
               if (newTravel !== undefined && newTravel.location !== undefined) {
                 if (newPhotoPage !== undefined) {
-                  AddTravel(newTravel);
+                  AddTravel(newTravel, userData as UserData);
                   newPhotoPage(newTravel);
                   return;
                 }
                 if (editPage === undefined) {
-                  AddTravel(newTravel);
+                  AddTravel(newTravel, userData as UserData);
                   navigate("/travels");
                 } else {
-                  UpdateTravel(newTravel);
+                  UpdateTravel(newTravel, userData as UserData);
                   editPage.setTravelData(newTravel);
-                  navigate(`/travel/${editPage.travelData.id}`);
+                  navigate(`/travel/ ${newTravel.id}`);
                 }
               }
             }}
