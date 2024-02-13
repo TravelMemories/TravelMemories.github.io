@@ -63,8 +63,16 @@ public class UserController {
     }
 
     @PutMapping("user/create")
-    public ResponseEntity<User> createNewUser(@RequestBody User user){
-        User addedUser = userService.save(user);
+    public ResponseEntity<User> createNewUser(@RequestParam("email") String email, @RequestParam("password") String password){
+
+        if(userService.findByEmail(email) != null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        User newUser = new User();
+        newUser.setPasswordHash(password);
+        newUser.setEmail(email);
+        newUser.setRole("USER");
+        User addedUser = userService.save(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedUser);
     }
 

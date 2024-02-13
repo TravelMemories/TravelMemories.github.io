@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import sr.tm.models.Photo;
 import sr.tm.repositories.PhotoDAORepository;
 
+import java.util.Optional;
+
 @Transactional
 @Service
 public class PhotoService {
@@ -17,6 +19,9 @@ public class PhotoService {
     @Autowired
     public PhotoService(PhotoDAORepository photoDAORepository) {
         this.photoDAORepository = photoDAORepository;
+    }
+    public Page<Photo> getById(Long id, Pageable pageable ){
+        return photoDAORepository.findAllById(id, pageable);
     }
 
     public Page<Photo> getAllPhotosByStageId(String stageId, Pageable pageable, String sort, Long privacy){
@@ -34,7 +39,9 @@ public class PhotoService {
             }
         }
     }
-
+    public Optional<Photo> getById(Long id){
+        return photoDAORepository.findById(id);
+    }
     public boolean deletePhoto(Long id){
         try{
             photoDAORepository.deleteById(id);

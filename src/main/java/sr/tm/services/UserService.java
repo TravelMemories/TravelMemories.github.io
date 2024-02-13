@@ -31,7 +31,9 @@ public class UserService {
     public User save(User user) {
         return this.userDAORepository.save(user);
     }
-
+    public User findByEmail(String email){
+        return userDAORepository.findByEmail(email);
+    }
     public boolean checkPassword(String email, String password){
         return userDAORepository.checkPassword(email, password) == 1;
     }

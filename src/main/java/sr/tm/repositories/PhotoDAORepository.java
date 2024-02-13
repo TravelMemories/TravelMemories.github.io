@@ -10,4 +10,6 @@ public interface PhotoDAORepository extends JpaRepository<Photo, Long> {
     Page<Photo> findAllByPrivacyOrderByPhotoDateDesc(Long privacy, Pageable pageable);
     Page<Photo> findAllByStageIdAndPrivacyOrderByPhotoDateAsc(Long stage_id, Long privacy, Pageable pageable);
     Page<Photo> findAllByStageIdAndPrivacyOrderByPhotoDateDesc(Long stage_id, Long privacy, Pageable pageable);
+    Page<Photo> findAllById(Long stage_id, Pageable pageable);
+
 }

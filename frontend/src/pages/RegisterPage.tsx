@@ -6,8 +6,11 @@ import { useUserContext } from "../context/UserContext";
 import LoginPopup from "../components/login/loginPopup";
 import { FaEye } from "react-icons/fa";
 function RegisterPage() {
-  const { LogIn } = useUserContext();
+  const { CreateUser } = useUserContext();
   const [errorMsg, setErrorMsg] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [retypePassword, setRetypePassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showRetypePassword, setShowRetypePassword] = useState(false);
   const clearMsg = () => {
@@ -42,15 +45,19 @@ function RegisterPage() {
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-700"
             htmlFor="username"
           >
-            Username
+            Email
           </label>
           <input
             className="flex h-10 w-full bg-background text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 border border-gray-300 p-2 rounded-md"
             id="username"
-            placeholder="Your username"
+            placeholder="Your email"
             required
-            type="username"
-            onChange={clearMsg}
+            type="text"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              clearMsg();
+            }}
+            value={email}
           />
         </div>
         <div className="space-y-2 relative">
@@ -66,7 +73,11 @@ function RegisterPage() {
             required
             type={showPassword ? "text" : "password"}
             title="Password should contain at least 8 characters"
-            onChange={clearMsg}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              clearMsg();
+            }}
+            value={password}
           />
           <button
             className="absolute bottom-0 h-10 right-3 z-10"
@@ -90,7 +101,11 @@ function RegisterPage() {
             id="confirmPassword"
             required
             type={showRetypePassword ? "text" : "password"}
-            onChange={clearMsg}
+            onChange={(e) => {
+              setRetypePassword(e.target.value);
+              clearMsg();
+            }}
+            value={retypePassword}
           />
           <button
             className="absolute bottom-0 h-10 right-3 z-10"
@@ -105,9 +120,18 @@ function RegisterPage() {
         <button
           className="inline-flex items-center justify-center text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary hover:bg-primary/90 h-10 w-full bg-action-400 hover:bg-action-500 text-background-50 p-2 rounded-md transition-colors "
           type="submit"
-          onClick={() => {
+          onClick={async () => {
+            if (email === "" || password === "" || retypePassword === "") {
+              setErrorMsg("Enter all fields");
+              return;
+            }
+            if (password !== retypePassword) {
+              setErrorMsg("Passwords are different");
+              return;
+            }
             clearMsg();
-            LogIn({ email: "user1", password: "password", id: 0 });
+            const created = await CreateUser(email, password);
+            if (!created) setErrorMsg("User with this email already exists");
           }}
         >
           Register

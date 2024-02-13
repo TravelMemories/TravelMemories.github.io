@@ -7,24 +7,12 @@ import { PrivacyData } from "../model/PrivacyData";
 import { PhotoData } from "../model/PhotoData";
 
 function PublicMemoriesPage() {
-  const { isLoggedIn } = useUserContext();
-  const { publicPhotoTravels, LoadPublicPhotosTravels } = useTravelsContext();
-  const [publicPhotos, setPublicPhotos] = useState<PhotoData[]>([]);
+  const { isLoggedIn, userData } = useUserContext();
+  const { publicPhotos, LoadPublicPhotosTravels } = useTravelsContext();
 
   useEffect(() => {
-    LoadPublicPhotosTravels();
-    const loadedPhotos: PhotoData[] = [];
-    publicPhotoTravels.forEach((t) =>
-      t.stages.forEach((s) =>
-        s.photos.forEach((p) => {
-          if (p.privacy === PrivacyData.Public) {
-            loadedPhotos.push(p);
-          }
-        })
-      )
-    );
-    setPublicPhotos(loadedPhotos);
-  }, [publicPhotoTravels]);
+    LoadPublicPhotosTravels(userData);
+  }, []);
   return (
     <>
       {!isLoggedIn && <Navbar />}

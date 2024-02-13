@@ -34,11 +34,11 @@ function LoginPage() {
           id: response.data.content[0].id,
         });
       } else {
-        setErrorMsg("User or password incorrect");
+        setErrorMsg("Email or password incorrect");
       }
     } catch (err) {
       console.log(err);
-      setErrorMsg("User or password incorrect");
+      setErrorMsg("Email or password incorrect");
     }
   };
   return (

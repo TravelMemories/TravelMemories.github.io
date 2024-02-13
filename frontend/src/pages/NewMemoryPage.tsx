@@ -27,13 +27,9 @@ interface Props {
   editPage?: EditPageProps;
 }
 function NewMemoryPage({ editPage }: Props) {
-  const {
-    LoadUserTravels: GetUserTravels,
-    AddPhoto,
-    AddTravel,
-  } = useTravelsContext();
+  const { AddPhoto } = useTravelsContext();
   const { userData } = useUserContext();
-  const { userTravels } = useTravelsContext();
+  const { userTravels, UpdatePhoto } = useTravelsContext();
   const [newMemory, setNewMemory] = useState<PhotoData | undefined>();
 
   const [memoryDate, setMemoryDate] = useState<Date>(new Date());

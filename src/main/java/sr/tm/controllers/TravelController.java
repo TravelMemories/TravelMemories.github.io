@@ -13,6 +13,7 @@ import sr.tm.services.StageService;
 import sr.tm.services.TravelService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -63,6 +64,10 @@ public class TravelController {
 
     @PutMapping("/travel/add")
     public ResponseEntity<Travel> addTravel(@RequestBody Travel travel){
+        Optional<Travel> oldTravel = travelService.getTravelById(travel.getId());
+        if(oldTravel.isPresent()){
+            travel.setStages(oldTravel.get().getStages());
+        }
         Travel newTravel = travelService.save(travel);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTravel);
     }

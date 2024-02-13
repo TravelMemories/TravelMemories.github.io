@@ -21,9 +21,10 @@ interface TravelsContextProviderProps {
 interface TravelsContextProps {
   userTravels: TravelData[];
   publicPhotoTravels: TravelData[];
+  publicPhotos: PhotoData[];
 
   LoadUserTravels: (userData: UserData | undefined) => void;
-  LoadPublicPhotosTravels: () => void;
+  LoadPublicPhotosTravels: (userData: UserData | undefined) => void;
 
   AddTravel: (travelData: TravelData, userData: UserData) => void;
   DeleteTravel: (id: number, userData: UserData) => void;
@@ -34,26 +35,21 @@ interface TravelsContextProps {
   DeleteStage: (stageData: StageData) => void;
   UpdateStage: (stageData: StageData) => void;
   GetStageByID: (id: number) => StageData | undefined;
-
-  DidUserLikePhoto: (
-    userData: UserData | undefined,
-    photo: PhotoData
-  ) => boolean;
-  LikeDislikePhoto: (
-    userData: UserData | undefined,
-    photo: PhotoData
-  ) => boolean;
-  GetLikes: (photo: PhotoData) => number;
-
   AddPhoto: (data: PhotoData) => void;
   DeletePhoto: (data: PhotoData) => Promise<void>;
   UpdatePhoto: (newData: PhotoData) => void;
   GetPhoto: (
+    discover: boolean,
     travelID: number,
     stageID: number,
     photoID: number
   ) => PhotoData | undefined;
   IsUserOwner: (travel: TravelData, userData: UserData | undefined) => boolean;
+
+  LikeDislikePhoto: (
+    userData: UserData,
+    photoData: PhotoData
+  ) => Promise<boolean>;
 }
 const TravelsContext = createContext({} as TravelsContextProps);
 
@@ -68,13 +64,14 @@ export function TravelsContextProvider({
   const [publicPhotoTravels, setPublicPhotoTravels] = useState<TravelData[]>(
     []
   );
+  const [publicPhotos, setPublicPhotos] = useState<PhotoData[]>([]);
   const UpdateTravelsFromJson = (
     jsonData: any,
     setTravels: React.Dispatch<React.SetStateAction<TravelData[]>>
-  ) => {
+  ): TravelData[] => {
     if (jsonData === undefined) {
       setTravels([]);
-      return;
+      return [];
     }
     let loadedTravels: TravelData[] = [];
     try {
@@ -130,7 +127,9 @@ export function TravelsContextProvider({
       });
     } catch (error) {
       console.log(error);
+
       loadedTravels = ExampleTravels;
+      return ExampleTravels;
     }
 
     loadedTravels.forEach((travel) => {
@@ -161,8 +160,8 @@ export function TravelsContextProvider({
         }
       });
     });
-
     setTravels(loadedTravels);
+    return loadedTravels;
   };
   const LoadUserTravels = async (userData: UserData | undefined) => {
     if (!userData) {
@@ -178,11 +177,25 @@ export function TravelsContextProvider({
       console.log(err);
     }
   };
-  const LoadPublicPhotosTravels = async () => {
+  const LoadPublicPhotosTravels = async (userData: UserData | undefined) => {
     try {
       const response = await api.get(`/travel/public-photos`);
       if (response && response.data) {
-        UpdateTravelsFromJson(response.data, setPublicPhotoTravels);
+        const travels = UpdateTravelsFromJson(
+          response.data,
+          setPublicPhotoTravels
+        );
+        const loadedPhotos: PhotoData[] = [];
+        travels.forEach((t) =>
+          t.stages.forEach((s) =>
+            s.photos.forEach((p) => {
+              if (p.privacy === PrivacyData.Public) {
+                loadedPhotos.push(p);
+              }
+            })
+          )
+        );
+        setPublicPhotos(loadedPhotos);
       }
     } catch (err) {
       console.log(err);
@@ -230,6 +243,7 @@ export function TravelsContextProvider({
       id: travelData.id,
       user: {
         id: userData.id,
+        email: userData.email,
       },
       travelDate: travelData.date.toISOString().slice(0, 19).replace("T", " "),
       locationName: travelData.location,
@@ -238,7 +252,7 @@ export function TravelsContextProvider({
       description: travelData.description,
       attraction: null,
       attractionLink: null,
-      stages: travelData.stages,
+      stages: [],
     };
     api
       .put(`/travel/add`, newTravel)
@@ -246,6 +260,7 @@ export function TravelsContextProvider({
         console.log(err);
       })
       .then((resp) => {
+        console.log(resp);
         setUserTravels((prev) =>
           prev.map((travel) =>
             travel.id === travelData.id ? travelData : travel
@@ -320,7 +335,7 @@ export function TravelsContextProvider({
       longitude: stageData.lng,
       attraction: null,
       attractionLink: null,
-      photos: stageData.photos,
+      photos: [],
     };
     api
       .put(
@@ -331,7 +346,6 @@ export function TravelsContextProvider({
         console.log(err);
       })
       .then((resp: any) => {
-        stageData.id = resp.data.id;
         setUserTravels((prev) =>
           prev.map((travel) =>
             travel.id !== stageData.parentTravel?.id
@@ -355,45 +369,8 @@ export function TravelsContextProvider({
     });
     return undefined;
   };
-  const DidUserLikePhoto = (
-    userData: UserData | undefined,
-    photo: PhotoData
-  ) => {
-    if (photo === undefined || !userData) {
-      return false;
-    }
-    return photo.likes.find((like) => like === userData.id) !== undefined;
-  };
-  const LikeDislikePhoto = (
-    userData: UserData | undefined,
-    photo: PhotoData
-  ) => {
-    if (photo === undefined || !userData) {
-      return false;
-    }
-    if (DidUserLikePhoto(userData, photo)) {
-      photo.likes = photo.likes.filter((like) => like !== userData.id);
-      return false;
-    } else {
-      photo.likes.push(userData.id);
-      return true;
-    }
-  };
-  const GetLikes = (photo: PhotoData) => {
-    return photo.likes.length;
-  };
   const AddPhoto = (photoData: PhotoData) => {
     if (photoData.parentStage === undefined) return;
-    // const newPhoto = {
-    //   photoDate: photoData.date.toISOString().slice(0, 19).replace("T", " "),
-    //   description: photoData.description,
-    //   locationName: photoData.location,
-    //   latitude: photoData.lat,
-    //   longitude: photoData.lng,
-    //   //photoData: photoData.photoData,
-    //   privacy: photoData.privacy === PrivacyData.Private ? 1 : 0,
-    //   likes: [],
-    // };
     const formData = new FormData();
     formData.append(
       "photoDate",
@@ -411,14 +388,9 @@ export function TravelsContextProvider({
       "privacy",
       photoData.privacy === PrivacyData.Private ? "1" : "0"
     );
-    if (photoData.likes.length > 0) {
-      formData.append("likes", JSON.stringify(photoData.likes));
-    }
-
     api
       .put(`/photo/add?stageId=${photoData.parentStage.id as number}`, formData)
       .then((resp: any) => {
-        console.log(resp);
         photoData.id = resp.data.id;
         setUserTravels((prev) =>
           prev.map((travel) =>
@@ -441,26 +413,93 @@ export function TravelsContextProvider({
   };
   const DeletePhoto = async (photoData: PhotoData): Promise<void> => {
     if (photoData) {
-      await api.delete(`/photo/delete?id=${photoData.id}`).catch((err) => {
-        throw err;
-      });
+      await api
+        .delete(`/photo/delete?id=${photoData.id}`)
+        .then((resp) => {
+          setUserTravels((prev) =>
+            prev.map((travel) =>
+              travel.id !== photoData.parentStage?.parentTravel?.id
+                ? travel
+                : {
+                    ...travel,
+                    stages: travel.stages.map((s) =>
+                      s.id === photoData.parentStage?.id
+                        ? {
+                            ...s,
+                            photos: s.photos.filter(
+                              (p) => p.id !== photoData.id
+                            ),
+                          }
+                        : s
+                    ),
+                  }
+            )
+          );
+        })
+        .catch((err) => {
+          throw err;
+        });
     }
-    // if (!data || !data.parentStage) {
-    //   return;
-    // }
-    // data.parentStage.photos = data.parentStage.photos.filter(
-    //   (p) => p.id !== data.id
-    // );
   };
-  const UpdatePhoto = (newData: PhotoData) => {
-    if (!newData || !newData.parentStage) {
-      return;
-    }
-    newData.parentStage.photos = newData.parentStage.photos.map((p) =>
-      p.id === newData.id ? newData : p
+  const UpdatePhoto = (photoData: PhotoData) => {
+    if (photoData.parentStage === undefined) return;
+    const formData = new FormData();
+    formData.append("id", (photoData.id as number).toString());
+    formData.append(
+      "photoDate",
+      new Date(photoData.date).toISOString().slice(0, 19).replace("T", " ")
     );
+    formData.append("description", photoData.description);
+    formData.append(
+      "locationName",
+      photoData.location ? photoData.location : ""
+    );
+    formData.append("latitude", photoData.lat.toString());
+    formData.append("longitude", photoData.lng.toString());
+    formData.append(
+      "privacy",
+      photoData.privacy === PrivacyData.Private ? "1" : "0"
+    );
+    api
+      .put(`/photo/add?stageId=${photoData.parentStage.id as number}`, formData)
+      .then((resp: any) => {
+        setUserTravels((prev) =>
+          prev.map((travel) =>
+            travel.id !== photoData.parentStage?.parentTravel?.id
+              ? travel
+              : {
+                  ...travel,
+                  stages: travel.stages.map((s) =>
+                    s.id === photoData.parentStage?.id
+                      ? {
+                          ...s,
+                          photos: s.photos.map((p) =>
+                            p.id === photoData.id ? photoData : p
+                          ),
+                        }
+                      : s
+                  ),
+                }
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  const GetPhoto = (travelID: number, stageID: number, photoID: number) => {
+  const GetPhoto = (
+    discover: boolean,
+    travelID: number,
+    stageID: number,
+    photoID: number
+  ): PhotoData | undefined => {
+    if (discover) {
+      const photo = publicPhotoTravels
+        .find((t) => t.id === travelID)
+        ?.stages.find((s) => s.id === stageID)
+        ?.photos.find((p) => p.id === photoID);
+      return photo;
+    }
     const photo = userTravels
       .find((t) => t.id === travelID)
       ?.stages.find((s) => s.id === stageID)
@@ -473,12 +512,67 @@ export function TravelsContextProvider({
     }
     return travel.userID === userData.id;
   };
+  const LikeDislikePhoto = async (
+    userData: UserData,
+    photoData: PhotoData
+  ): Promise<boolean> => {
+    try {
+      const resp = await api.put(
+        `/like/save?photoId=${photoData.id}&userId=${userData.id}`
+      );
+      setUserTravels((prev) =>
+        prev.map((t) =>
+          t.id !== photoData.parentStage?.parentTravel?.id
+            ? t
+            : {
+                ...t,
+                stages: t.stages.map((s) =>
+                  s.id !== photoData.parentStage?.id
+                    ? s
+                    : {
+                        ...s,
+                        photos: s.photos.map((p) =>
+                          p.id !== photoData.id
+                            ? p
+                            : {
+                                ...p,
+                                likes:
+                                  resp.data === true
+                                    ? [...p.likes, userData.id]
+                                    : p.likes.filter((l) => l !== userData.id),
+                              }
+                        ),
+                      }
+                ),
+              }
+        )
+      );
+      setPublicPhotos((prev) =>
+        prev.map((p) =>
+          p.id !== photoData.id
+            ? p
+            : {
+                ...p,
+                likes:
+                  resp.data === true
+                    ? [...p.likes, userData.id]
+                    : p.likes.filter((l) => l !== userData.id),
+              }
+        )
+      );
 
+      return resp.data;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
   return (
     <TravelsContext.Provider
       value={{
         userTravels,
         publicPhotoTravels,
+        publicPhotos,
         LoadUserTravels,
         AddTravel,
         DeleteTravel,
@@ -488,15 +582,13 @@ export function TravelsContextProvider({
         DeleteStage,
         UpdateStage,
         GetStageByID,
-        DidUserLikePhoto,
-        LikeDislikePhoto,
-        GetLikes,
         AddPhoto,
         DeletePhoto,
         UpdatePhoto,
         GetPhoto,
         IsUserOwner,
         LoadPublicPhotosTravels,
+        LikeDislikePhoto,
       }}
     >
       {children}

@@ -7,4 +7,5 @@ import sr.tm.models.Likes;
 
 public interface LikesDAORepository extends JpaRepository<Likes, Long> {
     Page<Likes> findAllByPhotoId(Long photo_id, Pageable pageable);
+    Likes findByPhotoIdAndUserId(Long photoId, Long userId);
 }

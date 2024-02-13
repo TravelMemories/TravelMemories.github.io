@@ -60,6 +60,10 @@ public class StageController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         stage.setTravel(travel.get());
+        Optional<Stage> oldStage = stageService.getById(stage.getId());
+        if(oldStage.isPresent()){
+            stage.setPhotos(oldStage.get().getPhotos());
+        }
         Stage newStage = stageService.save(stage);
         PageRequest pageRequest = PageRequest.of(0, 40);
         return ResponseEntity.status(HttpStatus.CREATED).body(newStage);

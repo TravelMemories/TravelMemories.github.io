@@ -20,5 +20,6 @@ public interface UserDAORepository extends JpaRepository<User, Long> {
     public int updatePasswordHashForUser(@Param("email") String email, @Param("newPasswordHash") String newPasswordHash);
 
     public Page<User> findByEmail(String email, Pageable pageable);
+    public User findByEmail(String email);
 }
 

@@ -25,7 +25,12 @@ function MemoryPage({ discover }: Props) {
   const [editWindow, setEditWindow] = useState(false);
 
   useEffect(() => {
-    const photo = GetPhoto(Number(travelID), Number(stageID), Number(memoryID));
+    const photo = GetPhoto(
+      discover === undefined ? false : discover,
+      Number(travelID),
+      Number(stageID),
+      Number(memoryID)
+    );
 
     if (photo === undefined) {
       navigate("/");
@@ -94,16 +99,11 @@ function MemoryPage({ discover }: Props) {
                 <div className="mt-2 flex w-full items-center justify-around">
                   <CustomButton
                     className="bg-red-400 hover:bg-red-500 w-60"
-                    onClick={async () => {
-                      try {
-                        DeletePhoto(photoData).then(() => {
-                          navigate(
-                            `/travel/${photoData.parentStage?.parentTravel?.id}`
-                          );
-                        });
-                      } catch (error) {
-                        console.error(error);
-                      }
+                    onClick={() => {
+                      DeletePhoto(photoData);
+                      navigate(
+                        `/travel/${photoData.parentStage?.parentTravel?.id}`
+                      );
                     }}
                   >
                     Yes
@@ -122,7 +122,7 @@ function MemoryPage({ discover }: Props) {
             </div>
           )}
           <div className="flex items-start w-full mx-auto max-w-[80%] gap-10 h-full">
-            <div className="flex w-[30rem] flex-col">
+            <div className="flex w-[30rem] flex-col flex-shrink-0">
               <img
                 src={photoData.imageSource}
                 alt="You photo"

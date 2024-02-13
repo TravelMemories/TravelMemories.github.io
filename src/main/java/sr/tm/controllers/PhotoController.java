@@ -37,12 +37,16 @@ public class PhotoController {
 
     @GetMapping("/photo")
     public Page<Photo> getPhotos(
+            @RequestParam(name ="id",required = false) Long id,
             @RequestParam(name = "stageId", required = false) String stageId,
             @RequestParam(name = "sort", defaultValue = "latest") String sort,
             @RequestParam(name = "privacy", defaultValue = "0") Long privacy,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pageSize", defaultValue = "20") int pageSize){
         PageRequest pageRequest = PageRequest.of(page, pageSize);
+        if(id!=null){
+            return photoService.getById(id, pageRequest);
+        }
         return photoService.getAllPhotosByStageId(stageId, pageRequest, sort, privacy);
     }
 
@@ -69,15 +73,15 @@ public class PhotoController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(newPhoto);
 //    }
     @PutMapping("/photo/add")
-    public ResponseEntity<Photo> addStage(@RequestParam("stageId") Long stageId,
-                                          @RequestPart("photoData") MultipartFile photoData,
+    public ResponseEntity<Photo> addStage(@RequestParam(value = "id", required = false) Long id,
+                                          @RequestParam("stageId") Long stageId,
+                                          @RequestPart(value = "photoData", required = false) MultipartFile photoData,
                                           @RequestParam("photoDate") String photoDate,
                                           @RequestParam("description") String description,
                                           @RequestParam("locationName") String locationName,
                                           @RequestParam("latitude") Double latitude,
                                           @RequestParam("longitude") Double longitude,
-                                          @RequestParam("privacy") Long privacy,
-                                          @RequestParam(value = "likes", required = false) Set<Long> likes){
+                                          @RequestParam("privacy") Long privacy) {
 
         Optional<Stage> stage = stageService.getById(stageId);
         if(stage.isEmpty()){
@@ -85,32 +89,38 @@ public class PhotoController {
         }
         Photo photo = new Photo();
         photo.setStage(stage.get());
-        try {
-            photo.setPhotoData(photoData.getBytes());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if(id != null){
+            photo.setId(id);
         }
+        if(photoData == null){
+            if(id == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            Optional<Photo> oldPhoto = photoService.getById(id);
+            if(oldPhoto.isEmpty()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+            photo.setPhotoData(oldPhoto.get().getPhotoData());
+        }
+        else{
+            try {
+                photo.setPhotoData(photoData.getBytes());
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+        }
+
         photo.setDescription(description);
         photo.setPhotoDate(photoDate);
         photo.setLocationName(locationName);
         photo.setLatitude(latitude);
         photo.setLongitude(longitude);
         photo.setPrivacy(privacy);
-        if(likes != null){
-            Set<Likes> likesSet = likes.stream()
-                    .map(userId -> {
-                        Likes like = new Likes();
-                        like.setUserId(userId);
-                        like.setPhoto(photo);
-                        return like;
-                    })
-                    .collect(Collectors.toSet());
-
-            photo.setLikes(likesSet);
-        }
-        else{
-            photo.setLikes(new HashSet<>());
+        photo.setLikes(new HashSet<>());
+        if(id != null){
+            Optional<Photo> oldPhoto = photoService.getById(id);
+            if(oldPhoto.isPresent()){
+                photo.setLikes(oldPhoto.get().getLikes());
+            }
         }
         Photo newPhoto = photoService.save(photo);
         PageRequest pageRequest = PageRequest.of(0, 40);

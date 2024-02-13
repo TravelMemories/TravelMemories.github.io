@@ -12,17 +12,33 @@ interface Props {
 }
 function LikesDisplay({ photoData, className }: Props) {
   const { isLoggedIn, userData } = useUserContext();
-  const { LikeDislikePhoto, DidUserLikePhoto, GetLikes } = useTravelsContext();
+  const { publicPhotoTravels, LikeDislikePhoto } = useTravelsContext();
   const [likes, setLikes] = useState(photoData.likes.length);
   const [liked, setLiked] = useState(false);
 
-  useEffect(() => {
-    if (!userData) {
+  const handleLikeClick = async () => {
+    if (!userData) return;
+    try {
+      const gaveLike = await LikeDislikePhoto(userData, photoData);
+      if (gaveLike) {
+        setLikes((prev) => prev + 1);
+        setLiked(true);
+      } else {
+        setLikes((prev) => prev - 1);
+        setLiked(false);
+      }
+    } catch (err) {
       return;
     }
-    setLikes(GetLikes(photoData));
-    setLiked(DidUserLikePhoto(userData, photoData));
-  }, [userData, GetLikes]);
+  };
+  useEffect(() => {
+    setLikes(photoData.likes.length);
+    setLiked(
+      !userData
+        ? false
+        : photoData.likes.find((like) => like === userData.id) !== undefined
+    );
+  }, [userData]);
 
   if (photoData === undefined) {
     return <div>No photo data</div>;
@@ -35,9 +51,7 @@ function LikesDisplay({ photoData, className }: Props) {
         onClick={(e) => {
           e.stopPropagation();
           if (!isLoggedIn) return;
-          LikeDislikePhoto(userData, photoData);
-          setLikes(GetLikes(photoData));
-          setLiked(DidUserLikePhoto(userData, photoData));
+          handleLikeClick();
         }}
       >
         {userData && liked ? <IoMdHeart /> : <IoIosHeartEmpty />}

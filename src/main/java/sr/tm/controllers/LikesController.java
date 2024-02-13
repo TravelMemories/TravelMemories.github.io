@@ -30,8 +30,13 @@ public class LikesController {
     }
 
     @PutMapping("/like/save")
-    public ResponseEntity<Likes> addLike(@RequestBody Likes like){
-        Likes addedLike = likesService.save(like);
-        return ResponseEntity.status(HttpStatus.CREATED).body(addedLike);
+    public ResponseEntity<Boolean> addLike(@RequestParam("photoId") Long photoID,
+                                           @RequestParam("userId") Long userID) {
+        try{
+            boolean addedLike = likesService.save(photoID, userID);
+            return ResponseEntity.status(HttpStatus.CREATED).body(addedLike);
+        }catch(RuntimeException e ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }

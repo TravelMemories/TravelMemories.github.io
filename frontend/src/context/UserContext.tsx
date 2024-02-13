@@ -9,6 +9,7 @@ import { UserData } from "../model/UserData";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { IoMdReturnLeft } from "react-icons/io";
 import { useTravelsContext } from "./TravelsContext";
+import api from "../api/api";
 
 interface UserContextProviderProps {
   children: ReactNode;
@@ -21,6 +22,7 @@ interface UserContextProps {
   userData: UserData | undefined;
   LoginCookies: () => void;
   DeleteAccount: () => void;
+  CreateUser: (email: string, password: string) => Promise<boolean>;
 }
 const UserContext = createContext({} as UserContextProps);
 
@@ -55,12 +57,34 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
     if (!userData) {
       return;
     }
-    //call api and delete all of content
-    setUserData(undefined);
-    LogOut();
+    try {
+      api.delete(`/user/delete?id=${userData.id}`);
+      LogOut();
+    } catch (err) {
+      console.log(err);
+    }
   };
   const GetUserData = () => {
     return userData;
+  };
+  const CreateUser = async (
+    email: string,
+    password: string
+  ): Promise<boolean> => {
+    try {
+      const response = await api.put(
+        `/user/create?email=${email}&password=${password}`
+      );
+      LogIn({
+        id: response.data.id,
+        email: email,
+        password: password,
+      } as UserData);
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
+    }
   };
   return (
     <CookiesProvider>
@@ -73,6 +97,7 @@ export function UserContextProvider({ children }: UserContextProviderProps) {
           GetUserData,
           LoginCookies,
           DeleteAccount,
+          CreateUser,
         }}
       >
         {children}
