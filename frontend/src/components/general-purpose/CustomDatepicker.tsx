@@ -8,6 +8,8 @@ interface Props {
   onDateSet: (date: Date) => void;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  maxDate?: Date;
+  minDate?: Date;
 }
 function CustomDatepicker({
   className,
@@ -15,13 +17,15 @@ function CustomDatepicker({
   onDateSet,
   visible,
   setVisible,
+  maxDate,
+  minDate,
 }: Props) {
   const options = {
     autoHide: true,
     todayBtn: false,
     clearBtn: false,
-    maxDate: new Date(),
-    minDate: new Date("1950-01-01"),
+    maxDate: maxDate === undefined ? new Date() : maxDate,
+    minDate: minDate === undefined ? new Date("1950-01-01") : minDate,
     defaultDate: new Date(),
   };
   const handleClose = (state: boolean) => {
@@ -30,7 +34,10 @@ function CustomDatepicker({
 
   return (
     <div
-      className={cn("pointer-events-auto cursor-pointer absolute", className)}
+      className={cn(
+        "pointer-events-auto cursor-pointer absolute z-30",
+        className
+      )}
       style={{
         left: "53%",
         bottom: "50%",

@@ -1,28 +1,24 @@
-import React from "react";
-import TravelsDisplay from "../components/travels-page/TravelsDisplay";
-import { motion } from "framer-motion";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import HorizontalDisplay from "../components/general-purpose/HorizontalDisplay";
+import { useTravelsContext } from "../context/TravelsContext";
+import { useUserContext } from "../context/UserContext";
+import { TravelData } from "../model/TravelData";
 
-function YourMemoriesPage() {
+function YourTravelsPage() {
+  const { userData } = useUserContext();
+  const { LoadUserTravels, userTravels } = useTravelsContext();
   return (
     <div className="w-full min-h-[100vh] flex flex-col px-4 lg:px-20 py-4">
-      <div className="mt-20 flex flex-col items-center w-full gap-8 ">
-        <NavLink to="/new-travel" className="w-1/2">
-          <motion.button
-            className="flex items-center justify-center bg-action-200 text-2xl px-4 py-2 h-full text-primary-950 shadow-md hover:bg-action-300 transition-colors rounded-lg w-full"
-            whileHover={{ scale: 1.02 }}
-          >
-            <IoAddCircleOutline className="text-3xl " />
-            <p className="whitespace-nowrap">New Travel</p>
-          </motion.button>
-        </NavLink>
+      <div className="mt-20 flex flex-col items-center w-full gap-4">
+        <h1 className="bg-background-50 text-5xl font-thin px-3 py-1 rounded-md shadow-md">
+          Your total travels: <b>{userTravels.length}</b>
+        </h1>
         <div className="w-full">
-          <TravelsDisplay />
+          <HorizontalDisplay travels={userTravels} />
         </div>
       </div>
     </div>
   );
 }
 
-export default YourMemoriesPage;
+export default YourTravelsPage;

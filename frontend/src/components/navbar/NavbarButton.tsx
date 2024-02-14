@@ -4,12 +4,14 @@ import { NavLink, NavLinkProps, useLocation } from "react-router-dom";
 export interface NavbarButtonProps {
   text: String;
   route: String;
+  onClick: () => void;
 }
-function NavbarButton({ text, route }: NavbarButtonProps) {
+function NavbarButton({ text, route, onClick }: NavbarButtonProps) {
   const location = useLocation();
   const [isActive, setIsActive] = useState(false);
   const checkIfActive = () => {
     setIsActive(location.pathname === route);
+    onClick();
   };
 
   return (

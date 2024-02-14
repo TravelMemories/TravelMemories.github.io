@@ -9,8 +9,8 @@ When committing something to the repo, remember to add an issue to the project a
 I've configured codespaces so that you don't need to insatlate additional packages or deps.
 mvn spring-boot:run launches server backend and front, npm start launched from ./frontend launches frontend which will be updated with yours code changes
 
-### How to run  
-mvn spring-boot:run  
+### How to run
+mvn spring-boot:run
 
 Pay attention to whether your commits are built on the server
 

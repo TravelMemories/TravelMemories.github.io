@@ -5,24 +5,75 @@ import { FormatDate } from "../helpers/helpers";
 import DataEditButton from "../components/general-purpose/DataEditButton";
 import { TravelData } from "../model/TravelData";
 import CustomDatepicker from "../components/general-purpose/CustomDatepicker";
-import CustomMap from "../components/general-purpose/CustomMap";
-function NewTravelPage() {
+import { useTravelsContext } from "../context/TravelsContext";
+import { useNavigate } from "react-router-dom";
+import LocationPicker from "../components/general-purpose/LocationPicker";
+import { useUserContext } from "../context/UserContext";
+import { UserData } from "../model/UserData";
+interface EditPageProps {
+  travelData: TravelData;
+  setTravelData: (newData: TravelData) => void;
+  cancelEditing: () => void;
+}
+interface Props {
+  editPage?: EditPageProps;
+  newPhotoPage?: (travelData: TravelData | undefined) => void;
+}
+function NewTravelPage({ editPage, newPhotoPage }: Props) {
   const [newTravel, setNewTravel] = useState<TravelData | undefined>();
   const [travelDate, setTravelDate] = useState<Date>(new Date());
   const [datepickerVisible, setDatepickerVisible] = useState(false);
+  const [mapVisible, setMapVisible] = useState(false);
+  const { AddTravel, UpdateTravel } = useTravelsContext();
+  const navigate = useNavigate();
+  const { userData } = useUserContext();
+
   useEffect(() => {
-    setNewTravel({
-      id: undefined,
-      location: undefined,
-      description: "",
-      date: new Date(),
-      stages: [],
-    });
+    setNewTravel(
+      editPage === undefined
+        ? {
+            id: undefined,
+            location: undefined,
+            lat: 0,
+            lng: 0,
+            description: "",
+            date: new Date(),
+            stages: [],
+            userID: userData?.id as number,
+          }
+        : editPage.travelData
+    );
   }, []);
+
+  const onLocationSelect = (lat: number, lng: number, location: string) => {
+    setNewTravel(
+      (prev) =>
+        ({ ...prev, location: location, lat: lat, lng: lng } as TravelData)
+    );
+  };
+
   return (
     <>
-      <form className=" max-w-[40rem] w-full mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md">
-        <DataEditButton data={undefined} onClick={() => {}}>
+      <div
+        className={`mx-auto bg-background-50 flex items-start flex-col mt-20 mb-6 p-8 gap-2 shadow-md z-20 
+        ${
+          newPhotoPage
+            ? "w-[90vw] h-5/6 fixed top-0 left-[50%] -translate-x-[50%]"
+            : "w-full max-w-[40rem]"
+        }`}
+      >
+        <div className="w-full bg-background-100 rounded-lg shadow-md mb-4">
+          <h1 className="text-center w-full text-xl">
+            {editPage === undefined ? "Create new travel" : "Edit your travel"}
+          </h1>
+        </div>
+        <DataEditButton
+          data={newTravel?.location}
+          onClick={() => {
+            setMapVisible(true);
+          }}
+          disabled={false}
+        >
           <TiLocation />
           <p>Location</p>
         </DataEditButton>
@@ -37,26 +88,70 @@ function NewTravelPage() {
             );
           }}
         />
-        <CustomMap />
+        {mapVisible && (
+          <LocationPicker
+            setVisible={setMapVisible}
+            onSelect={onLocationSelect}
+          />
+        )}
         <DataEditButton
           data={FormatDate(newTravel?.date)}
           onClick={() => {
             setDatepickerVisible((prev) => !prev);
           }}
+          disabled={false}
         >
           <MdDateRange />
           <p>Date</p>
         </DataEditButton>
 
-        <div className="flex items-center justify-between w-full mt-5 ">
+        <div
+          className={`flex items-center justify-between w-full ${
+            newPhotoPage ? "mt-auto" : "mt-5"
+          } `}
+        >
           <button
             className="flex text-center justify-center items-center gap-2 bg-action-400 hover:bg-action-500 p-2 rounded-lg text-background-50 transition-colors px-6"
             type="button"
+            onClick={(e) => {
+              if (newTravel !== undefined && newTravel.location !== undefined) {
+                if (newPhotoPage !== undefined) {
+                  AddTravel(newTravel, userData as UserData);
+                  newPhotoPage(newTravel);
+                  return;
+                }
+                if (editPage === undefined) {
+                  AddTravel(newTravel, userData as UserData);
+                  navigate("/travels");
+                } else {
+                  UpdateTravel(newTravel, userData as UserData);
+                  editPage.setTravelData(newTravel);
+                  navigate(`/travel/ ${newTravel.id}`);
+                }
+              }
+            }}
           >
-            Create
+            {editPage === undefined ? "Create" : "Confirm"}
+          </button>
+          <button
+            className="flex text-center justify-center items-center gap-2 bg-secondary-400 hover:bg-secondary-500 p-2 rounded-lg text-background-50 transition-colors px-6"
+            type="button"
+            onClick={() => {
+              if (newPhotoPage !== undefined) {
+                newPhotoPage(undefined);
+                return;
+              }
+              if (editPage === undefined) {
+                navigate("/travels");
+              } else {
+                editPage.cancelEditing();
+              }
+            }}
+          >
+            Cancel
           </button>
         </div>
-      </form>
+      </div>
       {datepickerVisible && (
         <CustomDatepicker
           date={travelDate}

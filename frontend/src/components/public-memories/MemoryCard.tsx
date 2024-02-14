@@ -1,63 +1,51 @@
-import React, { useState } from "react";
+import React from "react";
 import { PhotoData } from "../../model/PhotoData";
-import homeImage1 from "../../images/homeImage1.jpg";
-import homeImage2 from "../../images/homeImage2.jpg";
-import ExampleTravels from "../../examples/ExampleTravels";
 import { TiLocation } from "react-icons/ti";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { IoMdHeart } from "react-icons/io";
 import { motion } from "framer-motion";
-import { useUserContext } from "../../context/UserContext";
-import { FormatDate } from "../../helpers/helpers";
+import LikesDisplay from "./LikesDisplay";
+import { useNavigate } from "react-router-dom";
 interface MemoryCardProps {
   data: PhotoData;
+  isUserLogged: boolean;
+  publicMemoriesPage?: any;
 }
-function MemoryCard({ data }: MemoryCardProps) {
-  const [likes, setLikes] = useState(0);
-  const [liked, setLiked] = useState(false);
-  const { isLoggedIn } = useUserContext();
+function MemoryCard({
+  data,
+  isUserLogged,
+  publicMemoriesPage,
+}: MemoryCardProps) {
+  const navigate = useNavigate();
+  if (data === undefined) {
+    return <div>No photo data</div>;
+  }
   return (
-    <div className="max-w-[30rem] w-full p-4 shadow-md bg-background-50 flex flex-col">
+    <motion.button
+      className="max-w-[20rem] p-4 h-fit shadow-md bg-background-50 flex flex-col"
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      whileHover={{ scale: 1.008 }}
+      transition={{ type: "spring", duration: 0.2 }}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        navigate(
+          `/memory/${data.parentStage?.parentTravel?.id}/${
+            data.parentStage?.id
+          }/${data.id}${publicMemoriesPage !== undefined ? "/discover" : ""}`
+        );
+      }}
+    >
       <img
-        src={data.id === 0 ? homeImage1 : homeImage2}
-        alt={"beach"}
+        src={data.imageSource}
+        alt={"Travel memory"}
         className="object-cover aspect-square w-full"
       />
-      <div className="flex items-center text-4xl">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 1.01 }}
-          onClick={() => {
-            if (!isLoggedIn) return;
-            if (liked) {
-              setLikes((prev) => prev - 1);
-              setLiked(false);
-            } else {
-              setLikes((prev) => prev + 1);
-              setLiked(true);
-            }
-          }}
-        >
-          {liked ? <IoMdHeart /> : <IoIosHeartEmpty />}
-        </motion.button>
-        <p>{likes}</p>
-      </div>
-
-      <div className="flex items-center text-center text-lg font-bold">
+      <LikesDisplay photoData={data} />
+      <div className="flex items-center text-center text-lg font-bold max-w-full">
         <TiLocation />
-        <h1>
-          {data.id === 0
-            ? ExampleTravels[0].location
-            : ExampleTravels[1].location}
-        </h1>
+        <h1 className="truncate max-w-full">{data.location}</h1>
       </div>
-      <p className="text-sm">{FormatDate(ExampleTravels[0].date)}</p>
-      <p className="">
-        {data.id === 0
-          ? ExampleTravels[0].description
-          : ExampleTravels[1].description}
-      </p>
-    </div>
+    </motion.button>
   );
 }
 
